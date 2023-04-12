@@ -28,6 +28,8 @@ import "./theme/variables.css";
 
 import "./styles.scss";
 import Home from "./pages/Home";
+import SelectWorkers from "./components/orderInfoCard/SelectWorkers";
+import OrderDetails from "./components/orderInfoCard/OrderDetails";
 
 setupIonicReact();
 
@@ -37,6 +39,12 @@ const App = () => {
       <IonPage id="main-content">
         <IonRouterOutlet>
           <Route path={urls.root} component={Home} />
+          <Route exact path={urls.selectworkers} component={SelectWorkers}>
+            <SelectWorkers />
+          </Route>
+          <Route exact path={urls.orderdetails} component={OrderDetails}>
+            <OrderDetails />
+          </Route>
         </IonRouterOutlet>
       </IonPage>
     </IonApp>
