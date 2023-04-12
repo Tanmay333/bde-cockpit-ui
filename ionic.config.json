@@ -1,0 +1,7 @@
+{
+  "name": "blueprint-ionic-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

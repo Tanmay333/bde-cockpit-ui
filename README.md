@@ -1,20 +1,35 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Getting Started with blueprint-ionic-app
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+This project was bootstraped with [@ionic/cli](https://www.npmjs.com/package/@ionic/cli), using the [React](https://reactjs.org/) and [Redux Toolkit](https://redux-toolkit.js.org/).
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Getting started
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+- [Download](https://nodejs.org/) and install Node LTS.
+- Install Ionic CLI globally: `npm install -g @ionic/cli`.
+- Clone the repository: `git clone https://gitlab.com/smartdings/smartdings-tools/ionic-react-blueprint.git`.
+- Run `npm install` in the project directory to install the dependencies.
+- Run `ionic serve` in the project root directory to run the app in the development mode.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## Development Environment
+
+[IDE and Extensions](https://knowledge.smartdings.com/docs/engineering/dev-environments/vscode)
+
+## Building and deploying Android app
+
+- [Setup android environment](https://ionicframework.com/docs/developing/android)
+- Run `ionic cap run android` to build and run the android app.
+
+## Additional npm packages used for demonstration
+
+- @hookform/resolvers
+- @reduxjs/toolkit
+- aws-amplify
+- axios
+- axios-mock-adapter
+- joi
+- joi-password
+- react-hook-form
+- react-redux
+- underscore
+- @types/underscore
+- sass

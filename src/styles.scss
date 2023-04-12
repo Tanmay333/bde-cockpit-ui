@@ -1,0 +1,38 @@
+ion-button {
+  --border-radius: 5px;
+  text-transform: none;
+  &.no-ripple {
+    --background-activated: transparent;
+  }
+}
+
+ion-item.item-input {
+  --background: var(--ion-color-primary-tint);
+  --border-radius: 5px;
+  --inner-border-width: 0;
+  &.ion-invalid {
+    --background: var(--ion-color-danger-tint);
+  }
+  &.otp {
+    &::part(native) {
+      padding: 0 10px;
+      --ion-safe-area-right: 0;
+    }
+    ion-input input {
+      padding: 0;
+      text-align: center;
+    }
+  }
+}
+
+ion-content {
+  --padding-start: 15px;
+  --padding-end: 15px;
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
