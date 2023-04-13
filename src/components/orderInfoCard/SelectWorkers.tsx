@@ -3,49 +3,47 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonCol,
   IonContent,
   IonGrid,
-  IonIcon,
   IonImg,
   IonList,
   IonPage,
+  IonRow,
 } from "@ionic/react";
 import lohnpack from "../../static/assets/lohnpack.svg";
-import workers from "../../static/assets/selectworker.svg";
+import SelectWorkersIcon from "../../static/assets/SelectWorkse";
+import { useState } from "react";
 
 const SelectWorkers = () => {
   const Workers = [
     {
       id: 1,
-      icon: workers,
     },
     {
       id: 2,
-      icon: workers,
     },
     {
       id: 3,
-      icon: workers,
     },
     {
       id: 4,
-      icon: workers,
     },
     {
       id: 5,
-      icon: workers,
     },
     {
       id: 6,
-      icon: workers,
     },
     {
       id: 7,
-      icon: workers,
     },
   ];
-  const handler = function () {};
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const handler = (index: number) => {
+    setSelectedIndex(index);
+  };
 
   return (
     <IonPage>
@@ -112,20 +110,26 @@ const SelectWorkers = () => {
                   //bottom: "10%",
                 }}
               >
-                <IonCol size="12">
-                  {Workers.map((Icon, index) => (
-                    <IonIcon
-                      onClick={() => handler()}
-                      key={index}
+                <IonRow>
+                  {Workers.map((data, index) => (
+                    <div
+                      key={data.id}
                       style={{
+                        // display: "flex",
+                        // flexDirection: "row",
+                        textAlign: "center",
                         height: "55px",
                         width: "26px",
                         margin: "10px",
                       }}
-                      src={Icon.icon}
-                    />
+                      onClick={() => handler(index)}
+                    >
+                      <SelectWorkersIcon
+                        isSelected={selectedIndex >= index ? true : false}
+                      />
+                    </div>
                   ))}
-                </IonCol>
+                </IonRow>
               </IonGrid>
             </IonCard>
           </IonGrid>
