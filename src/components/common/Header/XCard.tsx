@@ -40,7 +40,6 @@ const XCard = (props: {
                 return (
                   <IonCardContent
                     style={{
-                      display: "flex",
                       fontSize: "16px",
                       fontWeight: "400",
                       padding: "10px",
