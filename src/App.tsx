@@ -30,6 +30,8 @@ import "./styles.scss";
 import Home from "./pages/Home";
 import SelectWorkers from "./components/orderInfoCard/SelectWorkers";
 import OrderDetails from "./components/orderInfoCard/OrderDetails";
+import MemberDetails from "./components/orderInfoCard/MemberDetails";
+import ConfirmOrderdetails from "./components/orderInfoCard/ConfirmOrderdetails";
 
 setupIonicReact();
 
@@ -44,6 +46,16 @@ const App = () => {
           </Route>
           <Route exact path={urls.orderdetails} component={OrderDetails}>
             <OrderDetails />
+          </Route>
+          <Route exact path={urls.memberdetails} component={MemberDetails}>
+            <MemberDetails />
+          </Route>
+          <Route
+            exact
+            path={urls.confirmorderdetails}
+            component={ConfirmOrderdetails}
+          >
+            <ConfirmOrderdetails />
           </Route>
         </IonRouterOutlet>
       </IonPage>
