@@ -8,7 +8,7 @@ const OrderDetails = () => {
       title: "Order details",
       content: ["Order number: 382993844", "Order quantity: 3,000"],
       btnText: "Confirm details",
-      btnLink: "/SelectWorkers",
+      btnLink: "/ConfirmOrderdetails",
     },
   ];
   return (
