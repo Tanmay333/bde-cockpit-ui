@@ -6,7 +6,11 @@ import {
   IonCardTitle,
   IonCol,
   IonGrid,
+  IonIcon,
+  IonList,
+  IonRow,
 } from "@ionic/react";
+import "../Header/XCard.module.scss";
 
 const XCard = (props: {
   title: string;
@@ -46,7 +50,9 @@ const XCard = (props: {
                     }}
                     key={i}
                   >
-                    {content}
+                    <IonRow>
+                      <IonList className="list">{content}</IonList>
+                    </IonRow>
                   </IonCardContent>
                 );
               })}
@@ -55,10 +61,10 @@ const XCard = (props: {
           {btnText && btnLink && (
             <IonGrid
               style={{
-                marginTop: "10%",
+                // marginTop: "10%",
                 textAlign: "center",
                 width: "100%",
-                bottom: "10%",
+                //bottom: "10%",
               }}
             >
               <IonCol size="12">
