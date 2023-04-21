@@ -1,8 +1,10 @@
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonCol,
   IonContent,
   IonGrid,
   IonImg,
@@ -16,6 +18,9 @@ import { useState } from "react";
 
 const SelectWorkers = () => {
   const Workers = [
+    {
+      id: 0,
+    },
     {
       id: 1,
     },
@@ -44,6 +49,10 @@ const SelectWorkers = () => {
   const handler = (index: number) => {
     setSelectedIndex(index);
   };
+
+  function selectworkers(index: number) {
+    handler(index);
+  }
 
   return (
     <IonPage>
@@ -101,7 +110,6 @@ const SelectWorkers = () => {
                   </IonCardContent>
                 </IonList>
               </IonGrid>
-
               <IonGrid
                 style={{
                   //marginTop: "10%",
@@ -110,24 +118,34 @@ const SelectWorkers = () => {
                   //bottom: "10%",
                 }}
               >
-                <IonRow>
+                <IonRow
+                  style={{
+                    padding: "20px",
+                  }}
+                >
                   {Workers.map((data, index) => (
-                    <div
-                      key={data.id}
+                    <IonRow
                       style={{
-                        // display: "flex",
-                        // flexDirection: "row",
+                        //display: "flex",
+                        //flexDirection: "row",
+                        position: "relative",
                         textAlign: "center",
                         height: "55px",
                         width: "26px",
                         margin: "10px",
+                        //justifyContent: "center",
                       }}
-                      onClick={() => handler(index)}
+                      key={data.id}
+                      onClick={() => selectworkers(index)}
                     >
-                      <SelectWorkersIcon
-                        isSelected={selectedIndex >= index ? true : false}
-                      />
-                    </div>
+                      <IonRow style={{ textAlign: "center" }}>
+                        <a href="/MemberDetails">
+                          <SelectWorkersIcon
+                            isSelected={selectedIndex >= index ? true : false}
+                          />
+                        </a>
+                      </IonRow>
+                    </IonRow>
                   ))}
                 </IonRow>
               </IonGrid>
