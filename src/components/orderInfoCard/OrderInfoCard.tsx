@@ -8,23 +8,25 @@ import {
 import React from "react";
 import styles from "./OrderInforCard.module.scss";
 
-interface Props {
-  title: string;
-  subtitle: string;
-  description: string;
-}
-
-const OrderInfoCard: React.FC<Props> = ({ title, subtitle, description }) => {
+const OrderInfoCard: React.FC = () => {
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader>
-        <IonCardTitle className={styles.title}>{title}</IonCardTitle>
-        <IonCardSubtitle className={styles.subtitle}>
-          {subtitle}
-        </IonCardSubtitle>
+        <IonCardTitle>Order: 382993844</IonCardTitle>
+        <IonCardSubtitle>Machine on</IonCardSubtitle>
       </IonCardHeader>
-      <IonCardContent className={styles.description}>
-        {description}
+
+      <IonCardContent>
+        <div>
+          <IonCardTitle>4:01 hrs</IonCardTitle>
+          <IonCardSubtitle>Today</IonCardSubtitle>
+        </div>
+        <div>
+          <IonCardTitle className={styles.ionRightSection}>
+            4:01 hrs
+          </IonCardTitle>
+          <IonCardSubtitle>Phase 03 - Production</IonCardSubtitle>
+        </div>
       </IonCardContent>
     </IonCard>
   );

@@ -1,19 +1,15 @@
-import { IonPage, IonContent } from "@ionic/react";
-import Header from "../components/common/Header/Header";
-import OrderInfoCard from "../components/orderInfoCard/OrderInfoCard";
-import WorkDetails from "../components/orderInfoCard/WorkDetails";
-import Phase from "../components/common/Header/Phase";
+import { IonPage, IonContent } from '@ionic/react';
+import Header from '../components/common/Header/Header';
+import OrderInfoCard from '../components/orderInfoCard/OrderInfoCard';
+import WorkDetails from '../components/workDetails/WorkDetails';
+import Phase from '../components/Phase/Phase';
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <IonPage>
       <Header />
       <IonContent>
-        <OrderInfoCard
-          title={"Name of order"}
-          subtitle={"Machine off"}
-          description={"Time details"}
-        />
+        <OrderInfoCard />
         <Phase />
         <WorkDetails />
       </IonContent>
