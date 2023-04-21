@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   IonButton,
   IonCard,
@@ -6,20 +7,26 @@ import {
   IonCardTitle,
   IonCol,
   IonGrid,
-  IonIcon,
   IonList,
   IonRow,
-} from "@ionic/react";
-import "../Header/XCard.module.scss";
+} from '@ionic/react';
+import '../XCard/XCard.module.scss';
 
-const XCard = (props: {
+interface Props {
   title: string;
   content?: string[];
   btnText?: string;
   btnLink?: string;
-  className: any;
+  className: string;
+}
+
+const XCard: React.FC<Props> = ({
+  title,
+  content,
+  btnText,
+  btnLink,
+  className,
 }) => {
-  const { title, content, btnText, btnLink, className } = props;
   return (
     <IonGrid>
       {className && (
@@ -29,8 +36,8 @@ const XCard = (props: {
               <IonCardHeader>
                 <IonCardTitle
                   style={{
-                    fontSize: "28px",
-                    fontWeight: "700",
+                    fontSize: '28px',
+                    fontWeight: '700',
                   }}
                 >
                   {title}
@@ -44,9 +51,9 @@ const XCard = (props: {
                 return (
                   <IonCardContent
                     style={{
-                      fontSize: "16px",
-                      fontWeight: "400",
-                      padding: "10px",
+                      fontSize: '16px',
+                      fontWeight: '400',
+                      padding: '10px',
                     }}
                     key={i}
                   >
@@ -62,8 +69,8 @@ const XCard = (props: {
             <IonGrid
               style={{
                 // marginTop: "10%",
-                textAlign: "center",
-                width: "100%",
+                textAlign: 'center',
+                width: '100%',
                 //bottom: "10%",
               }}
             >
@@ -74,8 +81,8 @@ const XCard = (props: {
                   //onClick={() => btnLink}
                   fill="solid"
                   style={{
-                    width: "210px",
-                    height: "50px",
+                    width: '210px',
+                    height: '50px',
                   }}
                 >
                   {btnText}

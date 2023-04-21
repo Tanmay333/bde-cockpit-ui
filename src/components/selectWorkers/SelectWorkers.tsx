@@ -13,7 +13,7 @@ import {
   IonRow,
 } from "@ionic/react";
 import lohnpack from "../../static/assets/lohnpack.svg";
-import SelectWorkersIcon from "../../static/assets/SelectWorkse";
+import SelectWorkersIcon from "../../static/assets/images/SelectWorkse";
 import { useState } from "react";
 
 const SelectWorkers = () => {

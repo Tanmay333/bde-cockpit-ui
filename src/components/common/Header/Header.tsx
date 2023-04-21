@@ -1,11 +1,17 @@
-import { IonHeader, IonToolbar } from "@ionic/react";
 import styles from "./Header.module.scss";
+import LohnpackLogo from "../../../static/assets/images/LohnpackLogo.svg";
+import PSITechnicsLogo from "../../../static/assets/images/PSILogo.svg";
+import SmartdingsLogo from "../../../static/assets/images/SmartdingsLogo.svg";
 
 const Header = () => {
   return (
-    <IonHeader>
-      <IonToolbar className={styles.toolbar}>Header</IonToolbar>
-    </IonHeader>
+    <div className={styles.container}>
+      <div className={styles.logoContainer}>
+        <img src={LohnpackLogo} alt={"lohnpack logo"} />
+        <img src={PSITechnicsLogo} alt={"psi logo"} />
+        <img src={SmartdingsLogo} alt={"smartdings logo"} />
+      </div>
+    </div>
   );
 };
 
