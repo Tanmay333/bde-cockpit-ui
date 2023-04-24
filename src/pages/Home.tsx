@@ -1,8 +1,9 @@
-import { IonPage, IonContent } from '@ionic/react';
+import { IonPage, IonContent, IonRow } from '@ionic/react';
 import Header from '../components/common/Header/Header';
 import OrderInfoCard from '../components/orderInfoCard/OrderInfoCard';
-import WorkDetails from '../components/workDetails/WorkDetails';
+import WorkDetails from '../components/workDetails/OrderDetails';
 import Phase from '../components/Phase/Phase';
+import PhaseDetails from '../components/workDetails/PhaseDetails';
 
 const Home: React.FC = () => {
   return (
@@ -11,7 +12,10 @@ const Home: React.FC = () => {
       <IonContent>
         <OrderInfoCard />
         <Phase />
-        <WorkDetails />
+        <IonRow>
+          <WorkDetails />
+          <PhaseDetails />
+        </IonRow>
       </IonContent>
     </IonPage>
   );
