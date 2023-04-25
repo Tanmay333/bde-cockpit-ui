@@ -1,42 +1,33 @@
-import { IonPage, IonRow, IonContent } from '@ionic/react';
-import OrderInfoCard from '../orderInfoCard/OrderInfoCard';
-import Header from '../common/header/Header';
-import Phase from '../phase/Phase';
+import { IonPage, IonContent, IonButton } from '@ionic/react';
 import CardContainer from '../common/cardContainer/CardContainer';
+import { useCallback } from 'react';
+import { useHistory } from 'react-router';
 
-const ConfirmOrderdetails = () => {
-  const data = [
-    {
-      title: 'Order details',
-      btnText: 'Scan bar-code',
-      btnLink: '/OrderDetails',
-      content: ['Order number: 382993844', 'Order quantity: 3,000'],
-    },
-    {
-      title: 'Phase details',
-      //btnText: "End mounting",
-      content: ['Start time: 8:00', 'End time: -- --'],
-    },
-  ];
+const ConfirmOrderDetails = () => {
+  const history = useHistory();
+
+  const onClick = useCallback(() => {
+    history.push('/');
+  }, [history]);
 
   return (
     <IonPage>
-      <Header />
       <IonContent>
-        <OrderInfoCard />
-        <Phase />
-        <IonRow>
-          {data.map((data, index) => {
-            return (
-              <CardContainer key={index} title={data.title}>
-                A
-              </CardContainer>
-            );
-          })}
-        </IonRow>
+        <CardContainer title={'Order details'}>
+          <IonButton
+            onClick={onClick}
+            fill="solid"
+            style={{
+              width: '210px',
+              height: '50px',
+            }}
+          >
+            Confirm Order Details
+          </IonButton>
+        </CardContainer>
       </IonContent>
     </IonPage>
   );
 };
 
-export default ConfirmOrderdetails;
+export default ConfirmOrderDetails;
