@@ -1,9 +1,9 @@
 import { IonPage, IonContent, IonRow } from '@ionic/react';
-import Header from '../components/common/Header/Header';
+import Header from '../components/common/header/Header';
 import OrderInfoCard from '../components/orderInfoCard/OrderInfoCard';
-import WorkDetails from '../components/workDetails/OrderDetails';
-import Phase from '../components/Phase/Phase';
-import PhaseDetails from '../components/workDetails/PhaseDetails';
+import WorkDetails from '../components/orderDetails/OrderDetails';
+import Phase from '../components/phase/Phase';
+import PhaseDetails from '../components/phaseDetails/PhaseDetails';
 
 const Home: React.FC = () => {
   return (

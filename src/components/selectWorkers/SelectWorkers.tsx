@@ -1,20 +1,19 @@
 import {
-  IonButton,
-  IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonCol,
   IonContent,
   IonGrid,
   IonImg,
   IonList,
   IonPage,
   IonRow,
-} from "@ionic/react";
-import lohnpack from "../../static/assets/lohnpack.svg";
-import SelectWorkersIcon from "../../static/assets/images/SelectWorkse";
-import { useState } from "react";
+} from '@ionic/react';
+import lohnpack from '../../static/assets/lohnpack.svg';
+import SelectWorkersIcon from '../../static/assets/images/SelectWorkse';
+import { useState } from 'react';
+import CardContainer from '../common/cardContainer/CardContainer';
+import styles from './SelectWorkers.module.scss';
 
 const SelectWorkers = () => {
   const Workers = [
@@ -57,101 +56,72 @@ const SelectWorkers = () => {
   return (
     <IonPage>
       <IonContent>
-        <IonGrid
-          style={{
-            marginTop: "10%",
-            textAlign: "center",
-          }}
-        >
-          <IonImg style={{ height: "55px" }} src={lohnpack} />
+        <IonImg className={styles.img} src={lohnpack} />
+        <CardContainer title={'Select worker'}>
+          <IonGrid>
+            <IonCardHeader>
+              <IonCardTitle
+                style={{
+                  fontSize: '28px',
+                  fontWeight: '700',
+                  textAlign: 'center',
+                }}
+              >
+                Number of workers
+              </IonCardTitle>
+            </IonCardHeader>
+          </IonGrid>
+
           <IonGrid
             style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
+              fontSize: '16px',
+              fontWeight: '400',
+              textAlign: 'center',
             }}
           >
-            <IonCard
+            <IonList>
+              <IonCardContent>
+                How many of employees is working on the order?
+              </IonCardContent>
+            </IonList>
+          </IonGrid>
+          <IonGrid
+            style={{
+              //marginTop: "10%",
+              textAlign: 'center',
+              width: '100%',
+              //bottom: "10%",
+            }}
+          >
+            <IonRow
               style={{
-                borderTop: "16px  solid #E20031",
-                position: "relative",
-                height: "369px",
-                width: "759px",
-                background: "#FFFFFF",
-                boxshadow: "0px 5px 15px rgba(114, 114, 114, 0.15)",
-                borderRadius: "15px",
+                padding: '20px',
               }}
             >
-              <IonGrid>
-                <IonCardHeader>
-                  <IonCardTitle
-                    style={{
-                      fontSize: "28px",
-                      fontWeight: "700",
-                      textAlign: "center",
-                    }}
-                  >
-                    Number of workers
-                  </IonCardTitle>
-                </IonCardHeader>
-              </IonGrid>
-
-              <IonGrid
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  textAlign: "center",
-                }}
-              >
-                <IonList>
-                  <IonCardContent>
-                    How many of employees is working on the order?
-                  </IonCardContent>
-                </IonList>
-              </IonGrid>
-              <IonGrid
-                style={{
-                  //marginTop: "10%",
-                  textAlign: "center",
-                  width: "100%",
-                  //bottom: "10%",
-                }}
-              >
+              {Workers.map((data, index) => (
                 <IonRow
                   style={{
-                    padding: "20px",
+                    position: 'relative',
+                    textAlign: 'center',
+                    height: '55px',
+                    width: '26px',
+                    margin: '10px',
                   }}
+                  key={data.id}
+                  onClick={() => selectworkers(index)}
                 >
-                  {Workers.map((data, index) => (
-                    <IonRow
-                      style={{
-                        //display: "flex",
-                        //flexDirection: "row",
-                        position: "relative",
-                        textAlign: "center",
-                        height: "55px",
-                        width: "26px",
-                        margin: "10px",
-                        //justifyContent: "center",
-                      }}
-                      key={data.id}
-                      onClick={() => selectworkers(index)}
-                    >
-                      <IonRow style={{ textAlign: "center" }}>
-                        <a href="/MemberDetails">
-                          <SelectWorkersIcon
-                            isSelected={selectedIndex >= index ? true : false}
-                          />
-                        </a>
-                      </IonRow>
-                    </IonRow>
-                  ))}
+                  <IonRow style={{ textAlign: 'center' }}>
+                    <a href="/MemberDetails">
+                      <SelectWorkersIcon
+                        isSelected={selectedIndex >= index ? true : false}
+                      />
+                    </a>
+                  </IonRow>
                 </IonRow>
-              </IonGrid>
-            </IonCard>
+              ))}
+            </IonRow>
           </IonGrid>
-        </IonGrid>
+        </CardContainer>
       </IonContent>
     </IonPage>
   );
