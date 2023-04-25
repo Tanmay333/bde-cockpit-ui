@@ -1,34 +1,48 @@
-import { IonContent, IonPage } from '@ionic/react';
-import XCard from '../common/XCard/XCard';
-import styles from '../common/XCard/XCard.module.scss';
-import React from 'react';
+import { useCallback, useState } from 'react';
+import CardContainer from '../common/cardContainer/CardContainer';
+import { IonCardContent, IonGrid, IonButton, IonList } from '@ionic/react';
 
 const OrderDetails: React.FC = () => {
-  const data = [
-    {
-      title: 'Order details',
-      content: ['Order number: 382993844', 'Order quantity: 3,000'],
-      btnText: 'Confirm details',
-      btnLink: '/ConfirmOrderdetails',
-    },
-  ];
+  const [barcodeState, setBarcodeState] = useState(false);
+
+  const onClick = useCallback(() => {
+    setBarcodeState(true);
+  }, [barcodeState]);
+
+  if (barcodeState === true) {
+    alert('data');
+  }
+
   return (
-    <IonPage>
-      <IonContent>
-        {data.map((data, index) => {
-          return (
-            <XCard
-              key={index}
-              className={styles.center}
-              title={data.title}
-              content={data.content}
-              btnText={data.btnText}
-              btnLink={data.btnLink}
-            />
-          );
-        })}
-      </IonContent>
-    </IonPage>
+    <CardContainer title="Order details">
+      <IonCardContent
+        style={{
+          fontSize: '16px',
+          fontWeight: '400',
+        }}
+      >
+        <IonList style={{ marginBottom: '10px' }}>Order number: -- --</IonList>
+        <IonList>Order quantity: -- --</IonList>
+      </IonCardContent>
+
+      <IonGrid
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        <IonButton
+          type="submit"
+          onClick={onClick}
+          fill="solid"
+          style={{
+            width: '210px',
+            height: '50px',
+          }}
+        >
+          Scan bar-code
+        </IonButton>
+      </IonGrid>
+    </CardContainer>
   );
 };
 

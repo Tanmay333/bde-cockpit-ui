@@ -1,15 +1,13 @@
-import XXCard from '../common/XCard/XXCard';
+import CardContainer from '../common/cardContainer/CardContainer';
 import { IonCardContent, IonGrid, IonButton, IonList } from '@ionic/react';
-import styles from '../common/XCard/XCard.module.scss';
 
 const PhaseDetails: React.FC = () => {
   return (
-    <XXCard className={styles.start} title="Phase details">
+    <CardContainer title="Phase details">
       <IonCardContent
         style={{
           fontSize: '16px',
           fontWeight: '400',
-          //margin: '30px',
         }}
       >
         <IonList style={{ marginBottom: '10px' }}>Start time: -- --</IonList>
@@ -19,8 +17,6 @@ const PhaseDetails: React.FC = () => {
       <IonGrid
         style={{
           textAlign: 'center',
-
-          //bottom: "10%",
         }}
       >
         <IonButton
@@ -37,7 +33,7 @@ const PhaseDetails: React.FC = () => {
           Mounting
         </IonButton>
       </IonGrid>
-    </XXCard>
+    </CardContainer>
   );
 };
 

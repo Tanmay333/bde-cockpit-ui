@@ -31,7 +31,7 @@ import Home from './pages/Home';
 import SelectWorkers from './components/selectWorkers/SelectWorkers';
 import OrderDetails from './components/orderDetails/OrderDetails';
 import MemberDetails from './components/memberDetails/MemberDetails';
-import ConfirmOrderdetails from './components/confirmOrderDetails.tsx/ConfirmOrderdetails';
+import ConfirmOrderdetails from './components/confirmOrderDetails.tsx/ConfirmOrderDetails';
 
 setupIonicReact();
 
