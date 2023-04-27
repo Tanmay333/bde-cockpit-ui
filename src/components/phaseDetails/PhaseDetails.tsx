@@ -3,7 +3,7 @@ import { IonCardContent, IonGrid, IonButton, IonList } from '@ionic/react';
 
 const PhaseDetails: React.FC = () => {
   return (
-    <CardContainer title="Phase details">
+    <CardContainer title="Phase details" position={'start'}>
       <IonCardContent
         style={{
           fontSize: '16px',

@@ -57,7 +57,7 @@ const SelectWorkers = () => {
     <IonPage>
       <IonContent>
         <IonImg className={styles.img} src={lohnpack} />
-        <CardContainer title={'Select worker'}>
+        <CardContainer title={'Select worker'} position={'middle'}>
           <IonGrid>
             <IonCardHeader>
               <IonCardTitle

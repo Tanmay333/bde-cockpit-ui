@@ -31,7 +31,7 @@ const MembersDetails = () => {
         <IonRow>
           {data.map((data, index) => {
             return (
-              <CardContainer key={index} title={data.title}>
+              <CardContainer key={index} title={data.title} position={'middle'}>
                 AAA
               </CardContainer>
             );
