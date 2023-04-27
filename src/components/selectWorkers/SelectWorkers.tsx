@@ -111,7 +111,7 @@ const SelectWorkers = () => {
                   onClick={() => selectworkers(index)}
                 >
                   <IonRow style={{ textAlign: 'center' }}>
-                    <a href="/MemberDetails">
+                    <a href="/">
                       <SelectWorkersIcon
                         isSelected={selectedIndex >= index ? true : false}
                       />
