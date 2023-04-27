@@ -31,7 +31,7 @@ import Home from './pages/Home';
 import SelectWorkers from './components/selectWorkers/SelectWorkers';
 import OrderDetails from './components/orderDetails/OrderDetails';
 import MemberDetails from './components/memberDetails/MemberDetails';
-import ConfirmOrderDetails from './components/confirmOrderDetails.tsx/ConfirmOrderDetails';
+import ConfirmOrderdetails from './components/confirmOrderDetails.tsx/ConfirmOrderDetails';
 
 setupIonicReact();
 
@@ -50,8 +50,12 @@ const App = () => {
           <Route exact path={urls.memberdetails} component={MemberDetails}>
             <MemberDetails />
           </Route>
-          <Route exact path={urls.confirmorderdetails}>
-            <ConfirmOrderDetails />
+          <Route
+            exact
+            path={urls.confirmorderdetails}
+            component={ConfirmOrderdetails}
+          >
+            <ConfirmOrderdetails />
           </Route>
         </IonRouterOutlet>
       </IonPage>
