@@ -11,9 +11,10 @@ import {
 } from '@ionic/react';
 import lohnpack from '../../static/assets/lohnpack.svg';
 import SelectWorkersIcon from '../../static/assets/images/SelectWorkse';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import styles from './SelectWorkers.module.scss';
+import { useHistory } from 'react-router';
 
 const SelectWorkers = () => {
   const Workers = [
@@ -44,10 +45,14 @@ const SelectWorkers = () => {
   ];
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const handler = (index: number) => {
-    setSelectedIndex(index);
-  };
+  const history = useHistory();
+  const handler = useCallback(
+    (index: number) => {
+      setSelectedIndex(index);
+      history.push('/');
+    },
+    [history],
+  );
 
   function selectworkers(index: number) {
     handler(index);
@@ -111,11 +116,9 @@ const SelectWorkers = () => {
                   onClick={() => selectworkers(index)}
                 >
                   <IonRow style={{ textAlign: 'center' }}>
-                    <a href="/">
-                      <SelectWorkersIcon
-                        isSelected={selectedIndex >= index ? true : false}
-                      />
-                    </a>
+                    <SelectWorkersIcon
+                      isSelected={selectedIndex >= index ? true : false}
+                    />
                   </IonRow>
                 </IonRow>
               ))}
