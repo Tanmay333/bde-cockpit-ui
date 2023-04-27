@@ -1,9 +1,16 @@
 import { IonButton, IonContent, IonPage, IonRow } from '@ionic/react';
-import React from 'react';
+import React, { useCallback } from 'react';
 import styles from './DowntimeType.module.scss';
 import Header from '../common/header/Header';
+import { useHistory } from 'react-router';
 
 const DowntimeType: React.FC = () => {
+  const history = useHistory();
+
+  const onClick = useCallback(() => {
+    history.push('/');
+  }, [history]);
+
   return (
     <IonPage>
       <Header />
@@ -22,7 +29,7 @@ const DowntimeType: React.FC = () => {
           </IonRow>
         </div>
         <div className={styles.endBtn}>
-          <IonButton className={styles.end} href="/">
+          <IonButton className={styles.end} onClick={onClick}>
             End Production
           </IonButton>
         </div>
