@@ -1,18 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { IonReactRouter } from '@ionic/react-router';
 import { Provider } from 'react-redux';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store/configureStore';
-import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <IonReactRouter>
         <App />
-      </BrowserRouter>
+      </IonReactRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
