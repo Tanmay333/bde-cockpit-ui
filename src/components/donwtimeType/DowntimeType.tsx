@@ -18,7 +18,6 @@ const DowntimeType: React.FC = () => {
         <div className={styles.title}>
           <p>Downtime</p>
         </div>
-
         <div>
           <IonRow>
             <IonButton className={styles.button}>Machine issue</IonButton>

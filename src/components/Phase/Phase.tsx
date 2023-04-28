@@ -1,6 +1,7 @@
 import { IonGrid, IonRow, IonCol, IonModal } from '@ionic/react';
 import React, { useCallback, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import styles from './Phase.module.scss';
 
 const Phase: React.FC = () => {
   const [downTime, setDownType] = useState(false);
@@ -25,16 +26,16 @@ const Phase: React.FC = () => {
   }, [bgColor]);
 
   return (
-    <IonGrid>
+    <IonGrid className={styles.container}>
       <IonCol>
         <IonGrid>
-          <IonRow>
+          <IonRow style={{ flexWrap: 'nowrap' }}>
             <div
               onClick={onClick}
               //onClick={handleClick}
               style={{
                 height: '39px',
-                width: '105px',
+                width: '10%',
                 //background: '#E0E0E0',
                 backgroundColor: bgColor,
                 borderRadius: '5px',
@@ -46,7 +47,7 @@ const Phase: React.FC = () => {
               onClick={handleClick}
               style={{
                 height: '39px',
-                width: '101px',
+                width: '10%',
                 //background: '#E0E0E0',
                 backgroundColor: bgColor,
                 borderRadius: '5px',
@@ -58,7 +59,7 @@ const Phase: React.FC = () => {
             <div
               style={{
                 height: '39px',
-                width: '316px',
+                width: '60%',
                 background: '#2AD127',
                 borderRadius: '5px',
                 margin: '3px',
@@ -76,7 +77,7 @@ const Phase: React.FC = () => {
             <div
               style={{
                 height: '39px',
-                width: '100px',
+                width: '10%',
                 background: '#E0E0E0',
                 borderRadius: '5px',
                 margin: '3px',
@@ -85,7 +86,7 @@ const Phase: React.FC = () => {
             <div
               style={{
                 height: '39px',
-                width: '101px',
+                width: '10%',
                 background: '#E0E0E0',
                 borderRadius: '5px',
                 margin: '3px',

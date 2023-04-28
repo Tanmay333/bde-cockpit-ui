@@ -1,4 +1,4 @@
-import { IonPage, IonContent, IonRow } from '@ionic/react';
+import { IonPage, IonContent } from '@ionic/react';
 import Header from '../components/common/header/Header';
 import OrderInfoCard from '../components/orderInfoCard/OrderInfoCard';
 import WorkDetails from '../components/orderDetails/OrderDetails';
@@ -6,6 +6,7 @@ import Phase from '../components/phase/Phase';
 import PhaseDetails from '../components/phaseDetails/PhaseDetails';
 import { useEffect, useState } from 'react';
 import SplashScreen from '../components/splashScreen/SplashScreen';
+import styles from './Home.module.scss';
 
 const Home: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState(5);
@@ -27,10 +28,10 @@ const Home: React.FC = () => {
       <IonContent>
         <OrderInfoCard />
         <Phase />
-        <IonRow>
+        <div className={styles.details}>
           <WorkDetails />
           <PhaseDetails />
-        </IonRow>
+        </div>
       </IonContent>
     </IonPage>
   );

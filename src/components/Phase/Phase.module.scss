@@ -1,6 +1,13 @@
 .aaa {
   background-color: #a3a3a3;
 }
+
 .selected {
   background-color: blue;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  padding: 0px 24px;
 }

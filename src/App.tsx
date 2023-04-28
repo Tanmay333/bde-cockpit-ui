@@ -30,7 +30,6 @@ import './styles.scss';
 import Home from './pages/Home';
 import SelectWorkers from './components/selectWorkers/SelectWorkers';
 import OrderDetails from './components/orderDetails/OrderDetails';
-import MemberDetails from './components/memberDetails/MemberDetails';
 import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDetails';
 import DowntimeType from './components/donwtimeType/DowntimeType';
 
@@ -47,9 +46,6 @@ const App = () => {
           </Route>
           <Route exact path={urls.orderdetails} component={OrderDetails}>
             <OrderDetails />
-          </Route>
-          <Route exact path={urls.memberdetails} component={MemberDetails}>
-            <MemberDetails />
           </Route>
           <Route
             exact
