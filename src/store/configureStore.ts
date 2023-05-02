@@ -1,8 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TEST_SLICE_KEY, testDataReducer } from './slices/OrderInfoSlice';
+import {
+  MACHINE_DETAILS_KEY,
+  machineDetailsReducer,
+} from './slices/machineDetailsSlice';
 
 const reducers = {
   [TEST_SLICE_KEY]: testDataReducer,
+  [MACHINE_DETAILS_KEY]: machineDetailsReducer,
 };
 
 export const store = configureStore({ reducer: reducers });

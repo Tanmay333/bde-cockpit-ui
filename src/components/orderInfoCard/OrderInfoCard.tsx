@@ -1,35 +1,31 @@
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
 } from '@ionic/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './OrderInforCard.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
-import { getTestData } from '../../store/slices/OrderInfoSlice';
+import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
 
 const OrderInfoCard: React.FC = () => {
-  const state = useAppSelector((state) => state.testslice);
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const promise = dispatch(getTestData());
+  const handleClick = () => {
+    dispatch(getMachineDetails());
+  };
 
-    return () => {
-      promise.abort();
-    };
-  }, [dispatch]);
-
-  if (state.data === null) {
-    return null;
-  }
+  console.log(state, 'Data from redux store.');
 
   return (
     <IonCard className={styles.orderInfoCard}>
+      <IonButton onClick={handleClick}>AAAAA</IonButton>
       <IonCardHeader>
-        <IonCardTitle>{state.data.name}</IonCardTitle>
+        <IonCardTitle>Test Data</IonCardTitle>
         <IonCardSubtitle>Machine on</IonCardSubtitle>
       </IonCardHeader>
 
