@@ -61,7 +61,9 @@ const SelectWorkers = () => {
   return (
     <IonPage>
       <IonContent>
-        <IonImg className={styles.img} src={lohnpack} />
+        <div className={styles.img}>
+          <IonImg src={lohnpack} />
+        </div>
         <CardContainer title={'Select worker'} position={'middle'}>
           <IonGrid>
             <IonCardHeader>
@@ -101,6 +103,8 @@ const SelectWorkers = () => {
             <IonRow
               style={{
                 padding: '20px',
+                display: 'flex',
+                justifyContent: 'center',
               }}
             >
               {Workers.map((data, index) => (

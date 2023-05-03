@@ -6,8 +6,12 @@ import SplashscreenLogo from '../../static/assets/images/SplashscreenLogo.svg';
 const SplashScreen: React.FC = () => {
   return (
     <>
-      <div className={styles.Splash}>
-        <img src={SplashscreenLogo} alt={'Splashscreen Logo'} />
+      <div className={styles.splash}>
+        <img
+          className={styles.img}
+          src={SplashscreenLogo}
+          alt={'Splashscreen Logo'}
+        />
       </div>
     </>
   );
