@@ -16,9 +16,17 @@ const Phase: React.FC = () => {
 
   const [bgColor, setBgColor] = useState('#E0E0E0');
 
-  const onClick = useCallback(() => {
-    setBgColor('#2799D1');
-  }, [bgColor]);
+  const onClick = useCallback(
+    (event) => {
+      console.log(event.target.id);
+      if (event.target.id === 'phase 1') {
+        setBgColor('#2799D1');
+      } else if (event.target.id === 'phase 2') {
+        setBgColor('#2799D1');
+      }
+    },
+    [bgColor],
+  );
 
   const handleClick = useCallback(() => {
     setBgColor('#2799D1');
@@ -31,6 +39,7 @@ const Phase: React.FC = () => {
         <IonGrid>
           <IonRow style={{ flexWrap: 'nowrap' }}>
             <div
+              id={'phase 1'}
               onClick={onClick}
               //onClick={handleClick}
               style={{
@@ -44,7 +53,8 @@ const Phase: React.FC = () => {
             ></div>
             {/* <a href="/SelectWorkers"> */}
             <div
-              onClick={handleClick}
+              id={'phase 2'}
+              onClick={onClick}
               style={{
                 height: '39px',
                 width: '10%',

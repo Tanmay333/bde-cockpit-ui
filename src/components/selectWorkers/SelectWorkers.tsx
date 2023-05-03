@@ -44,12 +44,16 @@ const SelectWorkers = () => {
     },
   ];
 
+  const routeToHomePage = () => {
+    return history.push('/');
+  };
+
   const [selectedIndex, setSelectedIndex] = useState(0);
   const history = useHistory();
   const handler = useCallback(
     (index: number) => {
       setSelectedIndex(index);
-      history.push('/');
+      setTimeout(routeToHomePage, 1000);
     },
     [history],
   );

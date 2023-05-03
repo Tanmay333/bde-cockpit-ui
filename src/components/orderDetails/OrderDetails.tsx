@@ -54,6 +54,7 @@ const OrderDetails: React.FC = () => {
         </IonButton>
         <IonModal
           style={{
+            '--border-radius': '0px',
             '--width': '100%',
             '--height': '100%',
           }}
