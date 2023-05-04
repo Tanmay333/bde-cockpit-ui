@@ -8,6 +8,7 @@ import {
   IonModal,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
+import styles from './OrderDetails.module.scss';
 
 const OrderDetails: React.FC = () => {
   const [barcodeState, setBarcodeState] = useState(false);
@@ -25,55 +26,56 @@ const OrderDetails: React.FC = () => {
   }, [history]);
 
   return (
-    <CardContainer title="Order details" position={'start'}>
-      <IonCardContent
-        style={{
-          fontSize: '16px',
-          fontWeight: '400',
-        }}
-      >
-        <IonList style={{ marginBottom: '10px' }}>Order number: -- --</IonList>
-        <IonList>Order quantity: -- --</IonList>
-      </IonCardContent>
+    <>
+      <CardContainer title="Order details" position={'start'}>
+        <IonCardContent>
+          <div className={styles.order}>
+            <p>Order number: --</p>
+            <p>Order quantity: --</p>
+          </div>
+        </IonCardContent>
 
-      <IonGrid
-        style={{
-          textAlign: 'center',
-        }}
-      >
-        <IonButton
-          type="submit"
-          onClick={onClick}
-          fill="solid"
+        <IonGrid
           style={{
-            width: '210px',
-            height: '50px',
+            textAlign: 'center',
           }}
         >
-          Scan bar-code
-        </IonButton>
-        <IonModal
-          style={{
-            '--border-radius': '0px',
-            '--width': '100%',
-            '--height': '100%',
-          }}
-          ref={modal}
-          isOpen={barcodeState}
-        >
-          <IonButton
-            onClick={onBarcodeScanComplete}
-            fill="solid"
+          <div className={styles.BtnContainer}>
+            <IonButton
+              type="submit"
+              onClick={onClick}
+              fill="solid"
+              style={{
+                width: '210px',
+                height: '50px',
+              }}
+            >
+              Scan bar-code
+            </IonButton>
+          </div>
+          <IonModal
             style={{
-              width: '210px',
-              height: '50px',
+              '--border-radius': '0px',
+              '--width': '100%',
+              '--height': '100%',
             }}
+            ref={modal}
+            isOpen={barcodeState}
           >
-            Sample scanner
-          </IonButton>
-        </IonModal>
-      </IonGrid>
-    </CardContainer>
+            <IonButton
+              onClick={onBarcodeScanComplete}
+              fill="solid"
+              style={{
+                width: '210px',
+                height: '50px',
+              }}
+            >
+              Sample scanner
+            </IonButton>
+          </IonModal>
+        </IonGrid>
+      </CardContainer>
+    </>
   );
 };
 
