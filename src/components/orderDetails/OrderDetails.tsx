@@ -6,11 +6,17 @@ import {
   IonButton,
   IonList,
   IonModal,
+  IonRow,
+  IonCol,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
+import { useAppSelector } from '../../store/utils/hooks';
+import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
 
 const OrderDetails: React.FC = () => {
   const [barcodeState, setBarcodeState] = useState(false);
+
+  const State = useAppSelector((State) => State.SelectworkersSlice);
 
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
@@ -24,6 +30,17 @@ const OrderDetails: React.FC = () => {
     setBarcodeState(false);
   }, [history]);
 
+  const renderSelectedIcons = () => {
+    const icons = [];
+    if (State.data == null) {
+      return null;
+    }
+    for (let i = 0; i - 1 < State.data; i++) {
+      icons.push(<SelectWorkersIcon isSelected />);
+    }
+    return icons;
+  };
+
   return (
     <CardContainer title="Order details" position={'start'}>
       <IonCardContent
@@ -33,7 +50,15 @@ const OrderDetails: React.FC = () => {
         }}
       >
         <IonList style={{ marginBottom: '10px' }}>Order number: -- --</IonList>
-        <IonList>Order quantity: -- --</IonList>
+        <IonList style={{ marginBottom: '10px' }}>
+          Order quantity: -- --
+        </IonList>
+        <IonRow>
+          <IonList>Members:</IonList>
+          <IonCol style={{ width: '50px', height: '50px' }}>
+            {renderSelectedIcons()}
+          </IonCol>
+        </IonRow>
       </IonCardContent>
 
       <IonGrid
