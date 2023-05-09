@@ -2,8 +2,6 @@ import { IonGrid, IonRow, IonCol, IonModal } from '@ionic/react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import styles from './Phase.module.scss';
-import { useAppDispatch } from '../../store/utils/hooks';
-import { getphaseDetails } from '../../store/slices/phaseSlice';
 
 const Phase: React.FC = () => {
   const [downTime, setDownType] = useState(false);
