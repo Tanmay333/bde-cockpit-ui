@@ -5,6 +5,7 @@ import { webSocket } from '../../integration/webScokets';
 export const MACHINE_DETAILS_KEY = 'machineDetailsSlice';
 
 interface AssignedOrderDetails {
+  jobId: string | null;
   orderId: string | null;
   customer: string | null;
   itemId: string | null;
@@ -19,15 +20,15 @@ interface Downtimes {
 }
 interface CurrentPhaseDetails {
   phaseName: string | null;
-  startTime: string | null;
+  startTime: string;
   endTime: string | null;
   downtimes: Downtimes[] | null;
   state: string;
 }
 interface PreviousPhases {
   phaseName: string | null;
-  startTime: string | null;
-  endTime: string | null;
+  startTime: string;
+  endTime: string;
   downtimes: Downtimes[] | null;
 }
 interface ProducedItems {
@@ -37,15 +38,14 @@ interface ProducedItems {
   result: string | null;
 }
 interface Process {
-  processId: string | null;
-  currentPhaseDetails: CurrentPhaseDetails | null;
-  previousPhases: PreviousPhases[] | null;
+  currentPhaseDetails: CurrentPhaseDetails;
+  previousPhases: PreviousPhases[];
   producedItems: ProducedItems[] | null;
 }
 export interface MachineDetails {
-  stationId: string | null;
-  assignedOrderDetails: AssignedOrderDetails | null;
-  process: Process | null;
+  stationId: string;
+  assignedJobDetails: AssignedOrderDetails;
+  process: Process;
 }
 
 export interface MachineDetailsState {
@@ -59,24 +59,38 @@ const initialState: MachineDetailsState = {
   error: null,
   data: null,
 };
-
-export const getMachineDetails = createAsyncThunk<MachineDetails, void>(
+const socket = webSocket();
+const ws = socket.init();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getMachineDetails = createAsyncThunk<MachineDetails, any>(
   'getMachineDetails',
-  async (_, { dispatch }) => {
-    return new Promise(() => {
-      const WebSocket = webSocket();
-      const ws = WebSocket.init();
+  async (message, { dispatch }) => {
+    // Send the message to the opened WebSocket connection
+    ws.send(JSON.stringify(message));
 
+    await new Promise<void>((resolve, reject) => {
       ws.onmessage = (event) => {
         const parsedData: MachineDetails = JSON.parse(event.data);
         if (event.type === 'message') {
           dispatch(updateMachineDetails(parsedData));
         }
       };
-      ws.onerror = () => {
-        ws.close();
+
+      ws.onerror = (error) => {
+        reject(error);
       };
+
+      // Resolve the promise once the WebSocket connection is open
+      if (ws.readyState === WebSocket.OPEN) {
+        resolve();
+      } else {
+        ws.onopen = () => {
+          resolve();
+        };
+      }
     });
+
+    return message;
   },
 );
 
