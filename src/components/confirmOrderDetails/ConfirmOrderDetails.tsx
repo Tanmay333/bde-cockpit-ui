@@ -31,16 +31,9 @@ const ConfirmOrderDetails = () => {
             <IonText className={styles.orderDetails}>
               <p>Order number: 382993844</p>
 
-              {/* <p>Order quantity: 3,0000</p> */}
               <p>
-                <IonInput
-                  style={{ textAlign: 'center' }}
-                  type="number"
-                  placeholder="Enter order quantity"
-                  maxlength={20}
-                >
-                  Order quantity:
-                </IonInput>
+                Order quantity:
+                <input type="number" placeholder="Enter order quantity" />
               </p>
             </IonText>
             <IonButton onClick={onClick} fill="solid" className={styles.btn}>
