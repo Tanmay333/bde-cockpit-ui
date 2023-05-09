@@ -5,6 +5,7 @@ import {
   IonText,
   IonHeader,
   IonImg,
+  IonInput,
 } from '@ionic/react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import { useCallback } from 'react';
@@ -20,26 +21,35 @@ const ConfirmOrderDetails = () => {
   }, [history]);
 
   return (
-    <>
-      <IonPage>
-        <IonContent>
-          <IonHeader className={styles.logo}>
-            <IonImg src={ConfirmOrderLogo} alt={'ConfirmOrderDetails Logo'} />
-          </IonHeader>
-          <div className={styles.container}>
-            <CardContainer title={'Order details'} position={'middle'}>
-              <IonText className={styles.orderDetails}>
-                <p>Order number: 382993844</p>
-                <p>Order quantity: 3,000</p>
-              </IonText>
-              <IonButton onClick={onClick} fill="solid" className={styles.btn}>
-                Confirm Order Details
-              </IonButton>
-            </CardContainer>
-          </div>
-        </IonContent>
-      </IonPage>
-    </>
+    <IonPage>
+      <IonContent>
+        <IonHeader className={styles.logo}>
+          <IonImg src={ConfirmOrderLogo} alt={'ConfirmOrderDetails Logo'} />
+        </IonHeader>
+        <div className={styles.container}>
+          <CardContainer title={'Order details'} position={'middle'}>
+            <IonText className={styles.orderDetails}>
+              <p>Order number: 382993844</p>
+
+              {/* <p>Order quantity: 3,0000</p> */}
+              <p>
+                <IonInput
+                  style={{ textAlign: 'center' }}
+                  type="number"
+                  placeholder="Enter order quantity"
+                  maxlength={20}
+                >
+                  Order quantity:
+                </IonInput>
+              </p>
+            </IonText>
+            <IonButton onClick={onClick} fill="solid" className={styles.btn}>
+              Confirm Order Details
+            </IonButton>
+          </CardContainer>
+        </div>
+      </IonContent>
+    </IonPage>
   );
 };
 
