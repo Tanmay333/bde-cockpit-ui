@@ -7,7 +7,6 @@ import {
   IonList,
   IonModal,
   IonRow,
-  IonCol,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { useAppSelector } from '../../store/utils/hooks';
@@ -35,9 +34,25 @@ const OrderDetails: React.FC = () => {
     if (State.data == null) {
       return null;
     }
+
     for (let i = 0; i - 1 < State.data; i++) {
-      icons.push(<SelectWorkersIcon isSelected />);
+      icons.push(
+        <IonRow
+          style={{
+            // display: 'flex',
+            position: 'relative',
+            textAlign: 'center',
+            height: 'auto',
+            width: '10px',
+            margin: '2px',
+            //marginBottom: '10px',
+          }}
+        >
+          <SelectWorkersIcon isSelected />
+        </IonRow>,
+      );
     }
+
     return icons;
   };
 
@@ -53,12 +68,8 @@ const OrderDetails: React.FC = () => {
         <IonList style={{ marginBottom: '10px' }}>
           Order quantity: -- --
         </IonList>
-        <IonRow>
-          <IonList>Members:</IonList>
-          <IonCol style={{ width: '50px', height: '50px' }}>
-            {renderSelectedIcons()}
-          </IonCol>
-        </IonRow>
+
+        <IonRow>Members:{renderSelectedIcons()}</IonRow>
       </IonCardContent>
 
       <IonGrid
