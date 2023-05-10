@@ -39,6 +39,7 @@ const OrderDetails: React.FC = () => {
     for (let i = 0; i - 1 < State.data; i++) {
       icons.push(
         <IonRow
+          key={i}
           style={{
             position: 'relative',
             textAlign: 'center',
@@ -57,19 +58,21 @@ const OrderDetails: React.FC = () => {
   return (
     <CardContainer title="Order details" position={'start'}>
       <IonCardContent>
-         <div className={styles.order}>
-         <p>Order number: --</p>
-         <p>Order quantity: --</p>
-       </div>
+        <div className={styles.order}>
+          <p>Order number: --</p>
+          <p>Order quantity: --</p>
+        </div>
 
         <IonRow
-         style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          color: '#333333',
-        }}>Members:{renderSelectedIcons()}
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            color: '#333333',
+          }}
+        >
+          Members:{renderSelectedIcons()}
         </IonRow>
       </IonCardContent>
 
@@ -77,19 +80,20 @@ const OrderDetails: React.FC = () => {
         style={{
           textAlign: 'center',
         }}
-      ><div className={styles.BtnContainer}>
-        <IonButton
-          type="submit"
-          onClick={onClick}
-          fill="solid"
-          style={{
-            width: '210px',
-            height: '50px',
-            borderRadius: '8px',
-          }}
-        >
-          Scan bar-code
-        </IonButton>
+      >
+        <div className={styles.BtnContainer}>
+          <IonButton
+            type="submit"
+            onClick={onClick}
+            fill="solid"
+            style={{
+              width: '210px',
+              height: '50px',
+              borderRadius: '8px',
+            }}
+          >
+            Scan bar-code
+          </IonButton>
         </div>
         <IonModal
           style={{
