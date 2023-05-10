@@ -1,6 +1,6 @@
 import { IonGrid, IonRow, IonCol, IonModal } from '@ionic/react';
-import React, { useCallback, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import styles from './Phase.module.scss';
 
 const Phase: React.FC = () => {
@@ -16,22 +16,40 @@ const Phase: React.FC = () => {
 
   const [bgColor, setBgColor] = useState('#E0E0E0');
 
-  const onClick = useCallback(
-    (event) => {
-      console.log(event.target.id);
-      if (event.target.id === 'phase 1') {
-        setBgColor('#2799D1');
-      } else if (event.target.id === 'phase 2') {
-        setBgColor('#2799D1');
-      }
-    },
-    [bgColor],
-  );
+  const onClick = useCallback(() => {
+    setBgColor('#2799D1');
+    history.push('/');
+  }, [bgColor, history]);
+
+  // const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getphaseDetails(bgColor));
+  // }, [dispatch, setBgColor]);
+
+  const [phaseTwo, setPhaseTwo] = useState('#E0E0E0');
 
   const handleClick = useCallback(() => {
-    setBgColor('#2799D1');
+    setPhaseTwo('#2799D1');
     history.push('/SelectWorkers');
-  }, [bgColor]);
+  }, [phaseTwo, history]);
+
+  const [phaseFour, setPhaseFour] = useState('#E0E0E0');
+
+  const FourClick = useCallback(() => {
+    setPhaseFour('#2799D1');
+    history.push('/');
+  }, [phaseFour, history]);
+
+  const [phaseFive, setPhaseFive] = useState('#E0E0E0');
+
+  const FiveClick = useCallback(() => {
+    setPhaseFive('#2799D1');
+    history.push('/');
+  }, [phaseFive, history]);
+
+  const location = useLocation();
+  const changeColor = location.state || {};
 
   return (
     <IonGrid className={styles.container}>
@@ -41,35 +59,32 @@ const Phase: React.FC = () => {
             <div
               id={'phase 1'}
               onClick={onClick}
-              //onClick={handleClick}
               style={{
                 height: '39px',
-                width: '10%',
-                //background: '#E0E0E0',
+                width: '14%',
                 backgroundColor: bgColor,
+                //backgroundColor: changeColor ? 'blue' : 'gey',
                 borderRadius: '5px',
                 margin: '3px',
               }}
             ></div>
-            {/* <a href="/SelectWorkers"> */}
+
             <div
               id={'phase 2'}
-              onClick={onClick}
+              onClick={handleClick}
               style={{
                 height: '39px',
-                width: '10%',
-                //background: '#E0E0E0',
-                backgroundColor: bgColor,
+                width: '14%',
+                backgroundColor: phaseTwo,
                 borderRadius: '5px',
                 margin: '3px',
               }}
             ></div>
-            {/* </a> */}
-            {/* <a href="/DowntimeType"> */}
+
             <div
               style={{
                 height: '39px',
-                width: '60%',
+                width: '44%',
                 background: '#2AD127',
                 borderRadius: '5px',
                 margin: '3px',
@@ -85,19 +100,21 @@ const Phase: React.FC = () => {
               isOpen={downTime}
             ></IonModal>
             <div
+              onClick={FourClick}
               style={{
                 height: '39px',
-                width: '10%',
-                background: '#E0E0E0',
+                width: '14%',
+                background: phaseFour,
                 borderRadius: '5px',
                 margin: '3px',
               }}
             ></div>
             <div
+              onClick={FiveClick}
               style={{
                 height: '39px',
-                width: '10%',
-                background: '#E0E0E0',
+                width: '14%',
+                background: phaseFive,
                 borderRadius: '5px',
                 margin: '3px',
               }}

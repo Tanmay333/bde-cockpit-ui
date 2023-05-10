@@ -4,10 +4,15 @@ import {
   MACHINE_DETAILS_KEY,
   machineDetailsReducer,
 } from './slices/machineDetailsSlice';
+import {
+  SELECT_WORKERS,
+  selectWorkersReducer,
+} from './slices/SelectworkersSlice';
 
 const reducers = {
   [TEST_SLICE_KEY]: testDataReducer,
   [MACHINE_DETAILS_KEY]: machineDetailsReducer,
+  [SELECT_WORKERS]: selectWorkersReducer,
 };
 
 export const store = configureStore({ reducer: reducers });

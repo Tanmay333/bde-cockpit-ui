@@ -10,17 +10,16 @@ import {
   IonRow,
 } from '@ionic/react';
 import lohnpack from '../../static/assets/lohnpack.svg';
-import SelectWorkersIcon from '../../static/assets/images/SelectWorkse';
-import { useCallback, useState } from 'react';
+import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
+import { useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import styles from './SelectWorkers.module.scss';
 import { useHistory } from 'react-router';
+import { useAppDispatch } from '../../store/utils/hooks';
+import { getworkersDetails } from '../../store/slices/SelectworkersSlice';
 
 const SelectWorkers = () => {
   const Workers = [
-    {
-      id: 0,
-    },
     {
       id: 1,
     },
@@ -42,25 +41,28 @@ const SelectWorkers = () => {
     {
       id: 7,
     },
+    {
+      id: 8,
+    },
   ];
+
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const history = useHistory();
 
   const routeToHomePage = () => {
     return history.push('/');
   };
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const history = useHistory();
-  const handler = useCallback(
-    (index: number) => {
-      setSelectedIndex(index);
-      setTimeout(routeToHomePage, 1000);
-    },
-    [history],
-  );
+  const selectworkers = (index: number) => {
+    setSelectedIndex(index);
+    setTimeout(routeToHomePage, 1000);
+  };
 
-  function selectworkers(index: number) {
-    handler(index);
-  }
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getworkersDetails(selectedIndex));
+  }, [dispatch, selectedIndex]);
 
   return (
     <IonPage>
