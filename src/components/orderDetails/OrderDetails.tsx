@@ -11,6 +11,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { useAppSelector } from '../../store/utils/hooks';
 import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
+import styles from './OrderDetails.module.scss';
 
 const OrderDetails: React.FC = () => {
   const [barcodeState, setBarcodeState] = useState(false);
@@ -39,13 +40,10 @@ const OrderDetails: React.FC = () => {
       icons.push(
         <IonRow
           style={{
-            // display: 'flex',
             position: 'relative',
             textAlign: 'center',
-            height: 'auto',
             width: '10px',
-            margin: '2px',
-            //marginBottom: '10px',
+            margin: '4px',
           }}
         >
           <SelectWorkersIcon isSelected />
@@ -58,25 +56,28 @@ const OrderDetails: React.FC = () => {
 
   return (
     <CardContainer title="Order details" position={'start'}>
-      <IonCardContent
-        style={{
-          fontSize: '16px',
-          fontWeight: '400',
-        }}
-      >
-        <IonList style={{ marginBottom: '10px' }}>Order number: -- --</IonList>
-        <IonList style={{ marginBottom: '10px' }}>
-          Order quantity: -- --
-        </IonList>
+      <IonCardContent>
+         <div className={styles.order}>
+         <p>Order number: --</p>
+         <p>Order quantity: --</p>
+       </div>
 
-        <IonRow>Members:{renderSelectedIcons()}</IonRow>
+        <IonRow
+         style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          color: '#333333',
+        }}>Members:{renderSelectedIcons()}
+        </IonRow>
       </IonCardContent>
 
       <IonGrid
         style={{
           textAlign: 'center',
         }}
-      >
+      ><div className={styles.BtnContainer}>
         <IonButton
           type="submit"
           onClick={onClick}
@@ -84,10 +85,12 @@ const OrderDetails: React.FC = () => {
           style={{
             width: '210px',
             height: '50px',
+            borderRadius: '8px',
           }}
         >
           Scan bar-code
         </IonButton>
+        </div>
         <IonModal
           style={{
             '--border-radius': '0px',
