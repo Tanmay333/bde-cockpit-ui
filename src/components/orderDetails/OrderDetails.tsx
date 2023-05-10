@@ -6,12 +6,16 @@ import {
   IonButton,
   IonList,
   IonModal,
+  IonRow,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import styles from './OrderDetails.module.scss';
+import { useAppSelector } from '../../store/utils/hooks';
+import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
 
 const OrderDetails: React.FC = () => {
   const [barcodeState, setBarcodeState] = useState(false);
+
+  const State = useAppSelector((State) => State.SelectworkersSlice);
 
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
@@ -25,57 +29,87 @@ const OrderDetails: React.FC = () => {
     setBarcodeState(false);
   }, [history]);
 
-  return (
-    <>
-      <CardContainer title="Order details" position={'start'}>
-        <IonCardContent>
-          <div className={styles.order}>
-            <p>Order number: --</p>
-            <p>Order quantity: --</p>
-          </div>
-        </IonCardContent>
+  const renderSelectedIcons = () => {
+    const icons = [];
+    if (State.data == null) {
+      return null;
+    }
 
-        <IonGrid
+    for (let i = 0; i - 1 < State.data; i++) {
+      icons.push(
+        <IonRow
           style={{
+            // display: 'flex',
+            position: 'relative',
             textAlign: 'center',
+            height: 'auto',
+            width: '10px',
+            margin: '2px',
+            //marginBottom: '10px',
           }}
         >
-          <div className={styles.BtnContainer}>
-            <IonButton
-              type="submit"
-              onClick={onClick}
-              fill="solid"
-              style={{
-                width: '210px',
-                height: '50px',
-              }}
-            >
-              Scan bar-code
-            </IonButton>
-          </div>
-          <IonModal
+          <SelectWorkersIcon isSelected />
+        </IonRow>,
+      );
+    }
+
+    return icons;
+  };
+
+  return (
+    <CardContainer title="Order details" position={'start'}>
+      <IonCardContent
+        style={{
+          fontSize: '16px',
+          fontWeight: '400',
+        }}
+      >
+        <IonList style={{ marginBottom: '10px' }}>Order number: -- --</IonList>
+        <IonList style={{ marginBottom: '10px' }}>
+          Order quantity: -- --
+        </IonList>
+
+        <IonRow>Members:{renderSelectedIcons()}</IonRow>
+      </IonCardContent>
+
+      <IonGrid
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        <IonButton
+          type="submit"
+          onClick={onClick}
+          fill="solid"
+          style={{
+            width: '210px',
+            height: '50px',
+          }}
+        >
+          Scan bar-code
+        </IonButton>
+        <IonModal
+          style={{
+            '--border-radius': '0px',
+            '--width': '100%',
+            '--height': '100%',
+          }}
+          ref={modal}
+          isOpen={barcodeState}
+        >
+          <IonButton
+            onClick={onBarcodeScanComplete}
+            fill="solid"
             style={{
-              '--border-radius': '0px',
-              '--width': '100%',
-              '--height': '100%',
+              width: '210px',
+              height: '50px',
             }}
-            ref={modal}
-            isOpen={barcodeState}
           >
-            <IonButton
-              onClick={onBarcodeScanComplete}
-              fill="solid"
-              style={{
-                width: '210px',
-                height: '50px',
-              }}
-            >
-              Sample scanner
-            </IonButton>
-          </IonModal>
-        </IonGrid>
-      </CardContainer>
-    </>
+            Sample scanner
+          </IonButton>
+        </IonModal>
+      </IonGrid>
+    </CardContainer>
   );
 };
 
