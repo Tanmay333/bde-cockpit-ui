@@ -12,11 +12,22 @@ import { useCallback } from 'react';
 import { useHistory } from 'react-router';
 import styles from './ConfirmOrderDetails.module.scss';
 import ConfirmOrderLogo from '../../static/assets/images/LohnpackLogo.svg';
+import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
+import { useAppDispatch } from '../../store/utils/hooks';
 
 const ConfirmOrderDetails = () => {
   const history = useHistory();
+  const dispatch = useAppDispatch();
 
   const onClick = useCallback(() => {
+    dispatch(
+      getMachineDetails({
+        action: 'assignNewJob',
+        orderId: '1869485',
+        stationId: '1.203.4.245',
+        orderQuantity: 5000,
+      }),
+    );
     history.push('/');
   }, [history]);
 
