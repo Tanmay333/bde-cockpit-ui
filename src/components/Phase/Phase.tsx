@@ -1,6 +1,6 @@
 import { IonGrid, IonRow, IonCol, IonModal } from '@ionic/react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React, { useCallback, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './Phase.module.scss';
 
 const Phase: React.FC = () => {
@@ -20,12 +20,6 @@ const Phase: React.FC = () => {
     setBgColor('#2799D1');
     history.push('/');
   }, [bgColor, history]);
-
-  // const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   dispatch(getphaseDetails(bgColor));
-  // }, [dispatch, setBgColor]);
 
   const [phaseTwo, setPhaseTwo] = useState('#E0E0E0');
 
@@ -47,9 +41,6 @@ const Phase: React.FC = () => {
     setPhaseFive('#2799D1');
     history.push('/');
   }, [phaseFive, history]);
-
-  const location = useLocation();
-  const changeColor = location.state || {};
 
   return (
     <IonGrid className={styles.container}>

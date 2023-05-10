@@ -5,7 +5,6 @@ import {
   IonText,
   IonHeader,
   IonImg,
-  IonInput,
 } from '@ionic/react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import { useCallback } from 'react';

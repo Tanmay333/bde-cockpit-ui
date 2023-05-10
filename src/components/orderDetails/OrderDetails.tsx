@@ -4,7 +4,6 @@ import {
   IonCardContent,
   IonGrid,
   IonButton,
-  IonList,
   IonModal,
   IonRow,
 } from '@ionic/react';
