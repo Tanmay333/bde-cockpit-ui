@@ -27,6 +27,10 @@ const ConfirmOrderDetails = () => {
         orderQuantity: 5000,
       }),
     );
+    const phaseone = document.getElementById('phase-one');
+    if (phaseone) {
+      phaseone.style.backgroundColor = '#2799D1';
+    }
     history.push('/');
   }, [history]);
 

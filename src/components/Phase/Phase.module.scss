@@ -1,13 +1,37 @@
-.aaa {
-  background-color: #a3a3a3;
-}
-
-.selected {
-  background-color: blue;
-}
-
 .container {
   display: flex;
   width: 100%;
   padding: 0px 24px;
+}
+
+.idle {
+  font-size: 20px;
+  font-weight: 700;
+  height: 39px;
+  width: 14%;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+}
+.working {
+  font-size: 20px;
+  font-weight: 700;
+  height: 39px;
+  width: 44%;
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+}
+.boxidle {
+  height: 39px;
+  width: 14%;
+  border-radius: 5px;
+  margin: 3px;
+}
+
+.boxworking {
+  height: 39px;
+  width: 44%;
+  border-radius: 5px;
+  margin: 3px;
 }
