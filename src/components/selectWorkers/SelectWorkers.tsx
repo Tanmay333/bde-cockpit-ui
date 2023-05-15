@@ -17,6 +17,7 @@ import styles from './SelectWorkers.module.scss';
 import { useHistory } from 'react-router';
 import { useAppDispatch } from '../../store/utils/hooks';
 import { getworkersDetails } from '../../store/slices/SelectworkersSlice';
+import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
 
 const SelectWorkers = () => {
   const Workers = [
@@ -56,6 +57,13 @@ const SelectWorkers = () => {
   const selectworkers = (index: number) => {
     setSelectedIndex(index);
     setTimeout(routeToHomePage, 1000);
+    dispatch(
+      getMachineDetails({
+        action: 'setTeamSize',
+        jobId: '885aaf1b-706f-4ff3-8c9e-f94e0cacd003',
+        productionTeamSize: index + 1,
+      }),
+    );
   };
 
   const dispatch = useAppDispatch();
