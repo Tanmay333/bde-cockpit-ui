@@ -1,17 +1,26 @@
+// .statement{
+
+//   padding-left: 15rem;
+//   padding-right: 15rem;
+ 
+// }
+
 .title {
-  font-style: normal;
+  padding-left: 4rem;
   font-weight: 700;
   font-size: 28px;
   line-height: 58px;
-  
-  align-items: center;
   color: #333333;
+ 
 }
 
-.button
- {
- 
-  justify-content: space-evenly;
+.classes{
+   
+  padding-left: 3rem;
+}
+.button{
+  
+  justify-content: space-between;
   font-size: 16px;
   height: 50px;
   --background: white;
@@ -22,16 +31,16 @@
   --border-width: 1px;
   margin: 10px;
   width: 210px;
-
+  
 }
 
 .endBtn {
   
-  position: absolute;
-  right: 100px;
+  position: fixed;
+  right: 18px;
   bottom: 24px;
-  padding: 16px;
- 
+  padding: 4rem;
+  padding-left:rem; 
 }
 
 .end {
@@ -43,6 +52,6 @@
   --border-color: #e20031;
   font-size: 16px;
   border-radius: 8px;
-  font-style: normal;
-  justify-content: end;
+  
 }
+

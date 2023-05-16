@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 import { IonCard, IonCardHeader, IonCardTitle, IonGrid } from '@ionic/react';
 import styles from '../cardContainer/CardContainer.module.scss';
 import { PositionProp, getPosition } from './utils/getPosition';
@@ -7,12 +7,21 @@ interface Props {
   title: string;
   children: ReactNode;
   position: PositionProp;
+  style?: { [key: string]: any };
 }
 
-const CardContainer: React.FC<Props> = ({ title, children, position }) => {
+const CardContainer: React.FC<Props> = ({
+  title,
+  children,
+  position,
+  style,
+}) => {
   return (
     <IonGrid>
-      <IonCard className={getPosition(position) ? styles.start : styles.center}>
+      <IonCard
+        style={style}
+        className={getPosition(position) ? styles.start : styles.center}
+      >
         {title && (
           <IonCardHeader>
             <IonCardTitle

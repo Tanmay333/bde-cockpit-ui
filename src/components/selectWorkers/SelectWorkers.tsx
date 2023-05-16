@@ -70,21 +70,11 @@ const SelectWorkers = () => {
         <div className={styles.img}>
           <IonImg src={lohnpack} />
         </div>
-        <CardContainer title={'Select worker'} position={'middle'}>
-          <IonGrid>
-            <IonCardHeader>
-              <IonCardTitle
-                style={{
-                  fontSize: '28px',
-                  fontWeight: '700',
-                  textAlign: 'center',
-                }}
-              >
-                Number of workers
-              </IonCardTitle>
-            </IonCardHeader>
-          </IonGrid>
-
+        <CardContainer
+          title={' Number of workers'}
+          position={'middle'}
+          style={{ paddingTop: '36px' }}
+        >
           <IonGrid
             style={{
               fontSize: '16px',
@@ -94,17 +84,21 @@ const SelectWorkers = () => {
           >
             <IonList>
               <IonCardContent>
-                How many of employees is working on the order?
+                <div className={styles.statement}>
+                  <p>How many of employees is working </p> on the order?
+                </div>
               </IonCardContent>
             </IonList>
           </IonGrid>
           <IonGrid
-            style={{
-              //marginTop: "10%",
-              textAlign: 'center',
-              width: '100%',
-              //bottom: "10%",
-            }}
+            style={
+              {
+                //marginTop: "10%",
+                // textAlign: 'center',
+                // width: '100%',
+                //bottom: "10%",
+              }
+            }
           >
             <IonRow
               style={{

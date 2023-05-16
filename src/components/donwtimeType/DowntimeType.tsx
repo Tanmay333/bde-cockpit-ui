@@ -15,22 +15,24 @@ const DowntimeType: React.FC = () => {
     <IonPage>
       <Header />
       <IonContent>
-        <div className={styles.title}>
-          <p>Downtime</p>
-        </div>
-        <div>
-          <IonRow>
-            <IonButton className={styles.button}>Machine issue</IonButton>
-            <IonButton className={styles.button}>Lunch Break</IonButton>
-            <IonButton className={styles.button}>Sick leave</IonButton>
-            <IonButton className={styles.button}>Team meeting </IonButton>
-            <IonButton className={styles.button}>Urgent call</IonButton>
-          </IonRow>
-        </div>
-        <div className={styles.endBtn}>
-          <IonButton className={styles.end} onClick={onClick}>
-            End Production
-          </IonButton>
+        <div className={styles.statement}>
+          <div className={styles.title}>
+            <p>Downtime</p>
+          </div>
+          <div>
+            <IonRow className={styles.classes}>
+              <IonButton className={styles.button}>Machine issue</IonButton>
+              <IonButton className={styles.button}>Lunch Break</IonButton>
+              <IonButton className={styles.button}>Sick leave</IonButton>
+              <IonButton className={styles.button}>Team meeting </IonButton>
+              <IonButton className={styles.button}>Urgent call</IonButton>
+            </IonRow>
+          </div>
+          <div className={styles.endBtn}>
+            <IonButton className={styles.end} onClick={onClick}>
+              End Production
+            </IonButton>
+          </div>
         </div>
       </IonContent>
     </IonPage>

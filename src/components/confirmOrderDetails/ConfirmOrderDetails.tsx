@@ -17,7 +17,26 @@ import { useAppDispatch } from '../../store/utils/hooks';
 const ConfirmOrderDetails = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
-
+  const handleKeyPress = (event: {
+    target: any;
+    key: string;
+    preventDefault: () => void;
+  }) => {
+    const invalidChars = ['+', '-', 'e', 'E'];
+    if (invalidChars.includes(event.key) || event.target.value.length >= 20) {
+      event.preventDefault();
+    }
+  };
+  const handleInputChange = (event: { target: { value: string | any[] } }) => {
+    let inputValue = event.target.value;
+    if (inputValue.length > 20) {
+      inputValue = inputValue.slice(0, 20);
+    }
+    if (Number(inputValue) < 0) {
+      inputValue = '0';
+    }
+    event.target.value = inputValue;
+  };
   const onClick = useCallback(() => {
     dispatch(
       getMachineDetails({
@@ -37,13 +56,23 @@ const ConfirmOrderDetails = () => {
           <IonImg src={ConfirmOrderLogo} alt={'ConfirmOrderDetails Logo'} />
         </IonHeader>
         <div className={styles.container}>
-          <CardContainer title={'Order details'} position={'middle'}>
+          <CardContainer
+            title={'Order details'}
+            position={'middle'}
+            style={{ paddingTop: '36px' }}
+          >
             <IonText className={styles.orderDetails}>
               <p>Order number: 382993844</p>
-
               <p>
+                {' '}
                 Order quantity:
-                <input type="number" placeholder="Enter order quantity" />
+                <input
+                  className={styles.focus}
+                  type="number"
+                  min="0"
+                  onKeyPress={handleKeyPress}
+                  onChange={handleInputChange}
+                />
               </p>
             </IonText>
             <IonButton onClick={onClick} fill="solid" className={styles.btn}>
