@@ -1,0 +1,13 @@
+# Ignore artifacts:
+build
+public
+android
+ios
+
+# IDE
+.idea
+.ionic
+
+# Config files
+*.yml
+*.json
