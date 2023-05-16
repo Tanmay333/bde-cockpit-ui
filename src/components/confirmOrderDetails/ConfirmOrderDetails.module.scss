@@ -1,15 +1,12 @@
 .logo {
-
   margin-left: auto;
   margin-right: auto;
   width: 192px;
   height: 53px;
   margin-top: 5rem;
-
 }
 
 .container {
-
   display: flex;
   margin-top: 10rem;
   padding-top: 10px;
@@ -39,17 +36,25 @@
   width: 210px;
   height: 50px;
   margin-top: 24px;
-  background-color: #2799D1 ;
+  background-color: #2799D1;
   border-radius: 8px;
 }
 
-.focus{
-
+.focus {
   border-top: none;
   border-left: none;
   border-right: none;
-  border-radius: 8px;
-  margin: 5px;
-  
+  margin-left: 12px;
+  outline: 0px;
+  width: 90px;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

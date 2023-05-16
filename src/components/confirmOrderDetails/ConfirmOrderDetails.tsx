@@ -70,7 +70,7 @@ const ConfirmOrderDetails = () => {
                   className={styles.focus}
                   type="number"
                   min="0"
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyPress}
                   onChange={handleInputChange}
                 />
               </p>

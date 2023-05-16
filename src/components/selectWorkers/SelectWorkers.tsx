@@ -1,7 +1,5 @@
 import {
   IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
   IonContent,
   IonGrid,
   IonImg,
