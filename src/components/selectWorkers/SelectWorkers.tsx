@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import styles from './SelectWorkers.module.scss';
 import { useHistory } from 'react-router';
-import { useAppDispatch } from '../../store/utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getworkersDetails } from '../../store/slices/SelectworkersSlice';
 import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
 
@@ -54,13 +54,15 @@ const SelectWorkers = () => {
     return history.push('/');
   };
 
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+
   const selectworkers = (index: number) => {
     setSelectedIndex(index);
     setTimeout(routeToHomePage, 1000);
     dispatch(
       getMachineDetails({
         action: 'setTeamSize',
-        jobId: '885aaf1b-706f-4ff3-8c9e-f94e0cacd003',
+        jobId: state?.assignedJobDetails.jobId,
         productionTeamSize: index + 1,
       }),
     );
