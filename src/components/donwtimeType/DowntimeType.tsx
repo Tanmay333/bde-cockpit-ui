@@ -3,11 +3,20 @@ import React, { useCallback } from 'react';
 import styles from './DowntimeType.module.scss';
 import Header from '../common/header/Header';
 import { useHistory } from 'react-router';
+import { useAppDispatch } from '../../store/utils/hooks';
+import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
 
 const DowntimeType: React.FC = () => {
   const history = useHistory();
+  const dispatch = useAppDispatch();
 
-  const onClick = useCallback(() => {
+  const onEndProduction = useCallback(() => {
+    dispatch(
+      getMachineDetails({
+        action: 'setEndOfProduction',
+        jobId: '782e0622-c9d8-4f5d-a026-d51ef99f2c08',
+      }),
+    );
     history.push('/');
   }, [history]);
 
@@ -29,7 +38,7 @@ const DowntimeType: React.FC = () => {
             </IonRow>
           </div>
           <div className={styles.endBtn}>
-            <IonButton className={styles.end} onClick={onClick}>
+            <IonButton className={styles.end} onClick={onEndProduction}>
               End Production
             </IonButton>
           </div>

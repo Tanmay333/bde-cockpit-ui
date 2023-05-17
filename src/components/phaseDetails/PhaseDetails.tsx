@@ -45,18 +45,7 @@ const PhaseDetails: React.FC = () => {
         >
           <div className={styles.BtnHolder}>
             <IonButton
-              href="/"
-              type="submit"
-              fill="solid"
-              style={{
-                width: '210px',
-                height: '50px',
-              }}
-              color={'danger'}
-            >
-              Mounting
-            </IonButton>
-            <IonButton
+              //href="/"
               onClick={onEndUnmounting}
               type="submit"
               fill="solid"
@@ -67,6 +56,18 @@ const PhaseDetails: React.FC = () => {
               color={'danger'}
             >
               End UnMounting
+            </IonButton>
+            <IonButton
+              onClick={onEndCleaning}
+              type="submit"
+              fill="solid"
+              style={{
+                width: '210px',
+                height: '50px',
+              }}
+              color={'danger'}
+            >
+              End Cleaning
             </IonButton>
           </div>
         </IonGrid>
