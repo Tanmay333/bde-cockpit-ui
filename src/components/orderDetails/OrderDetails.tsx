@@ -14,9 +14,9 @@ import styles from './OrderDetails.module.scss';
 
 const OrderDetails: React.FC = () => {
   const [barcodeState, setBarcodeState] = useState(false);
-
-  const State = useAppSelector((State) => State.SelectworkersSlice);
-
+  const OrderId = useAppSelector((state) => state.machineDetailsSlice.data);
+  const Members = useAppSelector((State) => State.SelectworkersSlice);
+  const Quantity = useAppSelector((State) => State.OrderQuantitySlice);
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
 
@@ -31,11 +31,11 @@ const OrderDetails: React.FC = () => {
 
   const renderSelectedIcons = () => {
     const icons = [];
-    if (State.data == null) {
+    if (Members.data == null) {
       return null;
     }
 
-    for (let i = 0; i - 1 < State.data; i++) {
+    for (let i = 0; i - 1 < Members.data; i++) {
       icons.push(
         <IonRow
           key={i}
@@ -54,12 +54,20 @@ const OrderDetails: React.FC = () => {
     return icons;
   };
 
+  const data = {
+    orderId: OrderId === null ? '--:--' : OrderId.assignedJobDetails.orderId,
+    quantity: Quantity === null ? '--:--' : Quantity.data,
+  };
+
   return (
     <CardContainer title="Order details" position={'start'}>
       <IonCardContent>
         <div className={styles.order}>
-          <p>Order number: --</p>
-          <p>Order quantity: --</p>
+          <p>
+            Order number:
+            {data.orderId}
+          </p>
+          <p>Order quantity: {Quantity.data}</p>
         </div>
 
         <IonRow

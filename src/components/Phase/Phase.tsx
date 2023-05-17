@@ -5,39 +5,48 @@ import styles from './Phase.module.scss';
 
 const Phase: React.FC = () => {
   const [downTime, setDownType] = useState(false);
-
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
 
-  const onDownTimeComplete = useCallback(() => {
-    history.push('/downtimetype');
-    setDownType(false);
-  }, [history]);
-
-  const [bgColor, setBgColor] = useState('#E0E0E0');
-
-  const onClick = useCallback(() => {
-    setBgColor('#2799D1');
-    history.push('/');
-  }, [bgColor, history]);
+  const [showPhase1, setShowPhase1] = useState(true);
+  const [showPhase2, setShowPhase2] = useState(false);
+  const [showPhase3, setShowPhase3] = useState(false);
+  const [showPhase4, setShowPhase4] = useState(false);
+  const [showPhase5, setShowPhase5] = useState(false);
 
   const [phaseTwo, setPhaseTwo] = useState('#E0E0E0');
+  const [phaseThree, setPhaseThree] = useState('#E0E0E0');
+  const [phaseFour, setPhaseFour] = useState('#E0E0E0');
+  const [phaseFive, setPhaseFive] = useState('#E0E0E0');
 
-  const handleClick = useCallback(() => {
+  const onClickDowntime = useCallback(() => {
+    history.push('/downtimetype');
+  }, [history]);
+
+  const onClickPhase2 = useCallback(() => {
+    setShowPhase1(false);
+    setShowPhase2(true);
     setPhaseTwo('#2799D1');
     history.push('/SelectWorkers');
   }, [phaseTwo, history]);
 
-  const [phaseFour, setPhaseFour] = useState('#E0E0E0');
+  const onClickPhase3 = useCallback(() => {
+    setShowPhase3(true);
+    setShowPhase2(false);
+    setPhaseThree('#2AD127');
+    setDownType(false);
+  }, [phaseThree, history]);
 
-  const FourClick = useCallback(() => {
+  const onClickPhase4 = useCallback(() => {
+    setShowPhase3(false);
+    setShowPhase4(true);
     setPhaseFour('#2799D1');
     history.push('/');
   }, [phaseFour, history]);
 
-  const [phaseFive, setPhaseFive] = useState('#E0E0E0');
-
-  const FiveClick = useCallback(() => {
+  const onClickPhase5 = useCallback(() => {
+    setShowPhase5(true);
+    setShowPhase4(false);
     setPhaseFive('#2799D1');
     history.push('/');
   }, [phaseFive, history]);
@@ -46,68 +55,65 @@ const Phase: React.FC = () => {
     <IonGrid className={styles.container}>
       <IonCol>
         <IonGrid>
+          <IonRow>
+            <div className={styles.idle}>{showPhase1 && <p>Phase 01</p>}</div>
+            <div className={styles.idle}>{showPhase2 && <p>Phase 02</p>}</div>
+            <div className={styles.working}>
+              {showPhase3 && <p>Phase 03</p>}
+              <button onClick={onClickDowntime}>Downtime</button>
+              <IonModal
+                style={{
+                  '--width': '100%',
+                  '--height': '100%',
+                }}
+                ref={modal}
+                isOpen={downTime}
+              ></IonModal>
+            </div>
+            <div className={styles.idle}>{showPhase4 && <p>Phase 04</p>}</div>
+            <div className={styles.idle}>{showPhase5 && <p> Phase 05</p>}</div>
+          </IonRow>
           <IonRow style={{ flexWrap: 'nowrap' }}>
             <div
-              id={'phase 1'}
-              onClick={onClick}
+              className={styles.boxidle}
+              id="phase-one"
+              //onClick={onClick}
               style={{
-                height: '39px',
-                width: '14%',
-                backgroundColor: bgColor,
-                //backgroundColor: changeColor ? 'blue' : 'gey',
-                borderRadius: '5px',
-                margin: '3px',
+                backgroundColor: '#E0E0E0',
+                //backgroundColor: bgColor,
               }}
             ></div>
 
             <div
+              className={styles.boxidle}
               id={'phase 2'}
-              onClick={handleClick}
+              onClick={onClickPhase2}
               style={{
-                height: '39px',
-                width: '14%',
                 backgroundColor: phaseTwo,
-                borderRadius: '5px',
-                margin: '3px',
               }}
             ></div>
 
             <div
+              className={styles.boxworking}
               style={{
-                height: '39px',
-                width: '44%',
-                background: '#2AD127',
-                borderRadius: '5px',
-                margin: '3px',
+                backgroundColor: phaseThree,
+                // transition: 'all 20s ease',
               }}
-              onClick={onDownTimeComplete}
+              onClick={onClickPhase3}
             ></div>
-            <IonModal
-              style={{
-                '--width': '100%',
-                '--height': '100%',
-              }}
-              ref={modal}
-              isOpen={downTime}
-            ></IonModal>
+
             <div
-              onClick={FourClick}
+              className={styles.boxidle}
+              onClick={onClickPhase4}
               style={{
-                height: '39px',
-                width: '14%',
                 background: phaseFour,
-                borderRadius: '5px',
-                margin: '3px',
               }}
             ></div>
             <div
-              onClick={FiveClick}
+              className={styles.boxidle}
+              onClick={onClickPhase5}
               style={{
-                height: '39px',
-                width: '14%',
                 background: phaseFive,
-                borderRadius: '5px',
-                margin: '3px',
               }}
             ></div>
           </IonRow>

@@ -8,12 +8,13 @@ import {
 import React from 'react';
 import styles from './OrderInforCard.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
-
 const OrderInfoCard: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-
   const previousPhaseTime = () => {
     if (state === null) {
+      return 'N/A';
+    }
+    if (state.process.previousPhases.length === 0) {
       return 'N/A';
     }
     const startTime = new Date(state.process.previousPhases[0].startTime);
@@ -22,12 +23,10 @@ const OrderInfoCard: React.FC = () => {
     const diffInMinutes = Math.floor(diffInMs / 60000);
     const hours = Math.floor(diffInMinutes / 60);
     const minutes = diffInMinutes % 60;
-
     return `${hours.toString().padStart(2, '0')}:${minutes
       .toString()
       .padStart(2, '0')}`;
   };
-
   const currentPhaseStartTime = () => {
     if (state === null) {
       return 'N/A';
@@ -41,15 +40,42 @@ const OrderInfoCard: React.FC = () => {
       .toString()
       .padStart(2, '0')}`;
   };
-
+  const previousPhaseName = () => {
+    if (state === null) {
+      return 'N/A';
+    }
+    if (state.process.previousPhases.length === 0) {
+      return 'N/A';
+    }
+    return state.process.previousPhases[0].phaseName;
+  };
+  const currentPhaseName = () => {
+    if (state === null) {
+      return 'N/A';
+    }
+    if (state.process.currentPhaseDetails === null) {
+      return 'N/A';
+    }
+    return state.process.currentPhaseDetails.phaseName;
+  };
+  const currentPhaseTime = () => {
+    if (state === null) {
+      return 'N/A';
+    }
+    if (state.process.currentPhaseDetails === null) {
+      return 'N/A';
+    }
+    return state.process.currentPhaseDetails.startTime;
+  };
   const data = {
     orderId: state === null ? 'N/A' : state.assignedJobDetails.orderId,
     machineStatus:
       state === null ? 'N/A' : state.process.currentPhaseDetails.state,
     startTime: currentPhaseStartTime(),
+    currentPhaseName: currentPhaseName(),
+    currentPhaseTime: currentPhaseTime(),
     previousPhaseTime: previousPhaseTime(),
-    previousPhaseName:
-      state === null ? 'N/A' : state.process.previousPhases[0].phaseName,
+    previousPhaseName: previousPhaseName(),
   };
   const t = new Date();
   return (
@@ -67,13 +93,12 @@ const OrderInfoCard: React.FC = () => {
         </div>
         <div>
           <IonCardTitle className={styles.ionRightSection}>
-            {data.previousPhaseTime} hrs
+            {data.currentPhaseTime} hrs
           </IonCardTitle>
-          <IonCardSubtitle>Phase 01 - {data.previousPhaseName}</IonCardSubtitle>
+          <IonCardSubtitle>Phase 01 - {data.currentPhaseName}</IonCardSubtitle>
         </div>
       </IonCardContent>
     </IonCard>
   );
 };
-
 export default OrderInfoCard;
