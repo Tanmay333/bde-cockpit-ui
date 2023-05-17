@@ -34,6 +34,27 @@ const ConfirmOrderDetails = () => {
     dispatch(getquantityDetails(enteredQuantity));
   }, [dispatch, enteredQuantity]);
 
+  const handleKeyPress = (event: {
+    target: any;
+    key: string;
+    preventDefault: () => void;
+  }) => {
+    const invalidChars = ['+', '-', 'e', 'E'];
+    if (invalidChars.includes(event.key) || event.target.value.length >= 20) {
+      event.preventDefault();
+    }
+  };
+  const handleInputChange = (event: { target: { value: string | any[] } }) => {
+    let inputValue = event.target.value;
+    if (inputValue.length > 20) {
+      inputValue = inputValue.slice(0, 20);
+    }
+    if (Number(inputValue) < 0) {
+      inputValue = '0';
+    }
+    event.target.value = inputValue;
+  };
+
   const onClick = useCallback(() => {
     dispatch(
       getMachineDetails({
@@ -64,7 +85,11 @@ const ConfirmOrderDetails = () => {
               <p>
                 Order quantity:
                 <input
+                  className={styles.focus}
                   type="number"
+                  min="0"
+                  onKeyDown={handleKeyPress}
+                  //onChange={handleInputChange}
                   onChange={onChangeQuantity}
                   placeholder="Enter order quantity"
                   required
