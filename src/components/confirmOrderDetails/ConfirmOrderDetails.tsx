@@ -44,16 +44,6 @@ const ConfirmOrderDetails = () => {
       event.preventDefault();
     }
   };
-  const handleInputChange = (event: { target: { value: string | any[] } }) => {
-    let inputValue = event.target.value;
-    if (inputValue.length > 20) {
-      inputValue = inputValue.slice(0, 20);
-    }
-    if (Number(inputValue) < 0) {
-      inputValue = '0';
-    }
-    event.target.value = inputValue;
-  };
 
   const onClick = useCallback(() => {
     dispatch(
@@ -89,7 +79,6 @@ const ConfirmOrderDetails = () => {
                   type="number"
                   min="0"
                   onKeyDown={handleKeyPress}
-                  //onChange={handleInputChange}
                   onChange={onChangeQuantity}
                   placeholder="Enter order quantity"
                   required
