@@ -89,8 +89,8 @@ const ConfirmOrderDetails = () => {
                   type="number"
                   min="0"
                   onKeyDown={handleKeyPress}
-                  //onChange={handleInputChange}
-                  onChange={onChangeQuantity}
+                  onChange={handleInputChange}
+                  //onChange={onChangeQuantity}
                   placeholder="Enter order quantity"
                   required
                 />
