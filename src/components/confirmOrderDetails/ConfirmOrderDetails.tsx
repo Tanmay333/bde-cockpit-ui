@@ -7,16 +7,33 @@ import {
   IonImg,
 } from '@ionic/react';
 import CardContainer from '../common/cardContainer/CardContainer';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import styles from './ConfirmOrderDetails.module.scss';
 import ConfirmOrderLogo from '../../static/assets/images/LohnpackLogo.svg';
 import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
-import { useAppDispatch } from '../../store/utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
+import { getquantityDetails } from '../../store/slices/orderQuantitySlice';
 
 const ConfirmOrderDetails = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const [enteredQuantity, setEnteredQuantity] = useState(Number);
+
+  const onChangeQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const parsedNumber = parseFloat(event.target.value);
+    setEnteredQuantity(parsedNumber);
+    console.log(event.target.value);
+  };
+
+  const orderquantityvalue = useAppSelector(
+    (state) => state.OrderQuantitySlice.data,
+  );
+
+  useEffect(() => {
+    dispatch(getquantityDetails(enteredQuantity));
+  }, [dispatch, enteredQuantity]);
+
   const handleKeyPress = (event: {
     target: any;
     key: string;
@@ -37,15 +54,20 @@ const ConfirmOrderDetails = () => {
     }
     event.target.value = inputValue;
   };
+
   const onClick = useCallback(() => {
     dispatch(
       getMachineDetails({
         action: 'assignNewJob',
         orderId: '1869485',
         stationId: '1.203.4.245',
-        orderQuantity: 5000,
+        orderQuantity: orderquantityvalue,
       }),
     );
+    const phaseone = document.getElementById('phase-one');
+    if (phaseone) {
+      phaseone.style.backgroundColor = '#2799D1';
+    }
     history.push('/');
   }, [history]);
 
@@ -56,15 +78,11 @@ const ConfirmOrderDetails = () => {
           <IonImg src={ConfirmOrderLogo} alt={'ConfirmOrderDetails Logo'} />
         </IonHeader>
         <div className={styles.container}>
-          <CardContainer
-            title={'Order details'}
-            position={'middle'}
-            style={{ paddingTop: '36px' }}
-          >
+          <CardContainer title={'Order details'} position={'middle'}>
             <IonText className={styles.orderDetails}>
-              <p>Order number: 382993844</p>
+              <p>Order number: 1869485</p>
+
               <p>
-                {' '}
                 Order quantity:
                 <input
                   className={styles.focus}
@@ -72,9 +90,16 @@ const ConfirmOrderDetails = () => {
                   min="0"
                   onKeyDown={handleKeyPress}
                   onChange={handleInputChange}
+                  //onChange={onChangeQuantity}
+                  placeholder="Enter order quantity"
+                  required
                 />
               </p>
             </IonText>
+            {/* {enteredQuantity !== undefined && (
+              <p>Entered quantity: {enteredQuantity}</p>
+            )} */}
+
             <IonButton onClick={onClick} fill="solid" className={styles.btn}>
               Confirm Order Details
             </IonButton>
