@@ -19,12 +19,9 @@ const Phase: React.FC = () => {
   const [phaseFour, setPhaseFour] = useState('#E0E0E0');
   const [phaseFive, setPhaseFive] = useState('#E0E0E0');
 
-  // const [bgColor, setBgColor] = useState('#E0E0E0');
-
-  // const onClick = useCallback(() => {
-  //   setBgColor('#2799D1');
-  //   history.push('/');
-  // }, [bgColor, history]);
+  const onClickDowntime = useCallback(() => {
+    history.push('/downtimetype');
+  }, [history]);
 
   const onClickPhase2 = useCallback(() => {
     setShowPhase1(false);
@@ -34,7 +31,6 @@ const Phase: React.FC = () => {
   }, [phaseTwo, history]);
 
   const onClickPhase3 = useCallback(() => {
-    history.push('/downtimetype');
     setShowPhase3(true);
     setShowPhase2(false);
     setPhaseThree('#2AD127');
@@ -64,6 +60,15 @@ const Phase: React.FC = () => {
             <div className={styles.idle}>{showPhase2 && <p>Phase 02</p>}</div>
             <div className={styles.working}>
               {showPhase3 && <p>Phase 03</p>}
+              <button onClick={onClickDowntime}>Downtime</button>
+              <IonModal
+                style={{
+                  '--width': '100%',
+                  '--height': '100%',
+                }}
+                ref={modal}
+                isOpen={downTime}
+              ></IonModal>
             </div>
             <div className={styles.idle}>{showPhase4 && <p>Phase 04</p>}</div>
             <div className={styles.idle}>{showPhase5 && <p> Phase 05</p>}</div>
@@ -96,14 +101,7 @@ const Phase: React.FC = () => {
               }}
               onClick={onClickPhase3}
             ></div>
-            <IonModal
-              style={{
-                '--width': '100%',
-                '--height': '100%',
-              }}
-              ref={modal}
-              isOpen={downTime}
-            ></IonModal>
+
             <div
               className={styles.boxidle}
               onClick={onClickPhase4}
