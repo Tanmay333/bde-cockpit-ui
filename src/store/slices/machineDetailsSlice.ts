@@ -45,6 +45,7 @@ interface Process {
 export interface MachineDetails {
   stationId: string;
   assignedJobDetails: AssignedOrderDetails;
+  assignOrderQuantity: AssignedOrderDetails;
   process: Process;
 }
 

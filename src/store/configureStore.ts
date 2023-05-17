@@ -8,11 +8,16 @@ import {
   SELECT_WORKERS,
   selectWorkersReducer,
 } from './slices/SelectworkersSlice';
+import {
+  ORDER_QUANTITY,
+  orderQuantityReducer,
+} from './slices/orderQuantitySlice';
 
 const reducers = {
   [TEST_SLICE_KEY]: testDataReducer,
   [MACHINE_DETAILS_KEY]: machineDetailsReducer,
   [SELECT_WORKERS]: selectWorkersReducer,
+  [ORDER_QUANTITY]: orderQuantityReducer,
 };
 
 export const store = configureStore({ reducer: reducers });
