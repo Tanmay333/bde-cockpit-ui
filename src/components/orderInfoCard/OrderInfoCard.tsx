@@ -5,17 +5,17 @@ import {
   IonCardSubtitle,
   IonCardTitle,
 } from '@ionic/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './OrderInforCard.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 const OrderInfoCard: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const previousPhaseTime = () => {
     if (state === null) {
-      return 'N/A';
+      return '00:00';
     }
     if (state.process.previousPhases.length === 0) {
-      return 'N/A';
+      return '00:00';
     }
     const startTime = new Date(state.process.previousPhases[0].startTime);
     const endTime = new Date(state.process.previousPhases[0].endTime);
@@ -27,19 +27,62 @@ const OrderInfoCard: React.FC = () => {
       .toString()
       .padStart(2, '0')}`;
   };
+
   const currentPhaseStartTime = () => {
     if (state === null) {
-      return 'N/A';
+      return '00:00';
     }
-    const startTime = new Date(state.process.currentPhaseDetails.startTime);
-    const ms = startTime.getTime();
-    const min = Math.floor(ms / 60000);
+
+    const currentTime = new Date(); // Get the current time
+    const receivedTime = new Date(state.process.currentPhaseDetails.startTime); // Get the received time
+    const timeDifference = currentTime.getTime() - receivedTime.getTime(); // Calculate the time difference in milliseconds
+
+    const min = Math.floor(timeDifference / 60000);
     const hrs = Math.floor(min / 60);
     const mins = min % 60;
+
     return `${hrs.toString().padStart(2, '0')}:${mins
       .toString()
       .padStart(2, '0')}`;
   };
+  const [currentTime, setCurrentTime] = useState('');
+
+  const totalTimeOfJob = () => {
+    const previousTime = previousPhaseTime();
+    const currentStartTime = currentPhaseStartTime();
+
+    if (previousTime === 'N/A' || currentStartTime === 'N/A') {
+      return 'N/A'; // If either value is 'N/A', return 'N/A' as the final result
+    }
+
+    const [previousHours, previousMinutes] = previousTime
+      .split(':')
+      .map(Number);
+    const [currentHours, currentMinutes] = currentStartTime
+      .split(':')
+      .map(Number);
+
+    const totalHours = previousHours + currentHours;
+    const totalMinutes = previousMinutes + currentMinutes;
+
+    const finalHours = totalHours + Math.floor(totalMinutes / 60);
+    const finalMinutes = totalMinutes % 60;
+
+    return `${finalHours.toString().padStart(2, '0')}:${finalMinutes
+      .toString()
+      .padStart(2, '0')}`;
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const result = totalTimeOfJob();
+      setCurrentTime(result);
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [state]);
   const previousPhaseName = () => {
     if (state === null) {
       return 'N/A';
@@ -60,10 +103,10 @@ const OrderInfoCard: React.FC = () => {
   };
   const currentPhaseTime = () => {
     if (state === null) {
-      return 'N/A';
+      return '00:00';
     }
     if (state.process.currentPhaseDetails === null) {
-      return 'N/A';
+      return '00:00';
     }
     return state.process.currentPhaseDetails.startTime;
   };
@@ -71,29 +114,28 @@ const OrderInfoCard: React.FC = () => {
     orderId: state === null ? 'N/A' : state.assignedJobDetails.orderId,
     machineStatus:
       state === null ? 'N/A' : state.process.currentPhaseDetails.state,
-    startTime: currentPhaseStartTime(),
+    startTime: currentTime,
     currentPhaseName: currentPhaseName(),
     currentPhaseTime: currentPhaseTime(),
     previousPhaseTime: previousPhaseTime(),
     previousPhaseName: previousPhaseName(),
   };
-  const t = new Date();
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader>
         <IonCardTitle>Order: {data.orderId}</IonCardTitle>
         <IonCardSubtitle>
-          Machine {data.machineStatus === 'running' ? 'on' : 'off'}
+          Machine {data.machineStatus === 'RUNNING' ? 'on' : 'off'}
         </IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent>
         <div>
-          <IonCardTitle>{t.getHours() + ':' + t.getMinutes()} hrs</IonCardTitle>
+          <IonCardTitle>{data.startTime} hrs</IonCardTitle>
           <IonCardSubtitle>Today</IonCardSubtitle>
         </div>
         <div>
           <IonCardTitle className={styles.ionRightSection}>
-            {data.currentPhaseTime} hrs
+            {data.previousPhaseTime} hrs
           </IonCardTitle>
           <IonCardSubtitle>Phase 01 - {data.currentPhaseName}</IonCardSubtitle>
         </div>

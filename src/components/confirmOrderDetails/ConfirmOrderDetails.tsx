@@ -69,7 +69,7 @@ const ConfirmOrderDetails = () => {
       phaseone.style.backgroundColor = '#2799D1';
     }
     history.push('/');
-  }, [history]);
+  }, [history, orderquantityvalue]);
 
   return (
     <IonPage>
