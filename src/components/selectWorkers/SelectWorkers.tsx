@@ -55,7 +55,7 @@ const SelectWorkers = () => {
   };
 
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-
+  const dispatch = useAppDispatch();
   const selectworkers = (index: number) => {
     setSelectedIndex(index);
     setTimeout(routeToHomePage, 1000);
@@ -67,8 +67,6 @@ const SelectWorkers = () => {
       }),
     );
   };
-
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getworkersDetails(selectedIndex));
