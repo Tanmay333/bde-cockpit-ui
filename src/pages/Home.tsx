@@ -7,8 +7,17 @@ import PhaseDetails from '../components/phaseDetails/PhaseDetails';
 import { useEffect, useState } from 'react';
 import SplashScreen from '../components/splashScreen/SplashScreen';
 import styles from './Home.module.scss';
+import { useAppSelector } from '../store/utils/hooks';
+import { useHistory } from 'react-router-dom';
 
 const Home: React.FC = () => {
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  const history = useHistory();
+  useEffect(() => {
+    if (state?.process.currentPhaseDetails.state === 'DOWNTIME') {
+      history.push('/downtimetype');
+    }
+  }, [state]);
   const [timeLeft, setTimeLeft] = useState(5);
   useEffect(() => {
     const interval = setInterval(() => {
@@ -22,6 +31,7 @@ const Home: React.FC = () => {
   if (timeLeft !== 0) {
     return <SplashScreen />;
   }
+
   return (
     <IonPage>
       <Header />

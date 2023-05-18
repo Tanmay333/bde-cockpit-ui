@@ -13,6 +13,8 @@ const DowntimeType: React.FC = () => {
   if (state === null) {
     return null;
   }
+  const phaseState = state.process.currentPhaseDetails.state;
+
   const jobId = state.assignedJobDetails.jobId;
   const onEndProduction = useCallback(() => {
     const message = {
@@ -22,7 +24,22 @@ const DowntimeType: React.FC = () => {
     sendMessage(message);
     history.push('/');
   }, [history]);
-
+  const onClick = useCallback(() => {
+    if (
+      phaseState === 'DOWNTIME' &&
+      state.process.currentPhaseDetails.downtimes !== null
+    ) {
+      const message = {
+        action: 'saveDowntimeReason',
+        downtimeStartTime:
+          state.process.currentPhaseDetails.downtimes[0].startTime,
+        jobId: jobId,
+        downtimeReason: 'machine issue',
+      };
+      sendMessage(message);
+      history.push('/');
+    }
+  }, []);
   return (
     <IonPage>
       <Header />
@@ -33,7 +50,9 @@ const DowntimeType: React.FC = () => {
           </div>
           <div>
             <IonRow className={styles.classes}>
-              <IonButton className={styles.button}>Machine issue</IonButton>
+              <IonButton onClick={onClick} className={styles.button}>
+                Machine issue
+              </IonButton>
               <IonButton className={styles.button}>Lunch Break</IonButton>
               <IonButton className={styles.button}>Sick leave</IonButton>
               <IonButton className={styles.button}>Team meeting </IonButton>

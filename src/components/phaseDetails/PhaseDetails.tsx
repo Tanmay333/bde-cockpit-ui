@@ -1,18 +1,13 @@
 import CardContainer from '../common/cardContainer/CardContainer';
 import { IonCardContent, IonGrid, IonButton } from '@ionic/react';
 import styles from './PhaseDetails.module.scss';
-import { useCallback } from 'react';
 import { useAppSelector } from '../../store/utils/hooks';
-import { useHistory } from 'react-router';
 import useWebSocket from '../../store/hooks/useWebSocket';
 
 const PhaseDetails: React.FC = () => {
-  // const history = useHistory();
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-  // if (state === null) {
-  //   return null;
-  // }
+
   const jobId = state === null ? null : state.assignedJobDetails.jobId;
 
   const onEndUnmounting = () => {
