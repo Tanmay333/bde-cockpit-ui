@@ -15,7 +15,7 @@ import styles from './SelectWorkers.module.scss';
 import { useHistory } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getworkersDetails } from '../../store/slices/SelectworkersSlice';
-import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
+import useWebSocket from '../../store/hooks/useWebSocket';
 
 const SelectWorkers = () => {
   const Workers = [
@@ -54,16 +54,17 @@ const SelectWorkers = () => {
 
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const dispatch = useAppDispatch();
+  const { sendMessage } = useWebSocket();
+
   const selectworkers = (index: number) => {
     setSelectedIndex(index);
     setTimeout(routeToHomePage, 1000);
-    dispatch(
-      getMachineDetails({
-        action: 'setTeamSize',
-        jobId: state?.assignedJobDetails.jobId,
-        productionTeamSize: index + 1,
-      }),
-    );
+    const message = {
+      action: 'setTeamSize',
+      jobId: state?.assignedJobDetails.jobId,
+      productionTeamSize: index + 1,
+    };
+    sendMessage(message);
   };
 
   useEffect(() => {

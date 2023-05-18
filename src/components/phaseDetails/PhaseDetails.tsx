@@ -2,31 +2,34 @@ import CardContainer from '../common/cardContainer/CardContainer';
 import { IonCardContent, IonGrid, IonButton } from '@ionic/react';
 import styles from './PhaseDetails.module.scss';
 import { useCallback } from 'react';
-import { useAppDispatch } from '../../store/utils/hooks';
-import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
+import { useAppSelector } from '../../store/utils/hooks';
 import { useHistory } from 'react-router';
+import useWebSocket from '../../store/hooks/useWebSocket';
 
 const PhaseDetails: React.FC = () => {
-  const history = useHistory();
-  const dispatch = useAppDispatch();
+  // const history = useHistory();
+  const { sendMessage } = useWebSocket();
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  // if (state === null) {
+  //   return null;
+  // }
+  const jobId = state === null ? null : state.assignedJobDetails.jobId;
 
-  const onEndUnmounting = useCallback(() => {
-    dispatch(
-      getMachineDetails({
-        action: 'setEndOfUnmounting',
-        jobId: '782e0622-c9d8-4f5d-a026-d51ef99f2c08',
-      }),
-    );
-  }, [history]);
+  const onEndUnmounting = () => {
+    const message = {
+      action: 'setEndOfUnmounting',
+      jobId: jobId,
+    };
+    sendMessage(message);
+  };
 
-  const onEndCleaning = useCallback(() => {
-    dispatch(
-      getMachineDetails({
-        action: 'setEndOfCleaning',
-        jobId: '782e0622-c9d8-4f5d-a026-d51ef99f2c08',
-      }),
-    );
-  }, [history]);
+  const onEndCleaning = () => {
+    const message = {
+      action: 'setEndOfCleaning',
+      jobId: jobId,
+    };
+    sendMessage(message);
+  };
 
   return (
     <>

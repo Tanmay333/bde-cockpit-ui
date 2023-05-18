@@ -3,20 +3,23 @@ import React, { useCallback } from 'react';
 import styles from './DowntimeType.module.scss';
 import Header from '../common/header/Header';
 import { useHistory } from 'react-router';
-import { useAppDispatch } from '../../store/utils/hooks';
-import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
+import { useAppSelector } from '../../store/utils/hooks';
+import useWebSocket from '../../store/hooks/useWebSocket';
 
 const DowntimeType: React.FC = () => {
   const history = useHistory();
-  const dispatch = useAppDispatch();
-
+  const { sendMessage } = useWebSocket();
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  if (state === null) {
+    return null;
+  }
+  const jobId = state.assignedJobDetails.jobId;
   const onEndProduction = useCallback(() => {
-    dispatch(
-      getMachineDetails({
-        action: 'setEndOfProduction',
-        jobId: '782e0622-c9d8-4f5d-a026-d51ef99f2c08',
-      }),
-    );
+    const message = {
+      action: 'setEndOfProduction',
+      jobId: jobId,
+    };
+    sendMessage(message);
     history.push('/');
   }, [history]);
 

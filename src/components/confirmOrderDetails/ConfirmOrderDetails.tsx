@@ -11,9 +11,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import styles from './ConfirmOrderDetails.module.scss';
 import ConfirmOrderLogo from '../../static/assets/images/LohnpackLogo.svg';
-import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getquantityDetails } from '../../store/slices/orderQuantitySlice';
+import useWebSocket from '../../store/hooks/useWebSocket';
 
 const ConfirmOrderDetails = () => {
   const history = useHistory();
@@ -23,7 +23,6 @@ const ConfirmOrderDetails = () => {
   const onChangeQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
     const parsedNumber = parseFloat(event.target.value);
     setEnteredQuantity(parsedNumber);
-    console.log(event.target.value);
   };
 
   const orderquantityvalue = useAppSelector(
@@ -35,6 +34,7 @@ const ConfirmOrderDetails = () => {
   }, [dispatch, enteredQuantity]);
 
   const handleKeyPress = (event: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     target: any;
     key: string;
     preventDefault: () => void;
@@ -45,15 +45,17 @@ const ConfirmOrderDetails = () => {
     }
   };
 
+  const { sendMessage } = useWebSocket();
+
   const onClick = useCallback(() => {
-    dispatch(
-      getMachineDetails({
-        action: 'assignNewJob',
-        orderId: '1869485',
-        stationId: '1.203.4.245',
-        orderQuantity: orderquantityvalue,
-      }),
-    );
+    const message = {
+      action: 'assignNewJob',
+      orderId: '1869485',
+      stationId: '1.203.4.245',
+      orderQuantity: orderquantityvalue,
+    };
+    sendMessage(message);
+
     const phaseone = document.getElementById('phase-one');
     if (phaseone) {
       phaseone.style.backgroundColor = '#2799D1';

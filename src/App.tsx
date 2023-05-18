@@ -32,10 +32,12 @@ import SelectWorkers from './components/selectWorkers/SelectWorkers';
 import OrderDetails from './components/orderDetails/OrderDetails';
 import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDetails';
 import DowntimeType from './components/donwtimeType/DowntimeType';
+import useWebSocket from './store/hooks/useWebSocket';
 
 setupIonicReact();
 
 const App = () => {
+  useWebSocket();
   return (
     <IonApp>
       <IonPage id="main-content">
