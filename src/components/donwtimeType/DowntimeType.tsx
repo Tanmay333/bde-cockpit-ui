@@ -42,7 +42,7 @@ const DowntimeType: React.FC = () => {
     sendMessage(message);
     history.push('/');
   }, [history]);
-  const onClick = useCallback(() => {
+  const onClick = useCallback((reason) => {
     if (
       phaseState === 'DOWNTIME' &&
       state.process.currentPhaseDetails.downtimes !== null
@@ -52,7 +52,7 @@ const DowntimeType: React.FC = () => {
         downtimeStartTime:
           state.process.currentPhaseDetails.downtimes[0].startTime,
         jobId: jobId,
-        downtimeReason: 'machine issue',
+        downtimeReason: reason,
       };
       sendMessage(message);
       history.push('/');
@@ -70,7 +70,7 @@ const DowntimeType: React.FC = () => {
             <IonRow className={styles.classes}>
               {Downtimereason.map((data) => (
                 <IonButton
-                  onClick={onClick}
+                  onClick={() => onClick(data.reason)}
                   key={data.reason}
                   className={styles.button}
                 >
