@@ -7,6 +7,24 @@ import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
 
 const DowntimeType: React.FC = () => {
+  const Downtimereason = [
+    {
+      reason: 'Machine issue',
+    },
+    {
+      reason: 'Lunch Break',
+    },
+    {
+      reason: 'Sick leave',
+    },
+    {
+      reason: 'Team meeting',
+    },
+    {
+      reason: 'Urgent call',
+    },
+  ];
+
   const history = useHistory();
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
@@ -50,13 +68,15 @@ const DowntimeType: React.FC = () => {
           </div>
           <div>
             <IonRow className={styles.classes}>
-              <IonButton onClick={onClick} className={styles.button}>
-                Machine issue
-              </IonButton>
-              <IonButton className={styles.button}>Lunch Break</IonButton>
-              <IonButton className={styles.button}>Sick leave</IonButton>
-              <IonButton className={styles.button}>Team meeting </IonButton>
-              <IonButton className={styles.button}>Urgent call</IonButton>
+              {Downtimereason.map((data) => (
+                <IonButton
+                  onClick={onClick}
+                  key={data.reason}
+                  className={styles.button}
+                >
+                  {data.reason}
+                </IonButton>
+              ))}
             </IonRow>
           </div>
           <div className={styles.endBtn}>
