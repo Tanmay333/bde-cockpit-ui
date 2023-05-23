@@ -20,7 +20,7 @@ interface Downtimes {
 interface CurrentPhaseDetails {
   phaseName: string | null;
   startTime: string;
-  endTime: string | null;
+  endTime: string;
   downtimes: Downtimes[] | null;
   state: string;
 }

@@ -8,6 +8,27 @@ const PhaseDetails: React.FC = () => {
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
+  const startData = () => {
+    if (state === null) {
+      return '--:--';
+    }
+    const startTime = new Date(state.process.currentPhaseDetails.startTime);
+    const hours = startTime.getHours().toString().padStart(2, '0');
+    const minutes = startTime.getMinutes().toString().padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}`;
+    return formattedTime;
+  };
+  const endData = () => {
+    if (state === null) {
+      return '--:--';
+    }
+    const endTime = new Date(state.process.currentPhaseDetails.endTime);
+    const hours = endTime.getHours().toString().padStart(2, '0');
+    const minutes = endTime.getMinutes().toString().padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}`;
+    return formattedTime;
+  };
+
   const jobId = state === null ? null : state.assignedJobDetails.jobId;
 
   const onEndUnmounting = () => {
@@ -31,7 +52,7 @@ const PhaseDetails: React.FC = () => {
       <CardContainer title="Phase details" position={'start'}>
         <IonCardContent>
           <div className={styles.bowl}>
-            <p>Start time: --:--</p>
+            <p>Start time: {startData()}</p>
             <p>End time: --:--</p>
           </div>
         </IonCardContent>
