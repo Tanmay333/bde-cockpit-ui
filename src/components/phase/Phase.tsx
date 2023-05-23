@@ -33,8 +33,8 @@ const Phase: React.FC = () => {
   }, [phaseTwo, history]);
 
   const onClickPhase3 = useCallback(() => {
-    setShowPhase3(true);
-    setShowPhase2(false);
+    //setShowPhase3(true);
+    //setShowPhase2(false);
     //setPhaseThree('#2AD127');
     setDownType(false);
   }, [phaseThree, history]);
@@ -53,21 +53,32 @@ const Phase: React.FC = () => {
     if (state === null) {
       return setPhaseThree('#E0E0E0');
     }
-    if (state.process.currentPhaseDetails.phaseName === 'production')
+    if (state.process.currentPhaseDetails.phaseName === 'production') {
+      setShowPhase3(true);
+      setShowPhase2(false);
       setPhaseThree('#2AD127');
-  }, [currentPhaseName]);
+    } else if (state.process.currentPhaseDetails.phaseName === 'unmounting') {
+      setShowPhase3(false);
+      setShowPhase4(true);
+      setPhaseFour('#2799D1');
+    } else if (state.process.currentPhaseDetails.phaseName === 'cleaning') {
+      setShowPhase5(true);
+      setShowPhase4(false);
+      setPhaseFive('#2799D1');
+    }
+  }, [currentPhaseName, history]);
 
   const onClickPhase4 = useCallback(() => {
-    setShowPhase3(false);
-    setShowPhase4(true);
-    setPhaseFour('#2799D1');
+    // setShowPhase3(false);
+    // setShowPhase4(true);
+    // setPhaseFour('#2799D1');
     history.push('/');
   }, [phaseFour, history]);
 
   const onClickPhase5 = useCallback(() => {
-    setShowPhase5(true);
-    setShowPhase4(false);
-    setPhaseFive('#2799D1');
+    // setShowPhase5(true);
+    // setShowPhase4(false);
+    // setPhaseFive('#2799D1');
     history.push('/');
   }, [phaseFive, history]);
 
