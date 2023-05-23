@@ -120,6 +120,25 @@ const OrderInfoCard: React.FC = () => {
     previousPhaseTime: previousPhaseTime(),
     previousPhaseName: previousPhaseName(),
   };
+
+  const [phase, setPhase] = useState('Default phase');
+
+  useEffect(() => {
+    if (state === null) {
+      return setPhase('N/A');
+    }
+    if (state.process.currentPhaseDetails.phaseName === 'mounting') {
+      return setPhase('Phase 1');
+    } else if (state.process.currentPhaseDetails.phaseName === 'preparing') {
+      return setPhase('Phase 2');
+    } else if (state.process.currentPhaseDetails.phaseName === 'production') {
+      return setPhase('Phase 3');
+    } else if (state.process.currentPhaseDetails.phaseName === 'unmounting') {
+      return setPhase('Phase 4');
+    } else if (state.process.currentPhaseDetails.phaseName === 'cleaning') {
+      return setPhase('Phase 5');
+    }
+  }, [currentPhaseName]);
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader>
@@ -137,7 +156,9 @@ const OrderInfoCard: React.FC = () => {
           <IonCardTitle className={styles.ionRightSection}>
             {data.previousPhaseTime} hrs
           </IonCardTitle>
-          <IonCardSubtitle>Phase 01 - {data.currentPhaseName}</IonCardSubtitle>
+          <IonCardSubtitle>
+            {phase} - {data.currentPhaseName}
+          </IonCardSubtitle>
         </div>
       </IonCardContent>
     </IonCard>
