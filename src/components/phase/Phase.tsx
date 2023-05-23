@@ -1,9 +1,11 @@
 import { IonGrid, IonRow, IonCol, IonModal } from '@ionic/react';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './Phase.module.scss';
+import { useAppSelector } from '../../store/utils/hooks';
 
 const Phase: React.FC = () => {
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const [downTime, setDownType] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
@@ -33,9 +35,27 @@ const Phase: React.FC = () => {
   const onClickPhase3 = useCallback(() => {
     setShowPhase3(true);
     setShowPhase2(false);
-    setPhaseThree('#2AD127');
+    //setPhaseThree('#2AD127');
     setDownType(false);
   }, [phaseThree, history]);
+
+  const currentPhaseName = () => {
+    if (state === null) {
+      return 'N/A';
+    }
+    if (state.process.currentPhaseDetails === null) {
+      return 'N/A';
+    }
+    return state.process.currentPhaseDetails.phaseName;
+  };
+
+  useEffect(() => {
+    if (state === null) {
+      return setPhaseThree('#E0E0E0');
+    }
+    if (state.process.currentPhaseDetails.phaseName === 'production')
+      setPhaseThree('#2AD127');
+  }, [currentPhaseName]);
 
   const onClickPhase4 = useCallback(() => {
     setShowPhase3(false);
