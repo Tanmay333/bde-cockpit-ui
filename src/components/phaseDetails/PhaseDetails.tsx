@@ -47,6 +47,11 @@ const PhaseDetails: React.FC = () => {
     sendMessage(message);
   };
 
+  const isPhaseUnmounting =
+    state?.process.currentPhaseDetails.phaseName === 'unmounting';
+  const isPhasecleaning =
+    state?.process.currentPhaseDetails.phaseName === 'cleaning';
+
   return (
     <>
       <CardContainer title="Phase details" position={'start'}>
@@ -63,31 +68,35 @@ const PhaseDetails: React.FC = () => {
           }}
         >
           <div className={styles.BtnHolder}>
-            <IonButton
-              //href="/"
-              onClick={onEndUnmounting}
-              type="submit"
-              fill="solid"
-              style={{
-                width: '210px',
-                height: '50px',
-              }}
-              color={'danger'}
-            >
-              End UnMounting
-            </IonButton>
-            <IonButton
-              onClick={onEndCleaning}
-              type="submit"
-              fill="solid"
-              style={{
-                width: '210px',
-                height: '50px',
-              }}
-              color={'danger'}
-            >
-              End Cleaning
-            </IonButton>
+            {isPhaseUnmounting && (
+              <IonButton
+                //href="/"
+                onClick={onEndUnmounting}
+                type="submit"
+                fill="solid"
+                style={{
+                  width: '210px',
+                  height: '50px',
+                }}
+                color={'danger'}
+              >
+                End UnMounting
+              </IonButton>
+            )}
+            {isPhasecleaning && (
+              <IonButton
+                onClick={onEndCleaning}
+                type="submit"
+                fill="solid"
+                style={{
+                  width: '210px',
+                  height: '50px',
+                }}
+                color={'danger'}
+              >
+                End Cleaning
+              </IonButton>
+            )}
           </div>
         </IonGrid>
       </CardContainer>
