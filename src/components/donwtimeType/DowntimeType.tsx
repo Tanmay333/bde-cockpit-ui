@@ -42,22 +42,25 @@ const DowntimeType: React.FC = () => {
     sendMessage(message);
     history.push('/');
   }, [history]);
-  const onClick = useCallback((reason) => {
-    if (
-      phaseState === 'DOWNTIME' &&
-      state.process.currentPhaseDetails.downtimes !== null
-    ) {
-      const message = {
-        action: 'saveDowntimeReason',
-        downtimeStartTime:
-          state.process.currentPhaseDetails.downtimes[0].startTime,
-        jobId: jobId,
-        downtimeReason: reason,
-      };
-      sendMessage(message);
-      history.push('/');
-    }
-  }, []);
+  const onClick = useCallback(
+    (reason) => {
+      if (
+        phaseState === 'DOWNTIME' &&
+        state.process.currentPhaseDetails.downtimes !== null
+      ) {
+        const message = {
+          action: 'saveDowntimeReason',
+          downtimeStartTime:
+            state.process.currentPhaseDetails.downtimes[0].startTime,
+          jobId: jobId,
+          downtimeReason: reason,
+        };
+        sendMessage(message);
+        history.push('/');
+      }
+    },
+    [Downtimereason],
+  );
   return (
     <IonPage>
       <Header />
