@@ -10,24 +10,32 @@ import styles from './OrderInforCard.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 const OrderInfoCard: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-  const previousPhaseTime = () => {
-    if (state === null) {
+
+  //To get total time of all previous phases.
+  const previousPhaseTotalTime = () => {
+    if (state === null || state.process.previousPhases.length === 0) {
       return '00:00';
     }
-    if (state.process.previousPhases.length === 0) {
-      return '00:00';
+
+    let totalMinutes = 0;
+
+    for (const phase of state.process.previousPhases) {
+      const startTime = new Date(phase.startTime);
+      const endTime = new Date(phase.endTime);
+      const diffInMs = endTime.getTime() - startTime.getTime();
+      const diffInMinutes = Math.floor(diffInMs / 60000);
+      totalMinutes += diffInMinutes;
     }
-    const startTime = new Date(state.process.previousPhases[0].startTime);
-    const endTime = new Date(state.process.previousPhases[0].endTime);
-    const diffInMs = endTime.getTime() - startTime.getTime();
-    const diffInMinutes = Math.floor(diffInMs / 60000);
-    const hours = Math.floor(diffInMinutes / 60);
-    const minutes = diffInMinutes % 60;
+
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
     return `${hours.toString().padStart(2, '0')}:${minutes
       .toString()
       .padStart(2, '0')}`;
   };
 
+  //To get start time of current phase
   const currentPhaseStartTime = () => {
     if (state === null) {
       return '00:00';
@@ -45,17 +53,18 @@ const OrderInfoCard: React.FC = () => {
       .toString()
       .padStart(2, '0')}`;
   };
-  const [currentTime, setCurrentTime] = useState('');
+  const [startTimeOfProcess, setStartTimeOfProcess] = useState('');
 
-  const totalTimeOfJob = () => {
-    const previousTime = previousPhaseTime();
+  //Adding total time of previous phases and current time minus start time of process
+  const totalTimeOfJobProcess = () => {
+    const totalTimeOfPreviousPhase = previousPhaseTotalTime();
     const currentStartTime = currentPhaseStartTime();
 
-    if (previousTime === 'N/A' || currentStartTime === 'N/A') {
+    if (totalTimeOfPreviousPhase === 'N/A' || currentStartTime === 'N/A') {
       return 'N/A'; // If either value is 'N/A', return 'N/A' as the final result
     }
 
-    const [previousHours, previousMinutes] = previousTime
+    const [previousHours, previousMinutes] = totalTimeOfPreviousPhase
       .split(':')
       .map(Number);
     const [currentHours, currentMinutes] = currentStartTime
@@ -73,25 +82,19 @@ const OrderInfoCard: React.FC = () => {
       .padStart(2, '0')}`;
   };
 
+  //To run the code every five seconds need to be changed to 1 min in future.
   useEffect(() => {
     const interval = setInterval(() => {
-      const result = totalTimeOfJob();
-      setCurrentTime(result);
+      const result = totalTimeOfJobProcess();
+      setStartTimeOfProcess(result);
     }, 5000);
 
     return () => {
       clearInterval(interval);
     };
   }, [state]);
-  const previousPhaseName = () => {
-    if (state === null) {
-      return 'N/A';
-    }
-    if (state.process.previousPhases.length === 0) {
-      return 'N/A';
-    }
-    return state.process.previousPhases[0].phaseName;
-  };
+
+  //To get the current phase name
   const currentPhaseName = () => {
     if (state === null) {
       return 'N/A';
@@ -101,24 +104,33 @@ const OrderInfoCard: React.FC = () => {
     }
     return state.process.currentPhaseDetails.phaseName;
   };
+
+  //To get current phase start time
   const currentPhaseTime = () => {
-    if (state === null) {
+    if (state === null || state.process.currentPhaseDetails === null) {
       return '00:00';
     }
-    if (state.process.currentPhaseDetails === null) {
-      return '00:00';
-    }
-    return state.process.currentPhaseDetails.startTime;
+
+    const startTime = new Date(state.process.currentPhaseDetails.startTime);
+    const currentTime = new Date();
+
+    const timeDiff = currentTime.getTime() - startTime.getTime();
+    const diffInMinutes = Math.floor(timeDiff / 60000);
+    const hours = Math.floor(diffInMinutes / 60);
+    const minutes = diffInMinutes % 60;
+
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}`;
   };
+
   const data = {
     orderId: state === null ? 'N/A' : state.assignedJobDetails.orderId,
     machineStatus:
       state === null ? 'N/A' : state.process.currentPhaseDetails.state,
-    startTime: currentTime,
+    startTimeOfCompleteProcess: startTimeOfProcess,
     currentPhaseName: currentPhaseName(),
     currentPhaseTime: currentPhaseTime(),
-    previousPhaseTime: previousPhaseTime(),
-    previousPhaseName: previousPhaseName(),
   };
 
   const [phase, setPhase] = useState('Default phase');
@@ -149,12 +161,12 @@ const OrderInfoCard: React.FC = () => {
       </IonCardHeader>
       <IonCardContent>
         <div>
-          <IonCardTitle>{data.startTime} hrs</IonCardTitle>
+          <IonCardTitle>{data.startTimeOfCompleteProcess} hrs</IonCardTitle>
           <IonCardSubtitle>Today</IonCardSubtitle>
         </div>
         <div>
           <IonCardTitle className={styles.ionRightSection}>
-            {data.previousPhaseTime} hrs
+            {data.currentPhaseTime} hrs
           </IonCardTitle>
           <IonCardSubtitle>
             {phase} - {data.currentPhaseName}
