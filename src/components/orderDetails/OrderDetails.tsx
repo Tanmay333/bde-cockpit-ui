@@ -67,7 +67,7 @@ const OrderDetails: React.FC = () => {
             Order number:
             {data.orderId}
           </p>
-          <p>Order quantity: {Quantity.data}</p>
+          <p>Order quantity: {data.quantity}</p>
         </div>
 
         <IonRow
