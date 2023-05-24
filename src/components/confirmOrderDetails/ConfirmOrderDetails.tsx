@@ -91,7 +91,12 @@ const ConfirmOrderDetails = () => {
               <p>Entered quantity: {enteredQuantity}</p>
             )} */}
 
-            <IonButton onClick={onClick} fill="solid" className={styles.btn}>
+            <IonButton
+              onClick={onClick}
+              fill="solid"
+              className={styles.btn}
+              disabled={!enteredQuantity}
+            >
               Confirm Order Details
             </IonButton>
           </CardContainer>
