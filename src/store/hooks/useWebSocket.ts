@@ -6,6 +6,7 @@ import { updateMachineDetails } from '../slices/machineDetailsSlice';
 type WebSocketMessage = any | null;
 
 type WebSocketHookReturn = {
+  isConnected: boolean;
   messages: WebSocketMessage[];
   sendMessage: (message: WebSocketMessage) => void;
 };
@@ -16,12 +17,15 @@ const connectedComponents: Array<(socket: WebSocket) => void> = [];
 const useWebSocket = (): WebSocketHookReturn => {
   const [socket, setSocket] = useState<WebSocket | null>(sharedSocket);
   const [messages, setMessages] = useState<WebSocketMessage>(null);
+  const [isConnected, setIsConnected] = useState(false);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (messages !== null) {
       dispatch(updateMachineDetails(messages));
     }
   }, [messages]);
+
   useEffect(() => {
     if (!socket) {
       const newSocket = new WebSocket(
@@ -32,6 +36,7 @@ const useWebSocket = (): WebSocketHookReturn => {
         console.log('WebSocket connection established.');
         sharedSocket = newSocket;
         setSocket(newSocket);
+        setIsConnected(true);
 
         connectedComponents.forEach((callback) => {
           callback(newSocket);
@@ -47,6 +52,7 @@ const useWebSocket = (): WebSocketHookReturn => {
         console.log('WebSocket connection closed.');
         sharedSocket = null;
         setSocket(null);
+        setIsConnected(false);
       };
     } else {
       connectedComponents.push(setSocket);
@@ -68,7 +74,7 @@ const useWebSocket = (): WebSocketHookReturn => {
     }
   };
 
-  return { messages, sendMessage };
+  return { isConnected, messages, sendMessage };
 };
 
 export default useWebSocket;

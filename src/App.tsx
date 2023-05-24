@@ -33,11 +33,24 @@ import OrderDetails from './components/orderDetails/OrderDetails';
 import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDetails';
 import DowntimeType from './components/donwtimeType/DowntimeType';
 import useWebSocket from './store/hooks/useWebSocket';
+import { useEffect } from 'react';
 
 setupIonicReact();
 
-const App = () => {
-  useWebSocket();
+const App: React.FC = () => {
+  const { sendMessage, isConnected } = useWebSocket();
+
+  const message = {
+    action: 'getCurrentProductionState',
+    stationId: '1.203.4.245',
+  };
+
+  useEffect(() => {
+    if (isConnected === true) {
+      sendMessage(message);
+    }
+  }, [isConnected]);
+
   return (
     <IonApp>
       <IonPage id="main-content">
