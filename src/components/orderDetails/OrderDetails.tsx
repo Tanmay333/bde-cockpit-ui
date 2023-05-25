@@ -13,17 +13,13 @@ import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
 import styles from './OrderDetails.module.scss';
 
 const OrderDetails: React.FC = () => {
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const [barcodeState, setBarcodeState] = useState(false);
-  const OrderId = useAppSelector((state) => state.machineDetailsSlice.data);
-  const Members = useAppSelector((State) => State.SelectworkersSlice);
-  const Quantity = useAppSelector((State) => State.OrderQuantitySlice);
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
-
   const onClick = useCallback(() => {
     setBarcodeState(true);
   }, [barcodeState]);
-
   const onBarcodeScanComplete = useCallback(() => {
     history.push('/confirmorderdetails');
     setBarcodeState(false);
@@ -31,11 +27,10 @@ const OrderDetails: React.FC = () => {
 
   const renderSelectedIcons = () => {
     const icons = [];
-    if (Members.data == null) {
+    if (state == null || state.assignedJobDetails.productionTeamSize === null) {
       return null;
     }
-
-    for (let i = 0; i - 1 < Members.data; i++) {
+    for (let i = 0; i - 1 < state.assignedJobDetails.productionTeamSize; i++) {
       icons.push(
         <IonRow
           key={i}
@@ -55,32 +50,37 @@ const OrderDetails: React.FC = () => {
   };
 
   const data = {
-    orderId: OrderId === null ? '--:--' : OrderId.assignedJobDetails.orderId,
-    quantity: Quantity === null ? '--:--' : Quantity.data,
+    orderId: state === null ? '--:--' : state.assignedJobDetails.orderId,
+    quantity: state === null ? '--:--' : state.assignedJobDetails.quantity,
   };
 
+  const isPhasePreparing = () => {
+    if (state === null) {
+      return false;
+    } else if (state.process.currentPhaseDetails.phaseName !== 'mounting') {
+      return true;
+    }
+  };
   return (
     <CardContainer title="Order details" position={'start'}>
       <IonCardContent>
         <div className={styles.order}>
-          <p>
-            Order number:
-            {data.orderId}
-          </p>
+          <p>Order number: {data.orderId} </p>
           <p>Order quantity: {data.quantity}</p>
         </div>
-
-        <IonRow
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            color: '#333333',
-          }}
-        >
-          Members:{renderSelectedIcons()}
-        </IonRow>
+        {isPhasePreparing() && (
+          <IonRow
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              color: '#333333',
+            }}
+          >
+            Members:{renderSelectedIcons()}
+          </IonRow>
+        )}
       </IonCardContent>
 
       <IonGrid
@@ -116,6 +116,7 @@ const OrderDetails: React.FC = () => {
             fill="solid"
             style={{
               width: '210px',
+
               height: '50px',
             }}
           >
