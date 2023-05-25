@@ -16,6 +16,7 @@ const Phase: React.FC = () => {
   const [showPhase4, setShowPhase4] = useState(false);
   const [showPhase5, setShowPhase5] = useState(false);
 
+  const [phaseOne, setPhaseOne] = useState('#E0E0E0');
   const [phaseTwo, setPhaseTwo] = useState('#E0E0E0');
   const [phaseThree, setPhaseThree] = useState('#E0E0E0');
   const [phaseFour, setPhaseFour] = useState('#E0E0E0');
@@ -33,9 +34,9 @@ const Phase: React.FC = () => {
   }, [phaseTwo, history]);
 
   const onClickPhase3 = useCallback(() => {
-    //setShowPhase3(true);
-    //setShowPhase2(false);
-    //setPhaseThree('#2AD127');
+    // setShowPhase3(true);
+    // setShowPhase2(false);
+    // setPhaseThree('#2AD127');
     setDownType(false);
   }, [phaseThree, history]);
 
@@ -53,15 +54,60 @@ const Phase: React.FC = () => {
     if (state === null) {
       return setPhaseThree('#E0E0E0');
     }
-    if (state.process.currentPhaseDetails.phaseName === 'production') {
+    const hasMountingPhase = state.process.previousPhases.some(
+      (phase) => phase.phaseName === 'mounting',
+    );
+
+    if (
+      state.process.currentPhaseDetails.phaseName === 'mounting' ||
+      hasMountingPhase
+    ) {
+      //setShowPhase1(false);
+      //setShowPhase2(true);
+      setPhaseOne('#2799D1');
+    }
+    const hasPreparationPhase = state.process.previousPhases.some(
+      (phase) => phase.phaseName === 'preparing',
+    );
+
+    if (
+      state.process.currentPhaseDetails.phaseName === 'preparing' ||
+      hasPreparationPhase
+    ) {
+      setShowPhase1(false);
+      setShowPhase2(true);
+      setPhaseTwo('#2799D1');
+    }
+    const hasProductionPhase = state.process.previousPhases.some(
+      (phase) => phase.phaseName === 'production',
+    );
+
+    if (
+      state.process.currentPhaseDetails.phaseName === 'production' ||
+      hasProductionPhase
+    ) {
       setShowPhase3(true);
       setShowPhase2(false);
       setPhaseThree('#2AD127');
-    } else if (state.process.currentPhaseDetails.phaseName === 'unmounting') {
+    }
+    const hasUnMountingPhase = state.process.previousPhases.some(
+      (phase) => phase.phaseName === 'unmounting',
+    );
+    if (
+      state.process.currentPhaseDetails.phaseName === 'unmounting' ||
+      hasUnMountingPhase
+    ) {
       setShowPhase3(false);
       setShowPhase4(true);
       setPhaseFour('#2799D1');
-    } else if (state.process.currentPhaseDetails.phaseName === 'cleaning') {
+    }
+    const hasCleaningPhase = state.process.previousPhases.some(
+      (phase) => phase.phaseName === 'cleaning',
+    );
+    if (
+      state.process.currentPhaseDetails.phaseName === 'cleaning' ||
+      hasCleaningPhase
+    ) {
       setShowPhase5(true);
       setShowPhase4(false);
       setPhaseFive('#2799D1');
@@ -110,8 +156,9 @@ const Phase: React.FC = () => {
               id="phase-one"
               //onClick={onClick}
               style={{
-                backgroundColor: '#E0E0E0',
+                //backgroundColor: '#E0E0E0',
                 //backgroundColor: bgColor,
+                backgroundColor: phaseOne,
               }}
             ></div>
 
