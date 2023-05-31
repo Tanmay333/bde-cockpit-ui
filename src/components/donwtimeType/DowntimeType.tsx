@@ -58,6 +58,27 @@ const DowntimeType: React.FC = () => {
       history.push('/');
     }
   }, []);
+
+  const startProduction = useCallback(() => {
+    const message = {
+      action: 'startProduction',
+      jobId: jobId,
+    };
+    sendMessage(message);
+
+    history.push('/');
+  }, [history]);
+
+  const startDowntime = useCallback(() => {
+    const message = {
+      action: 'toggleDowntime',
+      jobId: jobId,
+    };
+    sendMessage(message);
+
+    history.push('/');
+  }, [history]);
+
   return (
     <IonPage>
       <Header />
@@ -79,6 +100,9 @@ const DowntimeType: React.FC = () => {
               ))}
             </IonRow>
           </div>
+          <IonButton onClick={startProduction}>Production</IonButton>
+          <IonButton onClick={startDowntime}>DownTime</IonButton>
+
           <div className={styles.endBtn}>
             <IonButton className={styles.end} onClick={onEndProduction}>
               End Production

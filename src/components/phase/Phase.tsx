@@ -1,8 +1,10 @@
-import { IonGrid, IonRow, IonCol, IonModal } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonModal, IonButton } from '@ionic/react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './Phase.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
+import useWebSocket from '../../store/hooks/useWebSocket';
+import './Phase.module.scss';
 
 const Phase: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
@@ -128,10 +130,38 @@ const Phase: React.FC = () => {
     history.push('/');
   }, [phaseFive, history]);
 
+  const { sendMessage } = useWebSocket();
+
+  if (state === null) {
+    return null;
+  }
+  const jobId = state.assignedJobDetails.jobId;
+  const startProduction = useCallback(() => {
+    const message = {
+      action: 'startProduction',
+      jobId: jobId,
+    };
+    sendMessage(message);
+
+    history.push('/');
+  }, [history]);
+
+  const startDowntime = useCallback(() => {
+    const message = {
+      action: 'toggleDowntime',
+      jobId: jobId,
+    };
+    sendMessage(message);
+
+    history.push('/');
+  }, [history]);
+
   return (
     <IonGrid className={styles.container}>
       <IonCol>
         <IonGrid>
+          <IonButton onClick={startProduction}>Production</IonButton>
+          <IonButton onClick={startDowntime}>DownTime</IonButton>
           <IonRow>
             <div className={styles.idle}>{showPhase1 && <p>Phase 01</p>}</div>
             <div className={styles.idle}>{showPhase2 && <p>Phase 02</p>}</div>
