@@ -33,17 +33,14 @@ const Phase: React.FC = () => {
     setShowPhase2(true);
     setPhaseTwo('#2799D1');
     history.push('/SelectWorkers');
-  }, [phaseTwo, history]);
+  }, [history]);
 
   const onClickPhase3 = useCallback(() => {
-    // setShowPhase3(true);
-    // setShowPhase2(false);
-    // setPhaseThree('#2AD127');
     setDownType(false);
-  }, [phaseThree, history]);
+  }, [history]);
 
   const currentPhaseName = () => {
-    if (state === null) {
+    if (state === null || state === undefined) {
       return 'N/A';
     }
     if (state.process.currentPhaseDetails === null) {
@@ -52,90 +49,132 @@ const Phase: React.FC = () => {
     return state.process.currentPhaseDetails.phaseName;
   };
 
+  const phaseState = () => {
+    if (state === null || state === undefined) {
+      return 'N/A';
+    }
+    if (state.process.currentPhaseDetails === null) {
+      return 'N/A';
+    }
+    return state.process.currentPhaseDetails.state;
+  };
+
   useEffect(() => {
-    if (state === null) {
+    if (state === null || state === undefined) {
       return setPhaseThree('#E0E0E0');
     }
-    const hasMountingPhase = state.process.previousPhases.some(
-      (phase) => phase.phaseName === 'mounting',
-    );
+    const hasMountingPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'mounting',
+      );
 
     if (
-      state.process.currentPhaseDetails.phaseName === 'mounting' ||
-      hasMountingPhase
+      state.process &&
+      state.process.currentPhaseDetails &&
+      (state.process.currentPhaseDetails.phaseName === 'mounting' ||
+        hasMountingPhase)
     ) {
-      //setShowPhase1(false);
-      //setShowPhase2(true);
       setPhaseOne('#2799D1');
     }
-    const hasPreparationPhase = state.process.previousPhases.some(
-      (phase) => phase.phaseName === 'preparing',
-    );
+
+    const hasPreparationPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'preparing',
+      );
 
     if (
-      state.process.currentPhaseDetails.phaseName === 'preparing' ||
+      (state.process &&
+        state.process.currentPhaseDetails &&
+        state.process.currentPhaseDetails.phaseName === 'preparing') ||
       hasPreparationPhase
     ) {
       setShowPhase1(false);
       setShowPhase2(true);
       setPhaseTwo('#2799D1');
     }
-    const hasProductionPhase = state.process.previousPhases.some(
-      (phase) => phase.phaseName === 'production',
-    );
+    const hasProductionPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'production',
+      );
 
     if (
-      state.process.currentPhaseDetails.phaseName === 'production' ||
+      (state.process &&
+        state.process.currentPhaseDetails &&
+        state.process.currentPhaseDetails.phaseName === 'production') ||
       hasProductionPhase
     ) {
       setShowPhase3(true);
       setShowPhase2(false);
       setPhaseThree('#2AD127');
     }
-    const hasUnMountingPhase = state.process.previousPhases.some(
-      (phase) => phase.phaseName === 'unmounting',
-    );
+    const hasUnMountingPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'unmounting',
+      );
     if (
-      state.process.currentPhaseDetails.phaseName === 'unmounting' ||
+      (state.process &&
+        state.process.currentPhaseDetails &&
+        state.process.currentPhaseDetails.phaseName === 'unmounting') ||
       hasUnMountingPhase
     ) {
       setShowPhase3(false);
       setShowPhase4(true);
       setPhaseFour('#2799D1');
     }
-    const hasCleaningPhase = state.process.previousPhases.some(
-      (phase) => phase.phaseName === 'cleaning',
-    );
+    const hasCleaningPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'cleaning',
+      );
+
     if (
-      state.process.currentPhaseDetails.phaseName === 'cleaning' ||
+      (state.process &&
+        state.process.currentPhaseDetails &&
+        state.process.currentPhaseDetails.phaseName === 'cleaning') ||
       hasCleaningPhase
     ) {
       setShowPhase5(true);
       setShowPhase4(false);
       setPhaseFive('#2799D1');
     }
-  }, [currentPhaseName, history]);
+    if (
+      state.process &&
+      state.process.currentPhaseDetails &&
+      state.process.currentPhaseDetails.state === 'FINISHED'
+    ) {
+      setPhaseOne('#E0E0E0');
+      setPhaseTwo('#E0E0E0');
+      setPhaseThree('#E0E0E0');
+      setPhaseFour('#E0E0E0');
+      setPhaseFive('#E0E0E0');
+    }
+  }, [currentPhaseName, history, phaseState]);
 
   const onClickPhase4 = useCallback(() => {
-    // setShowPhase3(false);
-    // setShowPhase4(true);
-    // setPhaseFour('#2799D1');
     history.push('/');
-  }, [phaseFour, history]);
+  }, [history]);
 
   const onClickPhase5 = useCallback(() => {
-    // setShowPhase5(true);
-    // setShowPhase4(false);
-    // setPhaseFive('#2799D1');
     history.push('/');
-  }, [phaseFive, history]);
+  }, [history]);
 
   const { sendMessage } = useWebSocket();
 
-  if (state === null) {
+  if (state === null || state === undefined) {
     return null;
   }
-  const jobId = state.assignedJobDetails.jobId;
+
+  const jobId = state.assignedJobDetails?.jobId;
+
   const startProduction = useCallback(() => {
     const message = {
       action: 'startProduction',
@@ -184,10 +223,7 @@ const Phase: React.FC = () => {
             <div
               className={styles.boxidle}
               id="phase-one"
-              //onClick={onClick}
               style={{
-                //backgroundColor: '#E0E0E0',
-                //backgroundColor: bgColor,
                 backgroundColor: phaseOne,
               }}
             ></div>
@@ -205,7 +241,6 @@ const Phase: React.FC = () => {
               className={styles.boxworking}
               style={{
                 backgroundColor: phaseThree,
-                // transition: 'all 20s ease',
               }}
               onClick={onClickPhase3}
             ></div>

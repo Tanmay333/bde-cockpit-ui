@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import {
   IonCardContent,
@@ -12,14 +12,35 @@ import { useAppSelector } from '../../store/utils/hooks';
 import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
 import styles from './OrderDetails.module.scss';
 
+interface AssignedJobDetails {
+  orderId: string | null;
+  quantity: number | null;
+  productionTeamSize: number | null;
+}
+
+interface CurrentPhaseDetails {
+  phaseName: string | null;
+}
+
+interface MachineDetailsState {
+  assignedJobDetails: AssignedJobDetails;
+  process: {
+    currentPhaseDetails: CurrentPhaseDetails;
+  };
+}
+
 const OrderDetails: React.FC = () => {
-  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  const state = useAppSelector<MachineDetailsState | null>(
+    (state) => state.machineDetailsSlice.data,
+  );
   const [barcodeState, setBarcodeState] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
+
   const onClick = useCallback(() => {
     setBarcodeState(true);
-  }, [barcodeState]);
+  }, []);
+
   const onBarcodeScanComplete = useCallback(() => {
     history.push('/confirmorderdetails');
     setBarcodeState(false);
@@ -30,7 +51,7 @@ const OrderDetails: React.FC = () => {
     if (state == null || state.assignedJobDetails.productionTeamSize === null) {
       return null;
     }
-    for (let i = 0; i - 1 < state.assignedJobDetails.productionTeamSize; i++) {
+    for (let i = 0; i < state.assignedJobDetails.productionTeamSize; i++) {
       icons.push(
         <IonRow
           key={i}
@@ -45,24 +66,29 @@ const OrderDetails: React.FC = () => {
         </IonRow>,
       );
     }
-
     return icons;
   };
 
   const data = {
-    orderId: state === null ? '--:--' : state.assignedJobDetails.orderId,
-    quantity: state === null ? '--:--' : state.assignedJobDetails.quantity,
+    orderId: state?.assignedJobDetails?.orderId ?? '--:--',
+    quantity: state?.assignedJobDetails?.quantity ?? '--:--',
   };
 
   const isPhasePreparing = () => {
-    if (state === null) {
+    if (
+      state == null ||
+      state.process == null ||
+      state.process.currentPhaseDetails == null
+    ) {
       return false;
     } else if (state.process.currentPhaseDetails.phaseName !== 'mounting') {
       return true;
     }
+    return false;
   };
+
   return (
-    <CardContainer title="Order details" position={'start'}>
+    <CardContainer title="Order details" position="start">
       <IonCardContent>
         <div className={styles.order}>
           <p>Order number: {data.orderId} </p>
@@ -78,16 +104,12 @@ const OrderDetails: React.FC = () => {
               color: '#333333',
             }}
           >
-            Members:{renderSelectedIcons()}
+            Members: {renderSelectedIcons()}
           </IonRow>
         )}
       </IonCardContent>
 
-      <IonGrid
-        style={{
-          textAlign: 'center',
-        }}
-      >
+      <IonGrid style={{ textAlign: 'center' }}>
         <div className={styles.BtnContainer}>
           <IonButton
             type="submit"
@@ -116,7 +138,6 @@ const OrderDetails: React.FC = () => {
             fill="solid"
             style={{
               width: '210px',
-
               height: '50px',
             }}
           >

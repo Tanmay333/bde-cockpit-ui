@@ -3,35 +3,64 @@ import { IonCardContent, IonGrid, IonButton } from '@ionic/react';
 import styles from './PhaseDetails.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
+import { useMemo } from 'react';
 
 const PhaseDetails: React.FC = () => {
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
   const startData = () => {
-    if (state === null) {
+    if (
+      state === null ||
+      !state.process ||
+      !state.process.currentPhaseDetails
+    ) {
       return '--:--';
     }
-    const startTime = new Date(state.process.currentPhaseDetails.startTime);
+    const startTime =
+      state.process.currentPhaseDetails.startTime === null
+        ? new Date()
+        : new Date(state.process.currentPhaseDetails.startTime);
     const hours = startTime.getHours().toString().padStart(2, '0');
     const minutes = startTime.getMinutes().toString().padStart(2, '0');
     const formattedTime = `${hours}:${minutes}`;
     return formattedTime;
   };
+
   const endData = () => {
-    if (state === null) {
+    if (
+      state === null ||
+      !state.process ||
+      !state.process.currentPhaseDetails
+    ) {
       return '--:--';
     }
-    const endTime = new Date(state.process.currentPhaseDetails.endTime);
+    const endTime =
+      state.process.currentPhaseDetails.endTime === null
+        ? new Date()
+        : new Date(state.process.currentPhaseDetails.endTime);
     const hours = endTime.getHours().toString().padStart(2, '0');
     const minutes = endTime.getMinutes().toString().padStart(2, '0');
     const formattedTime = `${hours}:${minutes}`;
     return formattedTime;
   };
 
-  const jobId = state === null ? null : state.assignedJobDetails.jobId;
+  const jobId = useMemo(() => {
+    if (
+      state === null ||
+      !state.assignedJobDetails ||
+      state.assignedJobDetails.jobId === null
+    ) {
+      return null;
+    } else {
+      return state.assignedJobDetails.jobId;
+    }
+  }, [state]);
 
   const onEndUnmounting = () => {
+    if (jobId === null) {
+      return;
+    }
     const message = {
       action: 'setEndOfUnmounting',
       jobId: jobId,
@@ -40,6 +69,9 @@ const PhaseDetails: React.FC = () => {
   };
 
   const onEndCleaning = () => {
+    if (jobId === null) {
+      return;
+    }
     const message = {
       action: 'setEndOfCleaning',
       jobId: jobId,
@@ -48,9 +80,10 @@ const PhaseDetails: React.FC = () => {
   };
 
   const isPhaseUnmounting =
-    state?.process.currentPhaseDetails.phaseName === 'unmounting';
+    state?.process?.currentPhaseDetails?.phaseName === 'unmounting';
+
   const isPhasecleaning =
-    state?.process.currentPhaseDetails.phaseName === 'cleaning';
+    state?.process?.currentPhaseDetails?.phaseName === 'cleaning';
 
   return (
     <>
@@ -58,7 +91,7 @@ const PhaseDetails: React.FC = () => {
         <IonCardContent>
           <div className={styles.bowl}>
             <p>Start time: {startData()}</p>
-            <p>End time: --:--</p>
+            <p>End time: {endData()}</p>
           </div>
         </IonCardContent>
 
@@ -70,7 +103,6 @@ const PhaseDetails: React.FC = () => {
           <div className={styles.BtnHolder}>
             {isPhaseUnmounting && (
               <IonButton
-                //href="/"
                 onClick={onEndUnmounting}
                 type="submit"
                 fill="solid"

@@ -1,10 +1,10 @@
+import React, { useCallback, useMemo } from 'react';
 import { IonButton, IonContent, IonPage, IonRow } from '@ionic/react';
-import React, { useCallback } from 'react';
+import { useHistory } from 'react-router';
+import useWebSocket from '../../store/hooks/useWebSocket';
 import styles from './DowntimeType.module.scss';
 import Header from '../common/header/Header';
-import { useHistory } from 'react-router';
 import { useAppSelector } from '../../store/utils/hooks';
-import useWebSocket from '../../store/hooks/useWebSocket';
 
 const DowntimeType: React.FC = () => {
   const Downtimereason = [
@@ -28,11 +28,12 @@ const DowntimeType: React.FC = () => {
   const history = useHistory();
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-  if (state === null) {
+
+  if (!state) {
     return null;
   }
-  const phaseState = state.process.currentPhaseDetails.state;
 
+  const phaseState = state.process.currentPhaseDetails.state;
   const jobId = state.assignedJobDetails.jobId;
   const onEndProduction = useCallback(() => {
     const message = {
@@ -41,43 +42,64 @@ const DowntimeType: React.FC = () => {
     };
     sendMessage(message);
     history.push('/');
-  }, [history]);
-  const onClick = useCallback((reason) => {
-    if (
-      phaseState === 'DOWNTIME' &&
-      state.process.currentPhaseDetails.downtimes !== null
-    ) {
+  }, [sendMessage, jobId, history]);
+
+  const onClick = useCallback(
+    (reason: string) => {
+      if (!state.process.currentPhaseDetails.downtimes) {
+        return null;
+      }
+
+      const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
+        (event) => event.reason === 'unknown',
+      );
+
+      if (phaseState === 'DOWNTIME' && unknownEvent) {
+        const { startTime } = unknownEvent;
+
+        const message = {
+          action: 'saveDowntimeReason',
+          downtimeStartTime: startTime,
+          jobId: jobId,
+          downtimeReason: reason,
+        };
+        sendMessage(message);
+        history.push('/');
+      }
+
+      // For testing purpose only
       const message = {
-        action: 'saveDowntimeReason',
-        downtimeStartTime:
-          state.process.currentPhaseDetails.downtimes[0].startTime,
+        action: 'toggleDowntime',
         jobId: jobId,
-        downtimeReason: reason,
       };
       sendMessage(message);
+
       history.push('/');
+    },
+    [state, phaseState, sendMessage, jobId, history],
+  );
+  const downTimesData = useMemo(() => {
+    if (!state.process.currentPhaseDetails.downtimes) {
+      return null;
     }
+
+    const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
+      (event) => event.reason === 'unknown',
+    );
+    if (unknownEvent === undefined || unknownEvent.startTime === null) {
+      return null;
+    }
+    const dateObj = new Date(unknownEvent.startTime);
+
+    // Get the hours, minutes, and seconds from the Date object
+    const hours = dateObj.getHours();
+    const minutes = dateObj.getMinutes();
+    const seconds = dateObj.getSeconds();
+
+    // Format the time as a string
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    return formattedTime;
   }, []);
-
-  const startProduction = useCallback(() => {
-    const message = {
-      action: 'startProduction',
-      jobId: jobId,
-    };
-    sendMessage(message);
-
-    history.push('/');
-  }, [history]);
-
-  const startDowntime = useCallback(() => {
-    const message = {
-      action: 'toggleDowntime',
-      jobId: jobId,
-    };
-    sendMessage(message);
-
-    history.push('/');
-  }, [history]);
 
   return (
     <IonPage>
@@ -85,7 +107,7 @@ const DowntimeType: React.FC = () => {
       <IonContent>
         <div className={styles.statement}>
           <div className={styles.title}>
-            <p>Downtime</p>
+            <p>Downtime at {downTimesData}</p>
           </div>
           <div>
             <IonRow className={styles.classes}>
@@ -100,9 +122,6 @@ const DowntimeType: React.FC = () => {
               ))}
             </IonRow>
           </div>
-          <IonButton onClick={startProduction}>Production</IonButton>
-          <IonButton onClick={startDowntime}>DownTime</IonButton>
-
           <div className={styles.endBtn}>
             <IonButton className={styles.end} onClick={onEndProduction}>
               End Production

@@ -2,7 +2,36 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { FetchingStatus } from '../../types/common';
 
 export const MACHINE_DETAILS_KEY = 'machineDetailsSlice';
-
+const initialData: MachineDetails = {
+  stationId: null,
+  assignedJobDetails: {
+    jobId: null,
+    orderId: null,
+    customer: null,
+    itemId: null,
+    quantity: null,
+    description: null,
+    productionTeamSize: null,
+  },
+  process: {
+    currentPhaseDetails: {
+      phaseName: null,
+      startTime: null,
+      endTime: null,
+      downtimes: [],
+      state: null,
+    },
+    previousPhases: [],
+    producedItems: [
+      {
+        startTime: null,
+        endTime: null,
+        quantity: null,
+        result: null,
+      },
+    ],
+  },
+};
 interface AssignedOrderDetails {
   jobId: string | null;
   orderId: string | null;
@@ -19,10 +48,10 @@ interface Downtimes {
 }
 interface CurrentPhaseDetails {
   phaseName: string | null;
-  startTime: string;
-  endTime: string;
-  downtimes: Downtimes[] | null;
-  state: string;
+  startTime: string | null;
+  endTime: string | null;
+  downtimes: Downtimes[];
+  state: string | null;
 }
 interface PreviousPhases {
   phaseName: string | null;
@@ -42,9 +71,8 @@ interface Process {
   producedItems: ProducedItems[] | null;
 }
 export interface MachineDetails {
-  stationId: string;
+  stationId: string | null;
   assignedJobDetails: AssignedOrderDetails;
-  assignOrderQuantity: AssignedOrderDetails;
   process: Process;
 }
 
@@ -57,7 +85,7 @@ export interface MachineDetailsState {
 const initialState: MachineDetailsState = {
   status: FetchingStatus.IDLE,
   error: null,
-  data: null,
+  data: initialData,
 };
 
 const machineDetailsSlice = createSlice({
