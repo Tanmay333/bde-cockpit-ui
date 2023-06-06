@@ -149,7 +149,7 @@ const Phase: React.FC = () => {
     if (
       state.process &&
       state.process.currentPhaseDetails &&
-      state.process.currentPhaseDetails.state === 'FINISHED'
+      state.process.currentPhaseDetails.state === null
     ) {
       setPhaseOne('#E0E0E0');
       setPhaseTwo('#E0E0E0');
