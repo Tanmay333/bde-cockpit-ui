@@ -11,26 +11,10 @@ import { useHistory } from 'react-router-dom';
 import { useAppSelector } from '../../store/utils/hooks';
 import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
 import styles from './OrderDetails.module.scss';
-
-interface AssignedJobDetails {
-  orderId: string | null;
-  quantity: number | null;
-  productionTeamSize: number | null;
-}
-
-interface CurrentPhaseDetails {
-  phaseName: string | null;
-}
-
-interface MachineDetailsState {
-  assignedJobDetails: AssignedJobDetails;
-  process: {
-    currentPhaseDetails: CurrentPhaseDetails;
-  };
-}
+import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 
 const OrderDetails: React.FC = () => {
-  const state = useAppSelector<MachineDetailsState | null>(
+  const state = useAppSelector<MachineDetails | null>(
     (state) => state.machineDetailsSlice.data,
   );
   const [barcodeState, setBarcodeState] = useState(false);
@@ -78,7 +62,8 @@ const OrderDetails: React.FC = () => {
     if (
       state == null ||
       state.process == null ||
-      state.process.currentPhaseDetails == null
+      state.process.currentPhaseDetails == null ||
+      state.process.currentPhaseDetails.state === null
     ) {
       return false;
     } else if (state.process.currentPhaseDetails.phaseName !== 'mounting') {
