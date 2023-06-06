@@ -156,6 +156,11 @@ const Phase: React.FC = () => {
       setPhaseThree('#E0E0E0');
       setPhaseFour('#E0E0E0');
       setPhaseFive('#E0E0E0');
+      setShowPhase1(true);
+      setShowPhase2(false);
+      setShowPhase3(false);
+      setShowPhase4(false);
+      setShowPhase5(false);
     }
   }, [currentPhaseName, history, phaseState]);
 
