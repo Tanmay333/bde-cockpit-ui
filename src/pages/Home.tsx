@@ -28,7 +28,15 @@ const Home: React.FC = () => {
       );
 
       if (
-        state.process.currentPhaseDetails.state === 'DOWNTIME' ||
+        state.process.currentPhaseDetails.phaseName === 'production' &&
+        state.process.currentPhaseDetails.state === 'DOWNTIME' &&
+        unknownEvent
+      ) {
+        history.push('/downtimetype');
+      }
+      if (
+        state.process.currentPhaseDetails.phaseName === 'production' &&
+        state.process.currentPhaseDetails.state === 'RUNNING' &&
         unknownEvent
       ) {
         history.push('/downtimetype');

@@ -67,13 +67,6 @@ const DowntimeType: React.FC = () => {
         history.push('/');
       }
 
-      // For testing purpose only
-      const message = {
-        action: 'toggleDowntime',
-        jobId: jobId,
-      };
-      sendMessage(message);
-
       history.push('/');
     },
     [state, phaseState, sendMessage, jobId, history],
