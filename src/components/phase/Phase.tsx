@@ -162,7 +162,7 @@ const Phase: React.FC = () => {
       setShowPhase4(false);
       setShowPhase5(false);
     }
-  }, [currentPhaseName, history, phaseState]);
+  }, [currentPhaseName, phaseState, state]);
 
   const onClickPhase4 = useCallback(() => {
     history.push('/');
@@ -178,17 +178,17 @@ const Phase: React.FC = () => {
     return null;
   }
 
-  const jobId = state.assignedJobDetails?.jobId;
-
+  const jobId = state.assignedJobDetails.jobId;
   const startProduction = useCallback(() => {
+    if (jobId === null) {
+      return null;
+    }
     const message = {
       action: 'startProduction',
       jobId: jobId,
     };
     sendMessage(message);
-
-    history.push('/');
-  }, [history]);
+  }, [jobId]);
 
   const startDowntime = useCallback(() => {
     const message = {
