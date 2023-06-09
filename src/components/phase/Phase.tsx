@@ -5,6 +5,7 @@ import styles from './Phase.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import './Phase.module.scss';
+import ProgressBar from './ProgressBar';
 
 const Phase: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
@@ -61,7 +62,7 @@ const Phase: React.FC = () => {
 
   useEffect(() => {
     if (state === null || state === undefined) {
-      return setPhaseThree('#E0E0E0');
+      return setPhaseOne('#E0E0E0');
     }
     const hasMountingPhase =
       state.process &&
@@ -111,7 +112,7 @@ const Phase: React.FC = () => {
     ) {
       setShowPhase3(true);
       setShowPhase2(false);
-      setPhaseThree('#2AD127');
+      //setPhaseThree('#2AD127');
     }
     const hasUnMountingPhase =
       state.process &&
@@ -153,7 +154,7 @@ const Phase: React.FC = () => {
     ) {
       setPhaseOne('#E0E0E0');
       setPhaseTwo('#E0E0E0');
-      setPhaseThree('#E0E0E0');
+      // setPhaseThree('#E0E0E0');
       setPhaseFour('#E0E0E0');
       setPhaseFive('#E0E0E0');
       setShowPhase1(true);
@@ -241,14 +242,14 @@ const Phase: React.FC = () => {
                 backgroundColor: phaseTwo,
               }}
             ></div>
-
-            <div
+            <ProgressBar />
+            {/* <div
               className={styles.boxworking}
               style={{
                 backgroundColor: phaseThree,
               }}
               onClick={onClickPhase3}
-            ></div>
+            ></div> */}
 
             <div
               className={styles.boxidle}
