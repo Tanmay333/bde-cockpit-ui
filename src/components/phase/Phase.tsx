@@ -1,5 +1,5 @@
-import { IonGrid, IonRow, IonCol, IonModal, IonButton } from '@ionic/react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './Phase.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
@@ -9,8 +9,6 @@ import ProgressBar from './ProgressBar';
 
 const Phase: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-  const [downTime, setDownType] = useState(false);
-  const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
 
   const [showPhase1, setShowPhase1] = useState(true);
@@ -21,23 +19,15 @@ const Phase: React.FC = () => {
 
   const [phaseOne, setPhaseOne] = useState('#E0E0E0');
   const [phaseTwo, setPhaseTwo] = useState('#E0E0E0');
-  const [phaseThree, setPhaseThree] = useState('#E0E0E0');
+
   const [phaseFour, setPhaseFour] = useState('#E0E0E0');
   const [phaseFive, setPhaseFive] = useState('#E0E0E0');
-
-  const onClickDowntime = useCallback(() => {
-    history.push('/downtimetype');
-  }, [history]);
 
   const onClickPhase2 = useCallback(() => {
     setShowPhase1(false);
     setShowPhase2(true);
     setPhaseTwo('#2799D1');
     history.push('/SelectWorkers');
-  }, [history]);
-
-  const onClickPhase3 = useCallback(() => {
-    setDownType(false);
   }, [history]);
 
   const currentPhaseName = () => {
@@ -112,7 +102,6 @@ const Phase: React.FC = () => {
     ) {
       setShowPhase3(true);
       setShowPhase2(false);
-      //setPhaseThree('#2AD127');
     }
     const hasUnMountingPhase =
       state.process &&
@@ -154,7 +143,6 @@ const Phase: React.FC = () => {
     ) {
       setPhaseOne('#E0E0E0');
       setPhaseTwo('#E0E0E0');
-
       setPhaseFour('#E0E0E0');
       setPhaseFive('#E0E0E0');
       setShowPhase1(true);
@@ -212,15 +200,6 @@ const Phase: React.FC = () => {
             <div className={styles.idle}>{showPhase2 && <p>Phase 02</p>}</div>
             <div className={styles.working}>
               {showPhase3 && <p>Phase 03</p>}
-              <button onClick={onClickDowntime}>Downtime</button>
-              <IonModal
-                style={{
-                  '--width': '100%',
-                  '--height': '100%',
-                }}
-                ref={modal}
-                isOpen={downTime}
-              ></IonModal>
             </div>
             <div className={styles.idle}>{showPhase4 && <p>Phase 04</p>}</div>
             <div className={styles.idle}>{showPhase5 && <p> Phase 05</p>}</div>
@@ -243,7 +222,6 @@ const Phase: React.FC = () => {
               }}
             ></div>
             <ProgressBar />
-
             <div
               className={styles.boxidle}
               onClick={onClickPhase4}
