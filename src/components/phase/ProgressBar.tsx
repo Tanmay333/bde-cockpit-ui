@@ -3,13 +3,29 @@ import { useAppSelector } from '../../store/utils/hooks';
 import styles from './Phase.module.scss';
 
 const ProgressBar: React.FC = () => {
-  const [phaseThree, setPhaseThree] = useState('#E0E0E0');
   const [progressProduction, setProgressProduction] = useState(0);
   const [progressDowntime, setProgressDowntime] = useState(0);
   const [mode, setMode] = useState('production');
   const [items, setItems] = useState<
     { index: number; value: string; progress: number }[]
-  >([]);
+  >(() => {
+    const savedItems = localStorage.getItem('progressItems');
+    return savedItems ? JSON.parse(savedItems) : [];
+  });
+  useEffect(() => {
+    // Save the items to localStorage
+    localStorage.setItem('progressItems', JSON.stringify(items));
+  }, [items]);
+
+  useEffect(() => {
+    const savedItems = localStorage.getItem('progressItems');
+    if (savedItems) {
+      setItems(JSON.parse(savedItems));
+    }
+  }, [items]);
+  const savedItems = localStorage.getItem('progressItems');
+  const parsedItems = savedItems ? JSON.parse(savedItems) : [];
+
   const [index, setIndex] = useState(1);
 
   const progressRef = useRef<HTMLDivElement | null>(null);
@@ -124,7 +140,6 @@ const ProgressBar: React.FC = () => {
           (state.process &&
             state.process.currentPhaseDetails &&
             state.process.currentPhaseDetails.phaseName !== 'production')
-          //state.process.currentPhaseDetails.state !== 'DOWNTIME'
         ) {
           if (timerRefDowntime.current) {
             clearInterval(timerRefDowntime.current);
@@ -148,25 +163,31 @@ const ProgressBar: React.FC = () => {
       ref={progressRef}
       className={styles.boxworking}
       style={{
-        backgroundColor: phaseThree,
+        backgroundColor: '#E0E0E0',
         position: 'relative',
         display: 'flex',
       }}
     >
-      {items.map((data) => (
-        <div
-          className={styles.progressBar}
-          key={data.index}
-          style={{
-            width: data.progress / 20 + '%',
-            height: '100%',
-            backgroundColor: data.value,
-            transition: 'width 0.2s',
-            position: 'relative',
-            display: 'flex',
-          }}
-        ></div>
-      ))}
+      {parsedItems.map(
+        (data: {
+          index: React.Key | null | undefined;
+          progress: number;
+          value: string;
+        }) => (
+          <div
+            className={styles.progressBar}
+            key={data.index}
+            style={{
+              width: data.progress / 20 + '%',
+              height: '100%',
+              backgroundColor: data.value,
+              transition: 'width 0.2s',
+              position: 'relative',
+              display: 'flex',
+            }}
+          ></div>
+        ),
+      )}
     </div>
   );
 };
