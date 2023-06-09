@@ -4,7 +4,7 @@ import { IonCardContent, IonGrid, IonButton } from '@ionic/react';
 import styles from './PhaseDetails.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
-import { Key, useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 import bulletPoint2 from '../../static/assets/images/BulletPoint2.svg';
 import bulletpoint from '../../static/assets/images/bulletpoint.svg';
 import { formatTime } from '../../store/utils/formatTime';
@@ -27,8 +27,7 @@ const PhaseDetails: React.FC = () => {
         : new Date(state.process.currentPhaseDetails.startTime);
     const hours = startTime.getHours().toString().padStart(2, '0');
     const minutes = startTime.getMinutes().toString().padStart(2, '0');
-    const seconds = startTime.getSeconds().toString().padStart(2, '0');
-    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    const formattedTime = `${hours}:${minutes}`;
     return formattedTime;
   };
 
@@ -46,8 +45,7 @@ const PhaseDetails: React.FC = () => {
         : new Date(state.process.currentPhaseDetails.endTime);
     const hours = endTime.getHours().toString().padStart(2, '0');
     const minutes = endTime.getMinutes().toString().padStart(2, '0');
-    const seconds = endTime.getSeconds().toString().padStart(2, '0');
-    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    const formattedTime = `${hours}:${minutes}`;
     return formattedTime;
   };
 
@@ -67,18 +65,18 @@ const PhaseDetails: React.FC = () => {
       const resumeTime = formatTime(item.endTime);
 
       renderedList.push(
-        <>
-          <div key={index} className={styles.reason}>
+        <Fragment key={index}>
+          <div className={styles.reason}>
             <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
-            <p key={index}>
+            <p>
               Pause at: {pauseTime} : {item.reason}
             </p>
           </div>
-          <div key={index} className={styles.reason}>
+          <div className={styles.reason}>
             <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
-            <p key={index}>Resume at: {resumeTime}</p>
+            <p>Resume at: {resumeTime}</p>
           </div>
-        </>,
+        </Fragment>,
       );
     });
 
@@ -217,7 +215,7 @@ const PhaseDetails: React.FC = () => {
           {state &&
           state.process.currentPhaseDetails.phaseName === 'production' ? (
             <>
-              <div className={styles.reason}>
+              <div className={styles.reason} key={'stTime'}>
                 <img
                   src={bulletpoint}
                   alt={'bullet'}
@@ -229,7 +227,7 @@ const PhaseDetails: React.FC = () => {
                 </p>
               </div>
               {downtimeReasonsList()}
-              <div className={styles.reason}>
+              <div className={styles.reason} key={'endTime'}>
                 <img
                   src={bulletpoint}
                   alt={'bullet'}
@@ -250,7 +248,7 @@ const PhaseDetails: React.FC = () => {
                   label: any;
                   value: any;
                 },
-                index: Key | null | undefined,
+                index,
               ) => (
                 <div key={index} className={styles.reason}>
                   <img

@@ -94,7 +94,11 @@ const machineDetailsSlice = createSlice({
   reducers: {
     updateMachineDetails: (state, action: PayloadAction<MachineDetails>) => {
       state.status = FetchingStatus.SUCCESS;
-      if (action.payload.process.currentPhaseDetails.state === 'FINISHED') {
+      if (
+        action.payload &&
+        action.payload.process &&
+        action.payload.process.currentPhaseDetails.state === 'FINISHED'
+      ) {
         state.data = initialData;
       } else {
         state.data = action.payload;

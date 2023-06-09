@@ -154,7 +154,7 @@ const Phase: React.FC = () => {
     ) {
       setPhaseOne('#E0E0E0');
       setPhaseTwo('#E0E0E0');
-      // setPhaseThree('#E0E0E0');
+
       setPhaseFour('#E0E0E0');
       setPhaseFive('#E0E0E0');
       setShowPhase1(true);
@@ -179,7 +179,7 @@ const Phase: React.FC = () => {
     return null;
   }
 
-  const jobId = state.assignedJobDetails.jobId;
+  const jobId = state && state.assignedJobDetails.jobId;
   const startProduction = useCallback(() => {
     if (jobId === null) {
       return null;
@@ -199,7 +199,7 @@ const Phase: React.FC = () => {
     sendMessage(message);
 
     history.push('/');
-  }, [history]);
+  }, [jobId]);
 
   return (
     <IonGrid className={styles.container}>
@@ -243,13 +243,6 @@ const Phase: React.FC = () => {
               }}
             ></div>
             <ProgressBar />
-            {/* <div
-              className={styles.boxworking}
-              style={{
-                backgroundColor: phaseThree,
-              }}
-              onClick={onClickPhase3}
-            ></div> */}
 
             <div
               className={styles.boxidle}

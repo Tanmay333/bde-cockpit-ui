@@ -12,7 +12,6 @@ const ProgressBar: React.FC = () => {
   >([]);
   const [index, setIndex] = useState(1);
 
-  console.log(items, 'ic');
   const progressRef = useRef<HTMLDivElement | null>(null);
   const timerRefProduction = useRef<number | null>(null);
   const timerRefDowntime = useRef<number | null>(null);
@@ -88,9 +87,6 @@ const ProgressBar: React.FC = () => {
         const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
           (event) => event.reason === 'unknown',
         );
-        const knownEvent = state.process.currentPhaseDetails.downtimes.find(
-          (event) => event.reason !== 'unknown',
-        );
 
         if (
           state.process &&
@@ -98,8 +94,6 @@ const ProgressBar: React.FC = () => {
           state.process.currentPhaseDetails.phaseName === 'production' &&
           state.process.currentPhaseDetails.state === 'DOWNTIME' &&
           unknownEvent
-          //&&
-          //knownEvent
         ) {
           {
             if (mode === 'production') {
@@ -111,7 +105,6 @@ const ProgressBar: React.FC = () => {
             setProgressDowntime(0); // Reset progressB to 0
             timerRefDowntime.current = window.setInterval(() => {
               setProgressDowntime((prevProgress) => {
-                console.log(prevProgress);
                 const newProgress = prevProgress + 1;
                 newItem.progress = newProgress;
                 setItems((prevItems) =>
@@ -146,7 +139,7 @@ const ProgressBar: React.FC = () => {
       state.process.currentPhaseDetails &&
       state.process.currentPhaseDetails.state === null
     ) {
-      setPhaseThree('#E0E0E0');
+      setItems([]);
     }
   }, [state]);
 
@@ -162,9 +155,10 @@ const ProgressBar: React.FC = () => {
     >
       {items.map((data) => (
         <div
+          className={styles.progressBar}
           key={data.index}
           style={{
-            width: data.progress + '%',
+            width: data.progress / 20 + '%',
             height: '100%',
             backgroundColor: data.value,
             transition: 'width 0.2s',
