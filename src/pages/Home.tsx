@@ -9,6 +9,7 @@ import Phase from '../components/phase/Phase';
 import PhaseDetails from '../components/phaseDetails/PhaseDetails';
 import SplashScreen from '../components/splashScreen/SplashScreen';
 import styles from './Home.module.scss';
+import Buttons from '../components/common/buttons/Buttons';
 
 const Home: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
@@ -67,6 +68,7 @@ const Home: React.FC = () => {
           <WorkDetails />
           <PhaseDetails />
         </div>
+        <Buttons />
       </IonContent>
     </IonPage>
   );

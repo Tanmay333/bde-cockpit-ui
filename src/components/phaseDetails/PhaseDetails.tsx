@@ -3,14 +3,12 @@ import CardContainer from '../common/cardContainer/CardContainer';
 import { IonCardContent, IonGrid, IonButton } from '@ionic/react';
 import styles from './PhaseDetails.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
-import useWebSocket from '../../store/hooks/useWebSocket';
-import { Fragment, useMemo } from 'react';
+import { Fragment } from 'react';
 import bulletPoint2 from '../../static/assets/images/BulletPoint2.svg';
 import bulletpoint from '../../static/assets/images/bulletpoint.svg';
 import { formatTime } from '../../store/utils/formatTime';
 
 const PhaseDetails: React.FC = () => {
-  const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
   const startTime = () => {
@@ -104,46 +102,6 @@ const PhaseDetails: React.FC = () => {
 
     return formattedDowntimes;
   };
-
-  const jobId = useMemo(() => {
-    if (
-      state === null ||
-      !state.assignedJobDetails ||
-      state.assignedJobDetails.jobId === null
-    ) {
-      return null;
-    } else {
-      return state.assignedJobDetails.jobId;
-    }
-  }, [state]);
-
-  const onEndUnmounting = () => {
-    if (jobId === null) {
-      return;
-    }
-    const message = {
-      action: 'setEndOfUnmounting',
-      jobId: jobId,
-    };
-    sendMessage(message);
-  };
-
-  const onEndCleaning = () => {
-    if (jobId === null) {
-      return;
-    }
-    const message = {
-      action: 'setEndOfCleaning',
-      jobId: jobId,
-    };
-    sendMessage(message);
-  };
-
-  const isPhaseUnmounting =
-    state?.process?.currentPhaseDetails?.phaseName === 'unmounting';
-
-  const isPhasecleaning =
-    state?.process?.currentPhaseDetails?.phaseName === 'cleaning';
 
   const phaseDescription = () => {
     if (state === null) {
@@ -263,43 +221,6 @@ const PhaseDetails: React.FC = () => {
             )
           )}
         </IonCardContent>
-
-        <IonGrid
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          <div className={styles.BtnHolder}>
-            {isPhaseUnmounting && (
-              <IonButton
-                onClick={onEndUnmounting}
-                type="submit"
-                fill="solid"
-                style={{
-                  width: '210px',
-                  height: '50px',
-                }}
-                color={'danger'}
-              >
-                End UnMounting
-              </IonButton>
-            )}
-            {isPhasecleaning && (
-              <IonButton
-                onClick={onEndCleaning}
-                type="submit"
-                fill="solid"
-                style={{
-                  width: '210px',
-                  height: '50px',
-                }}
-                color={'danger'}
-              >
-                End Cleaning
-              </IonButton>
-            )}
-          </div>
-        </IonGrid>
       </CardContainer>
     </>
   );
