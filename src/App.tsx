@@ -34,6 +34,7 @@ import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDe
 import DowntimeType from './components/donwtimeType/DowntimeType';
 import useWebSocket from './store/hooks/useWebSocket';
 import { useEffect } from 'react';
+import EditOrderdetails from './components/confirmOrderDetails/EditOrderDetails';
 
 setupIonicReact();
 
@@ -71,6 +72,13 @@ const App: React.FC = () => {
           </Route>
           <Route exact path={urls.downtimetype}>
             <DowntimeType />
+          </Route>
+          <Route
+            exact
+            path={urls.editorderdetails}
+            component={EditOrderdetails}
+          >
+            <EditOrderdetails />
           </Route>
         </IonRouterOutlet>
       </IonPage>

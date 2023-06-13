@@ -4,6 +4,7 @@ const home = '/home';
 const orderdetails = '/orderdetails';
 const confirmorderdetails = '/confirmorderdetails';
 const downtimetype = '/downtimetype';
+const editorderdetails = '/editorderdetails';
 
 const urls = {
   root,
@@ -12,6 +13,7 @@ const urls = {
   orderdetails,
   confirmorderdetails,
   downtimetype,
+  editorderdetails,
 };
 
 export default urls;
