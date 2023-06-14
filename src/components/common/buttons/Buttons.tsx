@@ -65,7 +65,7 @@ const Buttons = () => {
   const history = useHistory();
 
   const StartPreparation = useCallback(() => {
-    history.push('/SelectWorkers');
+    history.push('/selectteamsize');
   }, [history]);
 
   return (

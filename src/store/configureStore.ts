@@ -6,8 +6,8 @@ import {
 } from './slices/machineDetailsSlice';
 import {
   SELECT_WORKERS,
-  selectWorkersReducer,
-} from './slices/SelectworkersSlice';
+  selectTeamSizeReducer,
+} from './slices/selectTeamSizeSlice';
 import {
   ORDER_QUANTITY,
   orderQuantityReducer,
@@ -16,7 +16,7 @@ import { ORDER_Number, orderNumberReducer } from './slices/orderNumber';
 const reducers = {
   [TEST_SLICE_KEY]: testDataReducer,
   [MACHINE_DETAILS_KEY]: machineDetailsReducer,
-  [SELECT_WORKERS]: selectWorkersReducer,
+  [SELECT_WORKERS]: selectTeamSizeReducer,
   [ORDER_QUANTITY]: orderQuantityReducer,
   [ORDER_Number]: orderNumberReducer,
 };

@@ -1,5 +1,5 @@
 const root = '/';
-const selectworkers = '/selectworkers';
+const selectteamsize = '/selectteamsize';
 const home = '/home';
 const orderdetails = '/orderdetails';
 const confirmorderdetails = '/confirmorderdetails';
@@ -10,7 +10,7 @@ const editteamsize = '/editteamsize';
 const urls = {
   root,
   default: home,
-  selectworkers,
+  selectteamsize,
   orderdetails,
   confirmorderdetails,
   downtimetype,

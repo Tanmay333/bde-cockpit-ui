@@ -8,7 +8,7 @@ import {
   IonRow,
 } from '@ionic/react';
 import lohnpack from '../../static/assets/lohnpack.svg';
-import SelectWorkersIcon from '../../static/assets/images/SelectTeamSizeIcon';
+import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
 import { useCallback, useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import styles from '../selectWorkers/SelectTeamSize.module.scss';
@@ -60,7 +60,7 @@ const EditTeamSize = () => {
   };
   const [selectedIndex, setSelectedIndex] = useState(+data.teamsize - 1);
 
-  const selectworkers = useCallback((index: number) => {
+  const selectteamsize = useCallback((index: number) => {
     setSelectedIndex(index);
     setTimeout(routeToHomePage, 1000);
     const message = {
@@ -119,10 +119,10 @@ const EditTeamSize = () => {
                     margin: '10px',
                   }}
                   key={data.id}
-                  onClick={() => selectworkers(index)}
+                  onClick={() => selectteamsize(index)}
                 >
                   <IonRow style={{ textAlign: 'center' }}>
-                    <SelectWorkersIcon
+                    <SelectTeamSizeIcon
                       isSelected={selectedIndex >= index ? true : false}
                     />
                   </IonRow>

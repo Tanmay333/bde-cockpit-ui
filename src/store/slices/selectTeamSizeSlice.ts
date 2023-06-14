@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FetchingStatus } from '../../types/common';
-import { fetchData } from '../../integration/workers';
+import { fetchData } from '../../integration/teamsize';
 
-export const SELECT_WORKERS = 'SelectworkersSlice';
+export const SELECT_WORKERS = 'SelectteamsizeSlice';
 
 export interface WorkersDetailsState {
   status: FetchingStatus;
@@ -23,7 +23,7 @@ export const getworkersDetails = createAsyncThunk<number | null, number>(
   },
 );
 
-const selectWorkersSlice = createSlice({
+const selectTeamSizeSlice = createSlice({
   name: SELECT_WORKERS,
   initialState,
   reducers: {},
@@ -47,6 +47,6 @@ const selectWorkersSlice = createSlice({
   },
 });
 
-const { reducer } = selectWorkersSlice;
+const { reducer } = selectTeamSizeSlice;
 
-export const selectWorkersReducer = reducer;
+export const selectTeamSizeReducer = reducer;

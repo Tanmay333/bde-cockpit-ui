@@ -9,7 +9,7 @@ import {
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { useAppSelector } from '../../store/utils/hooks';
-import SelectWorkersIcon from '../../static/assets/images/SelectTeamSizeIcon';
+import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
 import styles from './OrderDetails.module.scss';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 
@@ -54,7 +54,7 @@ const OrderDetails: React.FC = () => {
             margin: '4px',
           }}
         >
-          <SelectWorkersIcon isSelected />
+          <SelectTeamSizeIcon isSelected />
         </IonRow>,
       );
     }
