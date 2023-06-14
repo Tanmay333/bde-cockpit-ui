@@ -9,7 +9,7 @@ import {
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { useAppSelector } from '../../store/utils/hooks';
-import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
+import SelectWorkersIcon from '../../static/assets/images/SelectTeamSizeIcon';
 import styles from './OrderDetails.module.scss';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 
@@ -32,6 +32,10 @@ const OrderDetails: React.FC = () => {
 
   const editorderdetails = useCallback(() => {
     history.push('/editorderdetails');
+  }, [history]);
+
+  const editmemberdetails = useCallback(() => {
+    history.push('/editteamsize');
   }, [history]);
 
   const renderSelectedIcons = () => {
@@ -66,6 +70,11 @@ const OrderDetails: React.FC = () => {
     state?.process &&
     state.process.currentPhaseDetails &&
     state?.process.currentPhaseDetails.phaseName === 'mounting';
+
+  const isPhasePreparation =
+    state?.process &&
+    state.process.currentPhaseDetails &&
+    state?.process.currentPhaseDetails.phaseName === 'preparing';
 
   const data = {
     orderId: state?.assignedJobDetails?.orderId ?? '--:--',
@@ -138,7 +147,7 @@ const OrderDetails: React.FC = () => {
           </IonButton>
         </IonModal>
         <div className={styles.BtnContainer}>
-          {!isPhaseNull && (
+          {isPhaseMounting && (
             <IonButton
               onClick={editorderdetails}
               type="submit"
@@ -150,6 +159,22 @@ const OrderDetails: React.FC = () => {
               }}
             >
               Edit order details
+            </IonButton>
+          )}
+        </div>
+        <div className={styles.BtnContainer}>
+          {isPhasePreparation && (
+            <IonButton
+              onClick={editmemberdetails}
+              type="submit"
+              fill="solid"
+              style={{
+                width: '210px',
+                height: '50px',
+                borderRadius: '8px',
+              }}
+            >
+              Edit Member details
             </IonButton>
           )}
         </div>

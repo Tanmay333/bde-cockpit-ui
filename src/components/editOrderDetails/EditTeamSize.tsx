@@ -1,90 +1,138 @@
-import React, { useCallback, useState } from 'react';
-import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
-import { IonRow } from '@ionic/react';
-import { useAppSelector } from '../../store/utils/hooks';
-import { MachineDetails } from '../../store/slices/machineDetailsSlice';
+import {
+  IonCardContent,
+  IonContent,
+  IonGrid,
+  IonImg,
+  IonList,
+  IonPage,
+  IonRow,
+} from '@ionic/react';
+import lohnpack from '../../static/assets/lohnpack.svg';
+import SelectWorkersIcon from '../../static/assets/images/SelectTeamSizeIcon';
+import { useCallback, useEffect, useState } from 'react';
+import CardContainer from '../common/cardContainer/CardContainer';
+import styles from '../selectWorkers/SelectTeamSize.module.scss';
+import { useHistory } from 'react-router';
+import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
+import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
 
-const EditTeamSize: React.FC = () => {
-  const { sendMessage } = useWebSocket();
+const EditTeamSize = () => {
+  const Workers = [
+    {
+      id: 1,
+    },
+    {
+      id: 2,
+    },
+    {
+      id: 3,
+    },
+    {
+      id: 4,
+    },
+    {
+      id: 5,
+    },
+    {
+      id: 6,
+    },
+    {
+      id: 7,
+    },
+    {
+      id: 8,
+    },
+  ];
 
-  const state = useAppSelector<MachineDetails | null>(
-    (state) => state.machineDetailsSlice.data,
-  );
+  const history = useHistory();
+
+  const routeToHomePage = () => {
+    return history.push('/');
+  };
+
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  const dispatch = useAppDispatch();
+  const { sendMessage } = useWebSocket();
 
   const data = {
     teamsize: state?.assignedJobDetails.productionTeamSize ?? '--:--',
   };
+  const [selectedIndex, setSelectedIndex] = useState(+data.teamsize - 1);
 
-  const [counter, setCounter] = useState(+data.teamsize);
-  const maxIcons = 8;
-
-  // Function to increment the counter
-  const handleIncrement = useCallback(() => {
-    if (counter < maxIcons) {
-      setCounter((prevCounter) => prevCounter + 1);
-    }
+  const selectworkers = useCallback((index: number) => {
+    setSelectedIndex(index);
+    setTimeout(routeToHomePage, 1000);
     const message = {
       action: 'setTeamSize',
       jobId: state?.assignedJobDetails.jobId,
-      productionTeamSize: counter + 1,
+      productionTeamSize: index + 1,
     };
     sendMessage(message);
-  }, [counter]);
+  }, []);
 
-  // Function to decrement the counter
-  const handleDecrement = useCallback(() => {
-    if (counter > 0) {
-      setCounter((prevCounter) => prevCounter - 1);
-    }
-    const message = {
-      action: 'setTeamSize',
-      jobId: state?.assignedJobDetails.jobId,
-      productionTeamSize: counter - 1,
-    };
-    sendMessage(message);
-  }, [counter]);
-
-  // Generate the man icons based on the counter value
-  const generateManIcons = () => {
-    const icons = [];
-    if (state == null || state.assignedJobDetails.productionTeamSize === null) {
-      return null;
-    }
-    for (let i = 0; i < counter; i++) {
-      icons.push(
-        <IonRow
-          key={i}
-          style={{
-            position: 'relative',
-            textAlign: 'center',
-            width: '10px',
-            margin: '4px',
-          }}
-        >
-          <SelectWorkersIcon isSelected />
-        </IonRow>,
-      );
-    }
-    return icons;
-  };
+  useEffect(() => {
+    dispatch(getworkersDetails(selectedIndex));
+  }, [dispatch, selectedIndex]);
 
   return (
-    <>
-      <IonRow
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          alignItems: 'center',
-          color: '#333333',
-        }}
-      >
-        Members: {generateManIcons()}
-        <button onClick={handleDecrement}>-</button>
-        <button onClick={handleIncrement}>+</button>
-      </IonRow>
-    </>
+    <IonPage>
+      <IonContent>
+        <div className={styles.img}>
+          <IonImg src={lohnpack} />
+        </div>
+        <CardContainer
+          title={' Number of workers'}
+          position={'middle'}
+          style={{ paddingTop: '36px' }}
+        >
+          <IonGrid
+            style={{
+              fontSize: '16px',
+              fontWeight: '400',
+              textAlign: 'center',
+            }}
+          >
+            <IonList>
+              <IonCardContent>
+                <div className={styles.statement}>
+                  <p>How many of employees is working </p> on the order?
+                </div>
+              </IonCardContent>
+            </IonList>
+          </IonGrid>
+          <IonGrid>
+            <IonRow
+              style={{
+                padding: '20px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              {Workers.map((data, index) => (
+                <IonRow
+                  style={{
+                    position: 'relative',
+                    textAlign: 'center',
+                    height: '55px',
+                    width: '26px',
+                    margin: '10px',
+                  }}
+                  key={data.id}
+                  onClick={() => selectworkers(index)}
+                >
+                  <IonRow style={{ textAlign: 'center' }}>
+                    <SelectWorkersIcon
+                      isSelected={selectedIndex >= index ? true : false}
+                    />
+                  </IonRow>
+                </IonRow>
+              ))}
+            </IonRow>
+          </IonGrid>
+        </CardContainer>
+      </IonContent>
+    </IonPage>
   );
 };
 

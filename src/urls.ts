@@ -5,6 +5,7 @@ const orderdetails = '/orderdetails';
 const confirmorderdetails = '/confirmorderdetails';
 const downtimetype = '/downtimetype';
 const editorderdetails = '/editorderdetails';
+const editteamsize = '/editteamsize';
 
 const urls = {
   root,
@@ -14,6 +15,7 @@ const urls = {
   confirmorderdetails,
   downtimetype,
   editorderdetails,
+  editteamsize,
 };
 
 export default urls;
