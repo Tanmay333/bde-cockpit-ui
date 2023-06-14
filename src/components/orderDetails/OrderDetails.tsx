@@ -30,6 +30,10 @@ const OrderDetails: React.FC = () => {
     setBarcodeState(false);
   }, [history]);
 
+  const editorderdetails = useCallback(() => {
+    history.push('/editorderdetails');
+  }, [history]);
+
   const renderSelectedIcons = () => {
     const icons = [];
     if (state == null || state.assignedJobDetails.productionTeamSize === null) {
@@ -52,6 +56,16 @@ const OrderDetails: React.FC = () => {
     }
     return icons;
   };
+
+  const isPhaseNull =
+    state?.process &&
+    state.process.currentPhaseDetails &&
+    state?.process.currentPhaseDetails.phaseName === null;
+
+  const isPhaseMounting =
+    state?.process &&
+    state.process.currentPhaseDetails &&
+    state?.process.currentPhaseDetails.phaseName === 'mounting';
 
   const data = {
     orderId: state?.assignedJobDetails?.orderId ?? '--:--',
@@ -80,15 +94,7 @@ const OrderDetails: React.FC = () => {
           <p>Order quantity: {data.quantity}</p>
         </div>
         {isPhasePreparing() && (
-          <IonRow
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              color: '#333333',
-            }}
-          >
+          <IonRow className={styles.worker}>
             Members: {renderSelectedIcons()}
           </IonRow>
         )}
@@ -96,18 +102,20 @@ const OrderDetails: React.FC = () => {
 
       <IonGrid style={{ textAlign: 'center' }}>
         <div className={styles.BtnContainer}>
-          <IonButton
-            type="submit"
-            onClick={onClick}
-            fill="solid"
-            style={{
-              width: '210px',
-              height: '50px',
-              borderRadius: '8px',
-            }}
-          >
-            Scan bar-code
-          </IonButton>
+          {isPhaseNull && (
+            <IonButton
+              type="submit"
+              onClick={onClick}
+              fill="solid"
+              style={{
+                width: '210px',
+                height: '50px',
+                borderRadius: '8px',
+              }}
+            >
+              Scan bar-code
+            </IonButton>
+          )}
         </div>
         <IonModal
           style={{
@@ -129,6 +137,22 @@ const OrderDetails: React.FC = () => {
             Sample scanner
           </IonButton>
         </IonModal>
+        <div className={styles.BtnContainer}>
+          {!isPhaseNull && (
+            <IonButton
+              onClick={editorderdetails}
+              type="submit"
+              fill="solid"
+              style={{
+                width: '210px',
+                height: '50px',
+                borderRadius: '8px',
+              }}
+            >
+              Edit order details
+            </IonButton>
+          )}
+        </div>
       </IonGrid>
     </CardContainer>
   );

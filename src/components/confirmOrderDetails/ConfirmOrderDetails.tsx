@@ -5,9 +5,11 @@ import {
   IonText,
   IonHeader,
   IonImg,
+  IonModal,
+  IonGrid,
 } from '@ionic/react';
 import CardContainer from '../common/cardContainer/CardContainer';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import styles from './ConfirmOrderDetails.module.scss';
 import ConfirmOrderLogo from '../../static/assets/images/LohnpackLogo.svg';
@@ -19,6 +21,8 @@ const ConfirmOrderDetails = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const [enteredQuantity, setEnteredQuantity] = useState(Number);
+  const [barcodeState, setBarcodeState] = useState(false);
+  const modal = useRef<HTMLIonModalElement>(null);
 
   const onChangeQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
     const parsedNumber = parseFloat(event.target.value);
@@ -34,7 +38,6 @@ const ConfirmOrderDetails = () => {
   }, [dispatch, enteredQuantity]);
 
   const handleKeyPress = (event: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     target: any;
     key: string;
     preventDefault: () => void;
@@ -44,6 +47,15 @@ const ConfirmOrderDetails = () => {
       event.preventDefault();
     }
   };
+
+  const handleClick = useCallback(() => {
+    setBarcodeState(true);
+  }, []);
+
+  const onBarcodeScanComplete = useCallback(() => {
+    history.push('/confirmorderdetails');
+    setBarcodeState(false);
+  }, [history]);
 
   const { sendMessage } = useWebSocket();
 
@@ -87,9 +99,6 @@ const ConfirmOrderDetails = () => {
                 />
               </p>
             </IonText>
-            {/* {enteredQuantity !== undefined && (
-              <p>Entered quantity: {enteredQuantity}</p>
-            )} */}
 
             <IonButton
               onClick={onClick}
@@ -97,8 +106,44 @@ const ConfirmOrderDetails = () => {
               className={styles.btn}
               disabled={!enteredQuantity}
             >
-              Confirm Order Details
+              Confirm Details
             </IonButton>
+            <IonGrid style={{ textAlign: 'center' }}>
+              <div className={styles.BtnContainer}>
+                <IonButton
+                  type="submit"
+                  onClick={handleClick}
+                  fill="clear"
+                  style={{
+                    width: '210px',
+                    height: '50px',
+                    borderRadius: '8px',
+                  }}
+                >
+                  Scan again
+                </IonButton>
+              </div>
+              <IonModal
+                style={{
+                  '--border-radius': '0px',
+                  '--width': '100%',
+                  '--height': '100%',
+                }}
+                ref={modal}
+                isOpen={barcodeState}
+              >
+                <IonButton
+                  onClick={onBarcodeScanComplete}
+                  fill="solid"
+                  style={{
+                    width: '210px',
+                    height: '50px',
+                  }}
+                >
+                  Sample scanner
+                </IonButton>
+              </IonModal>
+            </IonGrid>
           </CardContainer>
         </div>
       </IonContent>

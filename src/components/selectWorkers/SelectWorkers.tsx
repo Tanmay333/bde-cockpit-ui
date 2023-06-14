@@ -9,7 +9,7 @@ import {
 } from '@ionic/react';
 import lohnpack from '../../static/assets/lohnpack.svg';
 import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import styles from './SelectWorkers.module.scss';
 import { useHistory } from 'react-router';
@@ -56,7 +56,7 @@ const SelectWorkers = () => {
   const dispatch = useAppDispatch();
   const { sendMessage } = useWebSocket();
 
-  const selectworkers = (index: number) => {
+  const selectworkers = useCallback((index: number) => {
     setSelectedIndex(index);
     setTimeout(routeToHomePage, 1000);
     const message = {
@@ -65,7 +65,7 @@ const SelectWorkers = () => {
       productionTeamSize: index + 1,
     };
     sendMessage(message);
-  };
+  }, []);
 
   useEffect(() => {
     dispatch(getworkersDetails(selectedIndex));
@@ -97,16 +97,7 @@ const SelectWorkers = () => {
               </IonCardContent>
             </IonList>
           </IonGrid>
-          <IonGrid
-            style={
-              {
-                //marginTop: "10%",
-                // textAlign: 'center',
-                // width: '100%',
-                //bottom: "10%",
-              }
-            }
-          >
+          <IonGrid>
             <IonRow
               style={{
                 padding: '20px',

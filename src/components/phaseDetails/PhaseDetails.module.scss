@@ -1,34 +1,36 @@
 .bowl {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    color: #333333;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #333333;
 }
 
 .bowl p {
-    padding: 10px 0px;
+  padding: 10px 0px;
 }
 
 .BtnHolder {
-    position: absolute;
-    width: 100%;
-    bottom: 25px;
+  position: absolute;
+  width: 100%;
+  bottom: 25px;
 }
 
 .reason {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    color: #333333;
-    display: flex;
-    align-items: center;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #333333;
+  display: flex;
+  align-items: center;
+}
 
+.reason p {
+  padding: 4px 0px;
 }
 
 .bullet {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 12px;
-
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
 }
