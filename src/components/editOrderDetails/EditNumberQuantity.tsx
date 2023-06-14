@@ -36,7 +36,7 @@ const EditOrderDetails: React.FC = () => {
   useEffect(() => {
     dispatch(getquantityDetails(orderQuantity));
     dispatch(getnumberDetails(orderNumber));
-  }, [dispatch, orderQuantity]);
+  }, [dispatch, orderQuantity, orderNumber]);
 
   const handleKeyPress = (event: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
