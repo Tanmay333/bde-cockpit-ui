@@ -1,42 +1,42 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FetchingStatus } from '../../types/common';
-import { fetchOrderQuantity } from '../../integration/orderQuantity';
+import { fetchOrderNumber } from '../../integration/orderNumber';
 
-export const ORDER_QUANTITY = 'OrderQuantitySlice';
+export const ORDER_Number = 'OrderNumberSlice';
 
-export interface QuantityDetailsState {
+export interface NUmberDetailsState {
   status: FetchingStatus;
   error: string | null;
   data: number | string | null;
 }
 
-const initialState: QuantityDetailsState = {
+const initialState: NUmberDetailsState = {
   status: FetchingStatus.IDLE,
   error: null,
   data: null,
 };
 
-export const getquantityDetails = createAsyncThunk<
+export const getnumberDetails = createAsyncThunk<
   number | string | null,
   number | string
->('getquantityDetails', (value: number | string | null) => {
-  return fetchOrderQuantity(value);
+>('getnumberDetails', (value: number | string | null) => {
+  return fetchOrderNumber(value);
 });
 
-const orderQuantitySlice = createSlice({
-  name: ORDER_QUANTITY,
+const orderNumberSlice = createSlice({
+  name: ORDER_Number,
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(getquantityDetails.pending, (state) => {
+      .addCase(getnumberDetails.pending, (state) => {
         state.status = FetchingStatus.PENDING;
       })
-      .addCase(getquantityDetails.fulfilled, (state, action) => {
+      .addCase(getnumberDetails.fulfilled, (state, action) => {
         state.status = FetchingStatus.SUCCESS;
         state.data = action.payload;
       })
-      .addCase(getquantityDetails.rejected, (state, action) => {
+      .addCase(getnumberDetails.rejected, (state, action) => {
         const requestCancelled = action.meta.aborted;
         if (requestCancelled) {
           return;
@@ -47,6 +47,6 @@ const orderQuantitySlice = createSlice({
   },
 });
 
-const { reducer } = orderQuantitySlice;
+const { reducer } = orderNumberSlice;
 
-export const orderQuantityReducer = reducer;
+export const orderNumberReducer = reducer;

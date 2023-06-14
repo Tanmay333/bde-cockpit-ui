@@ -12,12 +12,13 @@ import {
   ORDER_QUANTITY,
   orderQuantityReducer,
 } from './slices/orderQuantitySlice';
-
+import { ORDER_Number, orderNumberReducer } from './slices/orderNumber';
 const reducers = {
   [TEST_SLICE_KEY]: testDataReducer,
   [MACHINE_DETAILS_KEY]: machineDetailsReducer,
   [SELECT_WORKERS]: selectWorkersReducer,
   [ORDER_QUANTITY]: orderQuantityReducer,
+  [ORDER_Number]: orderNumberReducer,
 };
 
 export const store = configureStore({ reducer: reducers });
