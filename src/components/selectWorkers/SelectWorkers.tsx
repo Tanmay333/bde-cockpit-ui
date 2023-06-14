@@ -97,16 +97,7 @@ const SelectWorkers = () => {
               </IonCardContent>
             </IonList>
           </IonGrid>
-          <IonGrid
-            style={
-              {
-                //marginTop: "10%",
-                // textAlign: 'center',
-                // width: '100%',
-                //bottom: "10%",
-              }
-            }
-          >
+          <IonGrid>
             <IonRow
               style={{
                 padding: '20px',
