@@ -34,7 +34,7 @@ import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDe
 import DowntimeType from './components/donwtimeType/DowntimeType';
 import useWebSocket from './store/hooks/useWebSocket';
 import { useEffect } from 'react';
-import EditOrderdetails from './components/confirmOrderDetails/EditOrderDetails';
+import EditOrderdetails from './components/editOrderDetails/EditOrderDetails';
 
 setupIonicReact();
 
