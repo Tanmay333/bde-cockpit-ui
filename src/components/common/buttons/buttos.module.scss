@@ -1,9 +1,8 @@
 .endBtn {
   position: fixed;
-  right: 18px;
-  bottom: 24px;
-  padding: 4rem;
-  padding-left: rem;
+  bottom: 20px; /* Adjust the bottom margin as needed */
+  right: 50px; /* Adjust the right margin as needed */
+  z-index: 999;
 }
 
 .end {
