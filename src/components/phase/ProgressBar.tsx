@@ -27,7 +27,14 @@ const ProgressBar: React.FC = () => {
     localStorage.setItem('progressItems', JSON.stringify(items));
   }, [items]);
 
-  const [index, setIndex] = useState(1);
+  //const [index, setIndex] = useState(1);
+
+  const [index, setIndex] = useState(() => {
+    const savedItems = localStorage.getItem('progressItems');
+    const parsedItems = savedItems ? JSON.parse(savedItems) : [];
+    const lastItem = parsedItems[parsedItems.length - 1];
+    return lastItem ? lastItem.index + 1 : 1;
+  });
 
   const progressRef = useRef<HTMLDivElement | null>(null);
   const timerRefProduction = useRef<number | null>(null);
@@ -58,7 +65,7 @@ const ProgressBar: React.FC = () => {
       }
       const newItem = { index: index, value: '#2AD127', progress: 0 }; // Initialize progress to 0
       setItems((prevItems) => [...prevItems, newItem]);
-      setIndex((prevIndex) => prevIndex + 1);
+      setIndex((prevIndex: number) => prevIndex + 1);
       setProgressProduction(0); // Reset progress to 0
       timerRefProduction.current = window.setInterval(() => {
         setProgressProduction((prevProgress) => {
@@ -122,7 +129,7 @@ const ProgressBar: React.FC = () => {
             }
             const newItem = { index: index, value: '#E20031', progress: 0 };
             setItems((prevItems) => [...prevItems, newItem]);
-            setIndex((prevIndex) => prevIndex + 1);
+            setIndex((prevIndex: number) => prevIndex + 1);
             setProgressDowntime(0); // Reset progressB to 0
             timerRefDowntime.current = window.setInterval(() => {
               setProgressDowntime((prevProgress) => {
@@ -178,7 +185,7 @@ const ProgressBar: React.FC = () => {
           className={styles.progressBar}
           key={data.index}
           style={{
-            width: data.progress / 20 + '%',
+            width: data.progress + '%',
             height: '100%',
             backgroundColor: data.value,
             transition: 'width 0.2s',
