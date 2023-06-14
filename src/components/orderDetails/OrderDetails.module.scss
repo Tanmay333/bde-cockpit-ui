@@ -1,16 +1,26 @@
-.order{ 
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    color: #333333;
+.order {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #333333;
 }
 
-.order p{
-    padding: 8px 0px;
+.order p {
+  padding: 4px 0px;
 }
 
-.BtnContainer{
-    position: absolute;
-    width: 100%;
-    bottom: 25px
+.BtnContainer {
+  position: absolute;
+  width: 100%;
+  bottom: 25px;
+}
+
+.worker {
+  align-items: center;
+  color: #333333;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 4px 0px;
+  transform: translate(0, -18px);
 }

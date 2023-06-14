@@ -94,15 +94,7 @@ const OrderDetails: React.FC = () => {
           <p>Order quantity: {data.quantity}</p>
         </div>
         {isPhasePreparing() && (
-          <IonRow
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              color: '#333333',
-            }}
-          >
+          <IonRow className={styles.worker}>
             Members: {renderSelectedIcons()}
           </IonRow>
         )}
