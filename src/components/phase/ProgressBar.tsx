@@ -12,19 +12,20 @@ const ProgressBar: React.FC = () => {
     const savedItems = localStorage.getItem('progressItems');
     return savedItems ? JSON.parse(savedItems) : [];
   });
-  useEffect(() => {
-    // Save the items to localStorage
-    localStorage.setItem('progressItems', JSON.stringify(items));
-  }, [items]);
 
   useEffect(() => {
     const savedItems = localStorage.getItem('progressItems');
     if (savedItems) {
       setItems(JSON.parse(savedItems));
+    } else {
+      setItems([]);
     }
+  }, []);
+
+  useEffect(() => {
+    // Save the items to localStorage
+    localStorage.setItem('progressItems', JSON.stringify(items));
   }, [items]);
-  const savedItems = localStorage.getItem('progressItems');
-  const parsedItems = savedItems ? JSON.parse(savedItems) : [];
 
   const [index, setIndex] = useState(1);
 
@@ -41,6 +42,10 @@ const ProgressBar: React.FC = () => {
     if (state === null || state === undefined) {
       return setProgressDowntime(0);
     }
+
+    const savedItems = localStorage.getItem('progressItems');
+    const parsedItems = savedItems ? JSON.parse(savedItems) : [];
+    setItems(parsedItems);
 
     if (
       state.process &&
@@ -168,26 +173,20 @@ const ProgressBar: React.FC = () => {
         display: 'flex',
       }}
     >
-      {parsedItems.map(
-        (data: {
-          index: React.Key | null | undefined;
-          progress: number;
-          value: string;
-        }) => (
-          <div
-            className={styles.progressBar}
-            key={data.index}
-            style={{
-              width: data.progress / 20 + '%',
-              height: '100%',
-              backgroundColor: data.value,
-              transition: 'width 0.2s',
-              position: 'relative',
-              display: 'flex',
-            }}
-          ></div>
-        ),
-      )}
+      {items.map((data) => (
+        <div
+          className={styles.progressBar}
+          key={data.index}
+          style={{
+            width: data.progress / 20 + '%',
+            height: '100%',
+            backgroundColor: data.value,
+            transition: 'width 0.2s',
+            position: 'relative',
+            display: 'flex',
+          }}
+        ></div>
+      ))}
     </div>
   );
 };
