@@ -7,6 +7,7 @@ import {
   IonImg,
   IonModal,
   IonGrid,
+  IonIcon,
 } from '@ionic/react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -16,6 +17,9 @@ import ConfirmOrderLogo from '../../static/assets/images/LohnpackLogo.svg';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getquantityDetails } from '../../store/slices/orderQuantitySlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
+import { MachineDetails } from '../../store/slices/machineDetailsSlice';
+import { getnumberDetails } from '../../store/slices/orderNumber';
+import editIcon from '../../static/assets/images/edit.svg';
 
 const ConfirmOrderDetails = () => {
   const history = useHistory();
@@ -23,6 +27,23 @@ const ConfirmOrderDetails = () => {
   const [enteredQuantity, setEnteredQuantity] = useState(Number);
   const [barcodeState, setBarcodeState] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
+
+  const state = useAppSelector<MachineDetails | null>(
+    (state) => state.machineDetailsSlice.data,
+  );
+  const data = {
+    orderId: state?.assignedJobDetails?.orderId ?? '1869485',
+    quantity: state?.assignedJobDetails?.quantity ?? '--:--',
+  };
+
+  const [orderNumber, setOrderNumber] = useState(data.orderId);
+
+  const handleOrderNumberChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newOrderNumber = event.target.value;
+    setOrderNumber(newOrderNumber);
+  };
 
   const onChangeQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
     const parsedNumber = parseFloat(event.target.value);
@@ -33,9 +54,14 @@ const ConfirmOrderDetails = () => {
     (state) => state.OrderQuantitySlice.data,
   );
 
+  const ordernumbervalue = useAppSelector(
+    (state) => state.OrderNumberSlice.data,
+  );
+
   useEffect(() => {
     dispatch(getquantityDetails(enteredQuantity));
-  }, [dispatch, enteredQuantity]);
+    dispatch(getnumberDetails(orderNumber));
+  }, [dispatch, enteredQuantity, orderNumber]);
 
   const handleKeyPress = (event: {
     target: any;
@@ -46,6 +72,12 @@ const ConfirmOrderDetails = () => {
     if (invalidChars.includes(event.key) || event.target.value.length >= 20) {
       event.preventDefault();
     }
+  };
+
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const enterEditMode = () => {
+    setIsEditMode(true);
   };
 
   const handleClick = useCallback(() => {
@@ -62,7 +94,7 @@ const ConfirmOrderDetails = () => {
   const onClick = useCallback(() => {
     const message = {
       action: 'assignNewJob',
-      orderId: '1869485',
+      orderId: ordernumbervalue,
       stationId: '1.203.4.245',
       orderQuantity: orderquantityvalue,
     };
@@ -73,7 +105,17 @@ const ConfirmOrderDetails = () => {
       phaseone.style.backgroundColor = '#2799D1';
     }
     history.push('/');
-  }, [history, orderquantityvalue]);
+  }, [history, orderquantityvalue, ordernumbervalue]);
+
+  const right = (
+    <IonButton fill="clear" size="small" onClick={enterEditMode}>
+      <IonIcon
+        style={{ fontSize: '25px', stroke: 'var(--ion-color-primary)' }}
+        src={editIcon}
+        slot="icon-only"
+      ></IonIcon>
+    </IonButton>
+  );
 
   return (
     <IonPage>
@@ -82,10 +124,27 @@ const ConfirmOrderDetails = () => {
           <IonImg src={ConfirmOrderLogo} alt={'ConfirmOrderDetails Logo'} />
         </IonHeader>
         <div className={styles.container}>
-          <CardContainer title={'Order details'} position={'middle'}>
+          <CardContainer
+            title={'Order details'}
+            right={right}
+            position={'middle'}
+          >
             <IonText className={styles.orderDetails}>
-              <p>Order number: 1869485</p>
-
+              {isEditMode ? (
+                <p>
+                  Order number:
+                  <input
+                    className={styles.focus}
+                    type="number"
+                    value={orderNumber}
+                    onKeyDown={handleKeyPress}
+                    onChange={handleOrderNumberChange}
+                    required
+                  />
+                </p>
+              ) : (
+                <p>Order number: 1869485</p>
+              )}
               <p>
                 Order quantity:
                 <input
