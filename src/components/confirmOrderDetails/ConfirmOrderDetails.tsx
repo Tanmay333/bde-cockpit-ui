@@ -10,7 +10,7 @@ import {
   IonIcon,
 } from '@ionic/react';
 import CardContainer from '../common/cardContainer/CardContainer';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import styles from './ConfirmOrderDetails.module.scss';
 import ConfirmOrderLogo from '../../static/assets/images/LohnpackLogo.svg';
@@ -20,8 +20,9 @@ import useWebSocket from '../../store/hooks/useWebSocket';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 import { getnumberDetails } from '../../store/slices/orderNumber';
 import editIcon from '../../static/assets/images/edit.svg';
+import Scanner from '../../static/assets/images/Scanner.svg';
 
-const ConfirmOrderDetails = () => {
+const ConfirmOrderDetails: React.FC = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const [enteredQuantity, setEnteredQuantity] = useState(Number);
@@ -76,9 +77,9 @@ const ConfirmOrderDetails = () => {
 
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const enterEditMode = () => {
+  const enterEditMode = useCallback(() => {
     setIsEditMode(true);
-  };
+  }, []);
 
   const handleClick = useCallback(() => {
     setBarcodeState(true);
@@ -183,6 +184,7 @@ const ConfirmOrderDetails = () => {
                 </IonButton>
               </div>
               <IonModal
+                key="2"
                 style={{
                   '--border-radius': '0px',
                   '--width': '100%',
@@ -191,16 +193,18 @@ const ConfirmOrderDetails = () => {
                 ref={modal}
                 isOpen={barcodeState}
               >
-                <IonButton
-                  onClick={onBarcodeScanComplete}
-                  fill="solid"
-                  style={{
-                    width: '210px',
-                    height: '50px',
-                  }}
-                >
-                  Sample scanner
-                </IonButton>
+                <button onClick={onBarcodeScanComplete}>
+                  <IonImg
+                    style={{
+                      width: '100%',
+                      height: '100vh',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    src={Scanner}
+                  ></IonImg>
+                </button>
               </IonModal>
             </IonGrid>
           </CardContainer>
