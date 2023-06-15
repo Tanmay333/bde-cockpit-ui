@@ -6,12 +6,14 @@ import {
   IonButton,
   IonModal,
   IonRow,
+  IonImg,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { useAppSelector } from '../../store/utils/hooks';
-import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
+import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
 import styles from './OrderDetails.module.scss';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
+import Scanner from '../../static/assets/images/Scanner.svg';
 
 const OrderDetails: React.FC = () => {
   const state = useAppSelector<MachineDetails | null>(
@@ -28,10 +30,14 @@ const OrderDetails: React.FC = () => {
   const onBarcodeScanComplete = useCallback(() => {
     history.push('/confirmorderdetails');
     setBarcodeState(false);
-  }, [history]);
+  }, []);
 
   const editorderdetails = useCallback(() => {
     history.push('/editorderdetails');
+  }, []);
+
+  const editmemberdetails = useCallback(() => {
+    history.push('/editteamsize');
   }, [history]);
 
   const renderSelectedIcons = () => {
@@ -50,7 +56,7 @@ const OrderDetails: React.FC = () => {
             margin: '4px',
           }}
         >
-          <SelectWorkersIcon isSelected />
+          <SelectTeamSizeIcon isSelected />
         </IonRow>,
       );
     }
@@ -66,6 +72,11 @@ const OrderDetails: React.FC = () => {
     state?.process &&
     state.process.currentPhaseDetails &&
     state?.process.currentPhaseDetails.phaseName === 'mounting';
+
+  const isPhasePreparation =
+    state?.process &&
+    state.process.currentPhaseDetails &&
+    state?.process.currentPhaseDetails.phaseName === 'preparing';
 
   const data = {
     orderId: state?.assignedJobDetails?.orderId ?? '--:--',
@@ -118,6 +129,7 @@ const OrderDetails: React.FC = () => {
           )}
         </div>
         <IonModal
+          key="1"
           style={{
             '--border-radius': '0px',
             '--width': '100%',
@@ -126,19 +138,21 @@ const OrderDetails: React.FC = () => {
           ref={modal}
           isOpen={barcodeState}
         >
-          <IonButton
-            onClick={onBarcodeScanComplete}
-            fill="solid"
-            style={{
-              width: '210px',
-              height: '50px',
-            }}
-          >
-            Sample scanner
-          </IonButton>
+          <button onClick={onBarcodeScanComplete}>
+            <IonImg
+              style={{
+                width: '100%',
+                height: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              src={Scanner}
+            ></IonImg>
+          </button>
         </IonModal>
         <div className={styles.BtnContainer}>
-          {!isPhaseNull && (
+          {isPhaseMounting && (
             <IonButton
               onClick={editorderdetails}
               type="submit"
@@ -150,6 +164,22 @@ const OrderDetails: React.FC = () => {
               }}
             >
               Edit order details
+            </IonButton>
+          )}
+        </div>
+        <div className={styles.BtnContainer}>
+          {isPhasePreparation && (
+            <IonButton
+              onClick={editmemberdetails}
+              type="submit"
+              fill="solid"
+              style={{
+                width: '210px',
+                height: '50px',
+                borderRadius: '8px',
+              }}
+            >
+              Edit Member details
             </IonButton>
           )}
         </div>

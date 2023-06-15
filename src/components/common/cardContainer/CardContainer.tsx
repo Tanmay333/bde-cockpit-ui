@@ -1,11 +1,5 @@
-import React, { CSSProperties, ReactNode } from 'react';
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCol,
-  IonGrid,
-} from '@ionic/react';
+import React, { ReactNode } from 'react';
+import { IonCard, IonCardHeader, IonCardTitle, IonGrid } from '@ionic/react';
 import styles from '../cardContainer/CardContainer.module.scss';
 import { PositionProp, getPosition } from './utils/getPosition';
 
@@ -32,20 +26,6 @@ const CardContainer: React.FC<Props> = ({
       >
         {title && (
           <IonCardHeader>
-            {right && (
-              <IonCol
-                size="8.3"
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'end',
-                  alignItems: 'end',
-                  fontSize: '10px',
-                }}
-              >
-                {right}
-              </IonCol>
-            )}
             <IonCardTitle
               style={{
                 fontSize: '28px',
@@ -54,6 +34,21 @@ const CardContainer: React.FC<Props> = ({
             >
               {title}
             </IonCardTitle>
+            {right && (
+              <div
+                style={{
+                  width: '12px',
+                  height: '12px',
+                  marginLeft: '440px',
+                  verticalAlign: 'super',
+                  position: 'absolute',
+                  top: '2px',
+                  justifyContent: 'center',
+                }}
+              >
+                {right}
+              </div>
+            )}
           </IonCardHeader>
         )}
         {children}

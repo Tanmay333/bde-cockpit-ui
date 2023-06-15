@@ -28,13 +28,14 @@ import './theme/variables.css';
 
 import './styles.scss';
 import Home from './pages/Home';
-import SelectWorkers from './components/selectWorkers/SelectWorkers';
+import SelectTeamSize from './components/selectWorkers/SelectTeamSize';
 import OrderDetails from './components/orderDetails/OrderDetails';
 import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDetails';
 import DowntimeType from './components/donwtimeType/DowntimeType';
 import useWebSocket from './store/hooks/useWebSocket';
 import { useEffect } from 'react';
 import EditOrderdetails from './components/editOrderDetails/EditOrderDetails';
+import EditTeamSize from './components/editOrderDetails/EditTeamSize';
 
 setupIonicReact();
 
@@ -57,8 +58,8 @@ const App: React.FC = () => {
       <IonPage id="main-content">
         <IonRouterOutlet>
           <Route path={urls.root} component={Home} />
-          <Route exact path={urls.selectworkers} component={SelectWorkers}>
-            <SelectWorkers />
+          <Route exact path={urls.selectteamsize} component={SelectTeamSize}>
+            <SelectTeamSize />
           </Route>
           <Route exact path={urls.orderdetails} component={OrderDetails}>
             <OrderDetails />
@@ -79,6 +80,9 @@ const App: React.FC = () => {
             component={EditOrderdetails}
           >
             <EditOrderdetails />
+          </Route>
+          <Route exact path={urls.editteamsize} component={EditTeamSize}>
+            <EditTeamSize />
           </Route>
         </IonRouterOutlet>
       </IonPage>

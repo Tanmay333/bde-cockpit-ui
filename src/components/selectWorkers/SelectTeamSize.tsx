@@ -8,16 +8,16 @@ import {
   IonRow,
 } from '@ionic/react';
 import lohnpack from '../../static/assets/lohnpack.svg';
-import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
+import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
 import { useCallback, useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
-import styles from './SelectWorkers.module.scss';
+import styles from '../selectWorkers/SelectTeamSize.module.scss';
 import { useHistory } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
-import { getworkersDetails } from '../../store/slices/SelectworkersSlice';
+import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
 
-const SelectWorkers = () => {
+const SelectTeamSize = () => {
   const Workers = [
     {
       id: 1,
@@ -56,7 +56,7 @@ const SelectWorkers = () => {
   const dispatch = useAppDispatch();
   const { sendMessage } = useWebSocket();
 
-  const selectworkers = useCallback((index: number) => {
+  const selectteamsize = useCallback((index: number) => {
     setSelectedIndex(index);
     setTimeout(routeToHomePage, 1000);
     const message = {
@@ -115,10 +115,10 @@ const SelectWorkers = () => {
                     margin: '10px',
                   }}
                   key={data.id}
-                  onClick={() => selectworkers(index)}
+                  onClick={() => selectteamsize(index)}
                 >
                   <IonRow style={{ textAlign: 'center' }}>
-                    <SelectWorkersIcon
+                    <SelectTeamSizeIcon
                       isSelected={selectedIndex >= index ? true : false}
                     />
                   </IonRow>
@@ -132,4 +132,4 @@ const SelectWorkers = () => {
   );
 };
 
-export default SelectWorkers;
+export default SelectTeamSize;

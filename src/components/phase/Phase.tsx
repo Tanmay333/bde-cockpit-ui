@@ -23,13 +23,6 @@ const Phase: React.FC = () => {
   const [phaseFour, setPhaseFour] = useState('#E0E0E0');
   const [phaseFive, setPhaseFive] = useState('#E0E0E0');
 
-  const onClickPhase2 = useCallback(() => {
-    setShowPhase1(false);
-    setShowPhase2(true);
-    setPhaseTwo('#2799D1');
-    history.push('/SelectWorkers');
-  }, [history]);
-
   const currentPhaseName = () => {
     if (state === null || state === undefined) {
       return 'N/A';
@@ -216,7 +209,6 @@ const Phase: React.FC = () => {
             <div
               className={styles.boxidle}
               id={'phase 2'}
-              onClick={onClickPhase2}
               style={{
                 backgroundColor: phaseTwo,
               }}

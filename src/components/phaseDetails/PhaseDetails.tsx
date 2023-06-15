@@ -6,6 +6,7 @@ import { useAppSelector } from '../../store/utils/hooks';
 import { Fragment } from 'react';
 import bulletPoint2 from '../../static/assets/images/BulletPoint2.svg';
 import bulletpoint from '../../static/assets/images/bulletpoint.svg';
+import bulletpoint1 from '../../static/assets/images/BulletPoint1.svg';
 import { formatTime } from '../../store/utils/formatTime';
 
 const PhaseDetails: React.FC = () => {
@@ -170,6 +171,27 @@ const PhaseDetails: React.FC = () => {
         style={{ overflow: 'auto' }}
       >
         <IonCardContent>
+          {state && state.process.currentPhaseDetails.phaseName === null ? (
+            <>
+              <div className={styles.reason} key={'stTime'}>
+                <img
+                  src={bulletpoint1}
+                  alt={'bullet'}
+                  className={styles.bullet}
+                />
+                <p>Start time: --:--</p>
+              </div>
+              <div className={styles.reason} key={'endTime'}>
+                <img
+                  src={bulletpoint1}
+                  alt={'bullet'}
+                  className={styles.bullet}
+                />
+                <p className={styles.reason}>End time: --:--</p>
+              </div>
+            </>
+          ) : null}
+
           {state &&
           state.process.currentPhaseDetails.phaseName === 'production' ? (
             <>
