@@ -9,27 +9,56 @@ import {
   IonModal,
 } from '@ionic/react';
 import CardContainer from '../common/cardContainer/CardContainer';
-import { useCallback, useRef, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHistory, useLocation } from 'react-router';
 import styles from '../confirmOrderDetails/ConfirmOrderDetails.module.scss';
+import Btnstyles from '../orderDetails/OrderDetails.module.scss';
 import ConfirmOrderLogo from '../../static/assets/images/LohnpackLogo.svg';
 import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import EditNumberQuantity from './EditNumberQuantity';
+import Scanner from '../../static/assets/images/Scanner.svg';
 
 const EditOrderDetails: React.FC = () => {
-  const history = useHistory();
   const [barcodeState, setBarcodeState] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
+  const history = useHistory();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const isConfirmOrderDetails =
+        location.pathname === '/confirmorderdetails';
+      setBarcodeState(isConfirmOrderDetails);
+    };
+    handleLocationChange(); // Set initial state based on current URL
+    // Subscribe to location changes
+    const unlisten = history.listen(handleLocationChange);
+    return () => {
+      // Unsubscribe from location changes when component unmounts
+      unlisten();
+    };
+  }, [history, location.pathname]);
 
   const handleClick = useCallback(() => {
     setBarcodeState(true);
   }, []);
 
   const onBarcodeScanComplete = useCallback(() => {
-    history.push('/confirmorderdetails');
+    if (location.pathname === '/editorderdetails') {
+      setBarcodeState(false); // Close the modal before navigating
+      setTimeout(() => {
+        history.push('/confirmorderdetails');
+      }, 10);
+    } else {
+      history.push('/confirmorderdetails');
+    }
+  }, [history, location.pathname]);
+
+  const closeModal = useCallback(() => {
     setBarcodeState(false);
-  }, [history]);
+  }, []);
 
   const { sendMessage } = useWebSocket();
 
@@ -57,7 +86,7 @@ const EditOrderDetails: React.FC = () => {
       phaseone.style.backgroundColor = '#2799D1';
     }
     history.push('/');
-  }, [history, ordernumbervalue, orderquantityvalue, sendMessage]);
+  }, [history, ordernumbervalue, orderquantityvalue]);
 
   return (
     <IonPage>
@@ -89,6 +118,7 @@ const EditOrderDetails: React.FC = () => {
                 </IonButton>
               </div>
               <IonModal
+                //  key={barcodeState ? 'modal-open' : 'modal-closed'}
                 style={{
                   '--border-radius': '0px',
                   '--width': '100%',
@@ -96,17 +126,20 @@ const EditOrderDetails: React.FC = () => {
                 }}
                 ref={modal}
                 isOpen={barcodeState}
+                onDidDismiss={closeModal}
               >
-                <IonButton
-                  onClick={onBarcodeScanComplete}
-                  fill="solid"
-                  style={{
-                    width: '210px',
-                    height: '50px',
-                  }}
-                >
-                  Sample scanner
-                </IonButton>
+                <button onClick={onBarcodeScanComplete}>
+                  <IonImg
+                    style={{
+                      width: '100%',
+                      height: '100vh',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    src={Scanner}
+                  ></IonImg>
+                </button>
               </IonModal>
             </IonGrid>
           </CardContainer>
