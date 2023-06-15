@@ -185,7 +185,7 @@ const ProgressBar: React.FC = () => {
           className={styles.progressBar}
           key={data.index}
           style={{
-            width: data.progress + '%',
+            width: data.progress / 20 + '%',
             height: '100%',
             backgroundColor: data.value,
             transition: 'width 0.2s',
