@@ -5,23 +5,26 @@ import useWebSocket from '../../store/hooks/useWebSocket';
 import styles from './DowntimeType.module.scss';
 import Header from '../common/header/Header';
 import { useAppSelector } from '../../store/utils/hooks';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const DowntimeType: React.FC = () => {
+  const translation = useTranslations();
+
   const Downtimereason = [
     {
-      reason: 'Machine issue',
+      reason: translation.reason.machineIssue,
     },
     {
-      reason: 'Lunch Break',
+      reason: translation.reason.lunchBreak,
     },
     {
-      reason: 'Sick leave',
+      reason: translation.reason.sickLeave,
     },
     {
-      reason: 'Team meeting',
+      reason: translation.reason.teamMeeting,
     },
     {
-      reason: 'Urgent call',
+      reason: translation.reason.urgentCall,
     },
   ];
 
@@ -100,7 +103,10 @@ const DowntimeType: React.FC = () => {
       <IonContent>
         <div className={styles.statement}>
           <div className={styles.title}>
-            <p>Downtime at {downTimesData}</p>
+            <p>
+              {translation.text.downtimeAt}
+              {downTimesData}
+            </p>
           </div>
           <div>
             <IonRow className={styles.classes}>
@@ -117,7 +123,7 @@ const DowntimeType: React.FC = () => {
           </div>
           <div className={styles.endBtn}>
             <IonButton className={styles.end} onClick={onEndProduction}>
-              End Production
+              {translation.buttons.endProduction}
             </IonButton>
           </div>
         </div>

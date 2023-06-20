@@ -6,8 +6,11 @@ import style from './buttos.module.scss';
 import { useHistory } from 'react-router';
 import { getData } from '../../../store/slices/startNewOrderSlice';
 import { StartNewOrder } from '../../../store/slices/machineDetailsSlice';
+import { useTranslations } from '../../../store/slices/translation.slice';
 
 const Buttons = () => {
+  const translation = useTranslations();
+
   const history = useHistory();
   const [startNewOrder, setStartNewOrder] = useState(false);
 
@@ -111,7 +114,7 @@ const Buttons = () => {
             disabled={isPhaseNull}
             onClick={StartPreparation}
           >
-            Start preparation
+            {translation.buttons.startPreparation}
           </IonButton>
         )}
         {isPhaseUnmounting && (
@@ -125,7 +128,7 @@ const Buttons = () => {
             }}
             color={'danger'}
           >
-            End UnMounting
+            {translation.buttons.endUnmounting}
           </IonButton>
         )}
         {isPhasecleaning && !isStateFinished && (
@@ -139,7 +142,7 @@ const Buttons = () => {
             }}
             color={'danger'}
           >
-            End Cleaning
+            {translation.buttons.endCleaning}
           </IonButton>
         )}
         {isStateFinished && (
@@ -151,7 +154,7 @@ const Buttons = () => {
             color={'success'}
             onClick={onClick}
           >
-            Start new order
+            {translation.buttons.startNewOrder}
           </IonButton>
         )}
       </div>

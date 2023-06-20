@@ -4,8 +4,11 @@ import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getquantityDetails } from '../../store/slices/orderQuantitySlice';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 import { getnumberDetails } from '../../store/slices/orderNumber';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const EditOrderDetails: React.FC = () => {
+  const translation = useTranslations();
+
   const dispatch = useAppDispatch();
 
   const state = useAppSelector<MachineDetails | null>(
@@ -53,7 +56,7 @@ const EditOrderDetails: React.FC = () => {
   return (
     <>
       <p>
-        Order number:
+        {translation.text.orderNumber}:
         <input
           className={styles.focus}
           type="number"
@@ -64,7 +67,7 @@ const EditOrderDetails: React.FC = () => {
         />
       </p>
       <p>
-        Order quantity:
+        {translation.text.orderQuantity}:
         <input
           className={styles.focus}
           type="number"

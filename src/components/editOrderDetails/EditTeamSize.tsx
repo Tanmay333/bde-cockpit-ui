@@ -16,8 +16,11 @@ import { useHistory } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const EditTeamSize = () => {
+  const translation = useTranslations();
+
   const Workers = [
     {
       id: 1,
@@ -82,7 +85,7 @@ const EditTeamSize = () => {
           <IonImg src={lohnpack} />
         </div>
         <CardContainer
-          title={' Number of workers'}
+          title={translation.text.numberOfWorkers}
           position={'middle'}
           style={{ paddingTop: '36px' }}
         >
@@ -96,7 +99,7 @@ const EditTeamSize = () => {
             <IonList>
               <IonCardContent>
                 <div className={styles.statement}>
-                  <p>How many of employees is working </p> on the order?
+                  <p>{translation.text.employeesOnOrder}</p>
                 </div>
               </IonCardContent>
             </IonList>

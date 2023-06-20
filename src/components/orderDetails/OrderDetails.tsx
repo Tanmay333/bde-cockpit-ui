@@ -14,8 +14,11 @@ import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
 import styles from './OrderDetails.module.scss';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 import Scanner from '../../static/assets/images/Scanner.svg';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const OrderDetails: React.FC = () => {
+  const translation = useTranslations();
+
   const state = useAppSelector<MachineDetails | null>(
     (state) => state.machineDetailsSlice.data,
   );
@@ -101,12 +104,16 @@ const OrderDetails: React.FC = () => {
     <CardContainer title="Order details" position="start">
       <IonCardContent>
         <div className={styles.order}>
-          <p>Order number: {data.orderId} </p>
-          <p>Order quantity: {data.quantity}</p>
+          <p>
+            {translation.text.orderNumber}: {data.orderId}{' '}
+          </p>
+          <p>
+            {translation.text.orderQuantity}: {data.quantity}
+          </p>
         </div>
         {isPhasePreparing() && (
           <IonRow className={styles.worker}>
-            Members: {renderSelectedIcons()}
+            {translation.text.members}: {renderSelectedIcons()}
           </IonRow>
         )}
       </IonCardContent>
@@ -124,7 +131,7 @@ const OrderDetails: React.FC = () => {
                 borderRadius: '8px',
               }}
             >
-              Scan bar-code
+              {translation.buttons.scanBarCode}
             </IonButton>
           )}
         </div>
@@ -163,7 +170,7 @@ const OrderDetails: React.FC = () => {
                 borderRadius: '8px',
               }}
             >
-              Edit order details
+              {translation.buttons.editOrderDetails}
             </IonButton>
           )}
         </div>
@@ -179,7 +186,7 @@ const OrderDetails: React.FC = () => {
                 borderRadius: '8px',
               }}
             >
-              Edit Member details
+              {translation.buttons.editMemberDetails}
             </IonButton>
           )}
         </div>

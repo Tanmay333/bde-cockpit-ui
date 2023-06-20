@@ -31,6 +31,7 @@ const initialData: MachineDetails = {
       },
     ],
   },
+  data: undefined
 };
 interface AssignedOrderDetails {
   jobId: string | null;
@@ -71,6 +72,7 @@ interface Process {
   producedItems: ProducedItems[] | null;
 }
 export interface MachineDetails {
+  data: any;
   stationId: string | null;
   assignedJobDetails: AssignedOrderDetails;
   process: Process;

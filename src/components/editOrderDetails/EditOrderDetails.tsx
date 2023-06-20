@@ -18,8 +18,11 @@ import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import EditNumberQuantity from './EditNumberQuantity';
 import Scanner from '../../static/assets/images/Scanner.svg';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const EditOrderDetails: React.FC = () => {
+  const translation = useTranslations();
+
   const [barcodeState, setBarcodeState] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
@@ -95,13 +98,16 @@ const EditOrderDetails: React.FC = () => {
           <IonImg src={ConfirmOrderLogo} alt={'ConfirmOrderDetails Logo'} />
         </IonHeader>
         <div className={styles.container}>
-          <CardContainer title={'Order details'} position={'middle'}>
+          <CardContainer
+            title={translation.text.orderDetails}
+            position={'middle'}
+          >
             <IonText className={styles.orderDetails}>
               <EditNumberQuantity />
             </IonText>
             <IonGrid style={{ textAlign: 'center' }}>
               <IonButton onClick={onClick} fill="solid" className={styles.btn}>
-                Confirm Details
+                {translation.buttons.confirmDetails}
               </IonButton>
               <div className={styles.BtnContainer}>
                 <IonButton
@@ -114,7 +120,7 @@ const EditOrderDetails: React.FC = () => {
                     borderRadius: '8px',
                   }}
                 >
-                  Scan again
+                  {translation.buttons.scanAgain}
                 </IonButton>
               </div>
               <IonModal

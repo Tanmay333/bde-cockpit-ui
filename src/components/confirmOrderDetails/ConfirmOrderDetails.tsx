@@ -21,8 +21,11 @@ import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 import { getnumberDetails } from '../../store/slices/orderNumber';
 import editIcon from '../../static/assets/images/edit.svg';
 import Scanner from '../../static/assets/images/Scanner.svg';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const ConfirmOrderDetails: React.FC = () => {
+  const translation = useTranslations();
+
   const history = useHistory();
   const dispatch = useAppDispatch();
   const [enteredQuantity, setEnteredQuantity] = useState(Number);
@@ -126,14 +129,14 @@ const ConfirmOrderDetails: React.FC = () => {
         </IonHeader>
         <div className={styles.container}>
           <CardContainer
-            title={'Order details'}
+            title={translation.text.orderDetails}
             right={right}
             position={'middle'}
           >
             <IonText className={styles.orderDetails}>
               {isEditMode ? (
                 <p>
-                  Order number:
+                  {translation.text.orderNumber}:
                   <input
                     className={styles.focus}
                     type="number"
@@ -144,10 +147,10 @@ const ConfirmOrderDetails: React.FC = () => {
                   />
                 </p>
               ) : (
-                <p>Order number: 1869485</p>
+                <p> {translation.text.orderNumber}: 1869485</p>
               )}
               <p>
-                Order quantity:
+                {translation.text.orderQuantity}:
                 <input
                   className={styles.focus}
                   type="number"
@@ -166,7 +169,7 @@ const ConfirmOrderDetails: React.FC = () => {
               className={styles.btn}
               disabled={!enteredQuantity}
             >
-              Confirm Details
+              {translation.buttons.confirmDetails}
             </IonButton>
             <IonGrid style={{ textAlign: 'center' }}>
               <div className={styles.BtnContainer}>
@@ -180,7 +183,7 @@ const ConfirmOrderDetails: React.FC = () => {
                     borderRadius: '8px',
                   }}
                 >
-                  Scan again
+                  {translation.buttons.scanAgain}
                 </IonButton>
               </div>
               <IonModal

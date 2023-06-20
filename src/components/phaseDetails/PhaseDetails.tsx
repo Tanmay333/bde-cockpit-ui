@@ -3,13 +3,16 @@ import CardContainer from '../common/cardContainer/CardContainer';
 import { IonCardContent, IonGrid, IonButton } from '@ionic/react';
 import styles from './PhaseDetails.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
-import { Fragment } from 'react';
+import { Fragment, Key } from 'react';
 import bulletPoint2 from '../../static/assets/images/BulletPoint2.svg';
 import bulletpoint from '../../static/assets/images/bulletpoint.svg';
 import bulletpoint1 from '../../static/assets/images/BulletPoint1.svg';
 import { formatTime } from '../../store/utils/formatTime';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const PhaseDetails: React.FC = () => {
+  const translation = useTranslations();
+
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
   const startTime = () => {
@@ -68,12 +71,12 @@ const PhaseDetails: React.FC = () => {
           <div className={styles.reason}>
             <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
             <p>
-              Pause at {pauseTime} : {item.reason}
+              {translation.text.pauseAt} {pauseTime} : {item.reason}
             </p>
           </div>
           <div className={styles.reason}>
             <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
-            <p>Resume at {resumeTime}</p>
+            {translation.text.resumeAt}: {resumeTime}
           </div>
         </Fragment>,
       );
@@ -111,11 +114,11 @@ const PhaseDetails: React.FC = () => {
     const phaseName = state.process.currentPhaseDetails.phaseName;
 
     if (phaseName === 'mounting') {
-      return [{ label: 'Start time', value: startTime() }];
+      return [{ label: translation.text.startTime, value: startTime() }];
     }
 
     if (phaseName === 'preparing') {
-      return [{ label: 'Start time', value: startTime() }];
+      return [{ label: translation.text.startTime, value: startTime() }];
     }
 
     if (phaseName === 'production') {
@@ -134,15 +137,14 @@ const PhaseDetails: React.FC = () => {
         }
       });
       return [
-        { label: 'Start time', value: startTime() },
+        { label: translation.text.startTime, value: startTime() },
         ...downtimeReasons,
         ...pauseResumeItems,
-        { label: 'End time', value: endTime() },
       ];
     }
 
     if (phaseName === 'unmounting') {
-      return [{ label: 'Start time', value: startTime() }];
+      return [{ label: translation.text.startTime, value: startTime() }];
     }
 
     if (
@@ -156,8 +158,8 @@ const PhaseDetails: React.FC = () => {
       state?.process.currentPhaseDetails.state === 'FINISHED'
     ) {
       return [
-        { label: 'Start time', value: startTime() },
-        { label: 'End time', value: endTime() },
+        { label: translation.text.startTime, value: startTime() },
+        { label: translation.text.endTime, value: endTime() },
       ];
     }
     return [];
@@ -179,7 +181,7 @@ const PhaseDetails: React.FC = () => {
                   alt={'bullet'}
                   className={styles.bullet}
                 />
-                <p>Start time: --:--</p>
+                <p>{translation.text.startTime}: --:--</p>
               </div>
               <div className={styles.reason} key={'endTime'}>
                 <img
@@ -187,7 +189,9 @@ const PhaseDetails: React.FC = () => {
                   alt={'bullet'}
                   className={styles.bullet}
                 />
-                <p className={styles.reason}>End time: --:--</p>
+                <p className={styles.reason}>
+                  {translation.text.endTime}: --:--
+                </p>{' '}
               </div>
             </>
           ) : null}
@@ -202,7 +206,7 @@ const PhaseDetails: React.FC = () => {
                   className={styles.bullet}
                 />
                 <p>
-                  Start time:{' '}
+                  {translation.text.startTime}:
                   {formatTime(state.process.currentPhaseDetails.startTime)}
                 </p>
               </div>
@@ -215,7 +219,7 @@ const PhaseDetails: React.FC = () => {
                   label: any;
                   value: any;
                 },
-                index,
+                index: Key | null | undefined,
               ) => (
                 <div key={index} className={styles.reason}>
                   <img
@@ -224,7 +228,7 @@ const PhaseDetails: React.FC = () => {
                     className={styles.bullet}
                   />
                   <p></p>
-                  <p>{`${item.label}: ${item.value}`}</p>
+                  <p>{`${item.label} : ${item.value}`}</p>
                 </div>
               ),
             )

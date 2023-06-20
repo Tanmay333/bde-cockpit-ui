@@ -6,8 +6,11 @@ import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import './Phase.module.scss';
 import ProgressBar from './ProgressBar';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const Phase: React.FC = () => {
+  const translation = useTranslations();
+
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const history = useHistory();
 
@@ -192,8 +195,12 @@ const Phase: React.FC = () => {
     <IonGrid className={styles.container}>
       <IonCol>
         <IonGrid>
-          <IonButton onClick={startProduction}>Production</IonButton>
-          <IonButton onClick={startDowntime}>DownTime</IonButton>
+          <IonButton onClick={startProduction}>
+            {translation.buttons.production}
+          </IonButton>
+          <IonButton onClick={startDowntime}>
+            {translation.buttons.downTime}
+          </IonButton>
           <IonRow>
             <div className={styles.idle}>{showPhase1 && <p>Phase 01</p>}</div>
             <div className={styles.idle}>{showPhase2 && <p>Phase 02</p>}</div>

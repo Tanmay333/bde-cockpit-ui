@@ -8,8 +8,11 @@ import {
 } from '@ionic/react';
 import styles from './OrderInforCard.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const OrderInfoCard: React.FC = () => {
+  const translation = useTranslations();
+
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const [startTimeOfProcess, setStartTimeOfProcess] = useState('N/A');
   const [currentPhaseTime, setCurrentPhaseTime] = useState('00:00');
@@ -200,30 +203,35 @@ const OrderInfoCard: React.FC = () => {
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader>
-        <IonCardTitle>Order: {data.orderId}</IonCardTitle>
+        <IonCardTitle>
+          {translation.text.order}: {data.orderId}
+        </IonCardTitle>
         <IonCardSubtitle>
-          Machine {data.machineStatus === 'RUNNING' ? 'on' : 'off'}
+          {translation.text.machine}
+          {data.machineStatus === 'RUNNING'
+            ? translation.text.machineStatus.on
+            : translation.text.machineStatus.off}
         </IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent>
         <div>
           <IonCardTitle>{data.startTimeOfCompleteProcess} hrs</IonCardTitle>
-          <IonCardSubtitle>Today</IonCardSubtitle>
+          <IonCardSubtitle>{translation.text.today}</IonCardSubtitle>
         </div>
         <div>
           {!isPhasePreparing && (
             <IonCardTitle className={styles.ionRightSection}>
-              {data.currentPhaseTime} hrs
+              {data.currentPhaseTime} {translation.text.hrs}
             </IonCardTitle>
           )}
           {isPhasePreparing && (
             <IonCardTitle className={styles.ionRightSection}>
-              00:00 hrs
+              00:00 {translation.text.hrs}
             </IonCardTitle>
           )}
 
           <IonCardSubtitle>
-            {getPhaseName()} - {data.currentPhaseName}
+            {getPhaseName()} - {translation.description[data.currentPhaseName]}
           </IonCardSubtitle>
         </div>
       </IonCardContent>
