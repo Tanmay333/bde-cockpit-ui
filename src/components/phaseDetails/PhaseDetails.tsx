@@ -68,12 +68,12 @@ const PhaseDetails: React.FC = () => {
           <div className={styles.reason}>
             <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
             <p>
-              Pause at: {pauseTime} : {item.reason}
+              Pause at {pauseTime} : {item.reason}
             </p>
           </div>
           <div className={styles.reason}>
             <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
-            <p>Resume at: {resumeTime}</p>
+            <p>Resume at {resumeTime}</p>
           </div>
         </Fragment>,
       );
@@ -111,17 +111,11 @@ const PhaseDetails: React.FC = () => {
     const phaseName = state.process.currentPhaseDetails.phaseName;
 
     if (phaseName === 'mounting') {
-      return [
-        { label: 'Start time', value: startTime() },
-        { label: 'End time', value: endTime() },
-      ];
+      return [{ label: 'Start time', value: startTime() }];
     }
 
     if (phaseName === 'preparing') {
-      return [
-        { label: 'Start time', value: startTime() },
-        { label: 'End time', value: endTime() },
-      ];
+      return [{ label: 'Start time', value: startTime() }];
     }
 
     if (phaseName === 'production') {
@@ -148,13 +142,19 @@ const PhaseDetails: React.FC = () => {
     }
 
     if (phaseName === 'unmounting') {
-      return [
-        { label: 'Start time', value: startTime() },
-        { label: 'End time', value: endTime() },
-      ];
+      return [{ label: 'Start time', value: startTime() }];
     }
 
-    if (phaseName === 'cleaning') {
+    if (
+      phaseName === 'cleaning' &&
+      state?.process.currentPhaseDetails.state === 'RUNNING'
+    ) {
+      return [{ label: 'Start time', value: startTime() }];
+    }
+    if (
+      phaseName === 'cleaning' &&
+      state?.process.currentPhaseDetails.state === 'FINISHED'
+    ) {
       return [
         { label: 'Start time', value: startTime() },
         { label: 'End time', value: endTime() },
@@ -202,24 +202,11 @@ const PhaseDetails: React.FC = () => {
                   className={styles.bullet}
                 />
                 <p>
-                  Start time:
+                  Start time:{' '}
                   {formatTime(state.process.currentPhaseDetails.startTime)}
                 </p>
               </div>
               {downtimeReasonsList()}
-              <div className={styles.reason} key={'endTime'}>
-                <img
-                  src={bulletpoint}
-                  alt={'bullet'}
-                  className={styles.bullet}
-                />
-                <p className={styles.reason}>
-                  End time:
-                  {formatTime(
-                    state && state.process.currentPhaseDetails.endTime,
-                  )}
-                </p>
-              </div>
             </>
           ) : (
             phaseDescription().map(

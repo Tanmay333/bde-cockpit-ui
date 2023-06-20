@@ -1,6 +1,6 @@
 export const formatTime = (dateString: string | null): string => {
   if (dateString === null) {
-    return 'N/A';
+    return '--:--';
   }
 
   const dateObj = new Date(dateString);

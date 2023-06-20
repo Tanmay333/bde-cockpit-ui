@@ -1,11 +1,38 @@
 import { IonButton, IonGrid } from '@ionic/react';
 import useWebSocket from '../../../store/hooks/useWebSocket';
-import { useAppSelector } from '../../../store/utils/hooks';
-import { useCallback, useMemo } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../store/utils/hooks';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import style from './buttos.module.scss';
 import { useHistory } from 'react-router';
+import { getData } from '../../../store/slices/startNewOrderSlice';
+import { StartNewOrder } from '../../../store/slices/machineDetailsSlice';
 
 const Buttons = () => {
+  const history = useHistory();
+  const [startNewOrder, setStartNewOrder] = useState(false);
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem('startNewOrder');
+    const parsedValue = storedValue ? JSON.parse(storedValue) : false;
+    setStartNewOrder(parsedValue);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('startNewOrder', JSON.stringify(startNewOrder));
+  }, [startNewOrder]);
+
+  const onClick = useCallback(() => {
+    const updatedValue = !startNewOrder;
+    setStartNewOrder(updatedValue);
+    dispatch(StartNewOrder());
+  }, [startNewOrder, history]);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getData(startNewOrder));
+  }, [startNewOrder, dispatch]);
+
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
@@ -48,6 +75,11 @@ const Buttons = () => {
     state.process.currentPhaseDetails &&
     state?.process.currentPhaseDetails.phaseName === null;
 
+  const isStateFinished =
+    state?.process &&
+    state.process.currentPhaseDetails &&
+    state?.process.currentPhaseDetails.state === 'FINISHED';
+
   const isPhaseMounting =
     state?.process &&
     state.process.currentPhaseDetails &&
@@ -62,7 +94,6 @@ const Buttons = () => {
     state?.process &&
     state.process.currentPhaseDetails &&
     state?.process?.currentPhaseDetails?.phaseName === 'cleaning';
-  const history = useHistory();
 
   const StartPreparation = useCallback(() => {
     history.push('/selectteamsize');
@@ -97,7 +128,7 @@ const Buttons = () => {
             End UnMounting
           </IonButton>
         )}
-        {isPhasecleaning && (
+        {isPhasecleaning && !isStateFinished && (
           <IonButton
             onClick={onEndCleaning}
             type="submit"
@@ -109,6 +140,18 @@ const Buttons = () => {
             color={'danger'}
           >
             End Cleaning
+          </IonButton>
+        )}
+        {isStateFinished && (
+          <IonButton
+            id="phase-one"
+            className={style.end}
+            fill="solid"
+            type="submit"
+            color={'success'}
+            onClick={onClick}
+          >
+            Start new order
           </IonButton>
         )}
       </div>

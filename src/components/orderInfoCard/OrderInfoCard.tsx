@@ -43,13 +43,23 @@ const OrderInfoCard: React.FC = () => {
       if (!state?.process?.currentPhaseDetails?.startTime) {
         return '00:00';
       }
-
-      const currentTime = new Date();
+      const currentTime = () => {
+        if (
+          state?.process.currentPhaseDetails.endTime !== null &&
+          state?.process.currentPhaseDetails.phaseName === 'cleaning'
+        ) {
+          const endTime = state.process.currentPhaseDetails.endTime
+            ? new Date(state.process.currentPhaseDetails.endTime)
+            : new Date();
+          return endTime;
+        } else return new Date();
+      };
       const receivedTime = state.process.currentPhaseDetails.startTime
         ? new Date(state.process.currentPhaseDetails.startTime)
         : new Date();
 
-      const timeDifference = currentTime.getTime() - receivedTime.getTime();
+      const timeDifference = currentTime().getTime() - receivedTime.getTime();
+
       const min = Math.floor(timeDifference / 60000);
       const hrs = Math.floor(min / 60);
       const mins = min % 60;
@@ -181,6 +191,12 @@ const OrderInfoCard: React.FC = () => {
     currentPhaseTime,
   ]);
 
+  const isPhasePreparing =
+    state &&
+    state.process &&
+    state.process.currentPhaseDetails &&
+    state.process.currentPhaseDetails.state === 'FINISHED';
+
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader>
@@ -195,9 +211,17 @@ const OrderInfoCard: React.FC = () => {
           <IonCardSubtitle>Today</IonCardSubtitle>
         </div>
         <div>
-          <IonCardTitle className={styles.ionRightSection}>
-            {data.currentPhaseTime} hrs
-          </IonCardTitle>
+          {!isPhasePreparing && (
+            <IonCardTitle className={styles.ionRightSection}>
+              {data.currentPhaseTime} hrs
+            </IonCardTitle>
+          )}
+          {isPhasePreparing && (
+            <IonCardTitle className={styles.ionRightSection}>
+              00:00 hrs
+            </IonCardTitle>
+          )}
+
           <IonCardSubtitle>
             {getPhaseName()} - {data.currentPhaseName}
           </IonCardSubtitle>
