@@ -129,22 +129,28 @@ const Phase: React.FC = () => {
       setShowPhase4(false);
       setPhaseFive('#2799D1');
     }
-    if (
-      state.process &&
-      state.process.currentPhaseDetails &&
-      state.process.currentPhaseDetails.state === null
-    ) {
-      setPhaseOne('#E0E0E0');
-      setPhaseTwo('#E0E0E0');
-      setPhaseFour('#E0E0E0');
-      setPhaseFive('#E0E0E0');
-      setShowPhase1(true);
-      setShowPhase2(false);
-      setShowPhase3(false);
-      setShowPhase4(false);
-      setShowPhase5(false);
-    }
   }, [currentPhaseName, phaseState, state]);
+
+  const startorder = useAppSelector((state) => state.startneworderslice);
+
+  useEffect(() => {
+    if (startorder === null || startorder === undefined) {
+      return;
+    }
+    if (startorder && startorder.data === true) {
+      {
+        setPhaseOne('#E0E0E0');
+        setPhaseTwo('#E0E0E0');
+        setPhaseFour('#E0E0E0');
+        setPhaseFive('#E0E0E0');
+        setShowPhase1(true);
+        setShowPhase2(false);
+        setShowPhase3(false);
+        setShowPhase4(false);
+        setShowPhase5(false);
+      }
+    }
+  }, [startorder]);
 
   const onClickPhase4 = useCallback(() => {
     history.push('/');

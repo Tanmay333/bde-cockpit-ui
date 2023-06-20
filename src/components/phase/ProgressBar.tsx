@@ -161,14 +161,19 @@ const ProgressBar: React.FC = () => {
         }
       }
     }
-    if (
-      state.process &&
-      state.process.currentPhaseDetails &&
-      state.process.currentPhaseDetails.state === null
-    ) {
+  }, [state]);
+
+  const startorder = useAppSelector((state) => state.startneworderslice);
+
+  useEffect(() => {
+    const savedItems = localStorage.getItem('progressItems');
+    const parsedItems = savedItems ? JSON.parse(savedItems) : [];
+    setItems(parsedItems);
+
+    if (startorder && startorder.data === true) {
       setItems([]);
     }
-  }, [state]);
+  }, [startorder]);
 
   return (
     <div

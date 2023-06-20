@@ -94,20 +94,17 @@ const machineDetailsSlice = createSlice({
   reducers: {
     updateMachineDetails: (state, action: PayloadAction<MachineDetails>) => {
       state.status = FetchingStatus.SUCCESS;
-      if (
-        action.payload &&
-        action.payload.process &&
-        action.payload.process.currentPhaseDetails.state === 'FINISHED'
-      ) {
-        state.data = initialData;
-      } else {
-        state.data = action.payload;
-      }
+
+      state.data = action.payload;
+    },
+
+    StartNewOrder: (state) => {
+      state.data = initialData;
     },
   },
 });
 
 const { reducer, actions } = machineDetailsSlice;
 
-export const { updateMachineDetails } = actions;
+export const { updateMachineDetails, StartNewOrder } = actions;
 export const machineDetailsReducer = reducer;
