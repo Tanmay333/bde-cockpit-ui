@@ -33,9 +33,10 @@ import OrderDetails from './components/orderDetails/OrderDetails';
 import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDetails';
 import DowntimeType from './components/donwtimeType/DowntimeType';
 import useWebSocket from './store/hooks/useWebSocket';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import EditOrderdetails from './components/editOrderDetails/EditOrderDetails';
 import EditTeamSize from './components/editOrderDetails/EditTeamSize';
+import { getCurrentDimension } from './store/utils/getCurrentDimension';
 
 setupIonicReact();
 
@@ -53,10 +54,23 @@ const App: React.FC = () => {
     }
   }, [isConnected]);
 
+  const [screenSize, setScreenSize] = useState(getCurrentDimension());
+
+  useEffect(() => {
+    const updateDimension = () => {
+      setScreenSize(getCurrentDimension());
+    };
+    window.addEventListener('resize', updateDimension);
+
+    return () => {
+      window.removeEventListener('resize', updateDimension);
+    };
+  }, [screenSize]);
+
   return (
     <IonApp
       style={{
-        width: 1400,
+        width: screenSize.width < 1400 ? 'auto' : 1400,
         display: 'flex',
         justifyContent: 'center',
         margin: '0 auto',
