@@ -12,6 +12,7 @@ const Phase: React.FC = () => {
   const translation = useTranslations();
 
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  const toggleMock = useAppSelector((state) => state.mockData.data);
   const history = useHistory();
 
   const [showPhase1, setShowPhase1] = useState(true);
@@ -25,26 +26,6 @@ const Phase: React.FC = () => {
 
   const [phaseFour, setPhaseFour] = useState('#E0E0E0');
   const [phaseFive, setPhaseFive] = useState('#E0E0E0');
-
-  const currentPhaseName = () => {
-    if (state === null || state === undefined) {
-      return 'N/A';
-    }
-    if (state.process.currentPhaseDetails === null) {
-      return 'N/A';
-    }
-    return state.process.currentPhaseDetails.phaseName;
-  };
-
-  const phaseState = () => {
-    if (state === null || state === undefined) {
-      return 'N/A';
-    }
-    if (state.process.currentPhaseDetails === null) {
-      return 'N/A';
-    }
-    return state.process.currentPhaseDetails.state;
-  };
 
   useEffect(() => {
     if (state === null || state === undefined) {
@@ -64,6 +45,14 @@ const Phase: React.FC = () => {
         hasMountingPhase)
     ) {
       setPhaseOne('#2799D1');
+      setShowPhase1(true);
+      setShowPhase2(false);
+      setShowPhase3(false);
+      setShowPhase4(false);
+      setShowPhase5(false);
+      setPhaseTwo('#E0E0E0');
+      setPhaseFour('#E0E0E0');
+      setPhaseFive('#E0E0E0');
     }
 
     const hasPreparationPhase =
@@ -81,7 +70,12 @@ const Phase: React.FC = () => {
     ) {
       setShowPhase1(false);
       setShowPhase2(true);
+      setShowPhase3(false);
+      setShowPhase4(false);
+      setShowPhase5(false);
       setPhaseTwo('#2799D1');
+      setPhaseFour('#E0E0E0');
+      setPhaseFive('#E0E0E0');
     }
     const hasProductionPhase =
       state.process &&
@@ -97,7 +91,12 @@ const Phase: React.FC = () => {
       hasProductionPhase
     ) {
       setShowPhase3(true);
+      setShowPhase4(false);
+      setShowPhase5(false);
       setShowPhase2(false);
+      setShowPhase1(false);
+      setPhaseFour('#E0E0E0');
+      setPhaseFive('#E0E0E0');
     }
     const hasUnMountingPhase =
       state.process &&
@@ -112,7 +111,12 @@ const Phase: React.FC = () => {
       hasUnMountingPhase
     ) {
       setShowPhase3(false);
+      setShowPhase5(false);
+      setShowPhase1(false);
+      setShowPhase2(false);
+
       setShowPhase4(true);
+      setPhaseFive('#E0E0E0');
       setPhaseFour('#2799D1');
     }
     const hasCleaningPhase =
@@ -130,9 +134,12 @@ const Phase: React.FC = () => {
     ) {
       setShowPhase5(true);
       setShowPhase4(false);
+      setShowPhase3(false);
+      setShowPhase1(false);
+      setShowPhase2(false);
       setPhaseFive('#2799D1');
     }
-  }, [currentPhaseName, phaseState, state]);
+  }, [state]);
 
   const startorder = useAppSelector((state) => state.startneworderslice);
 
@@ -195,12 +202,16 @@ const Phase: React.FC = () => {
     <IonGrid className={styles.container}>
       <IonCol>
         <IonGrid>
-          <IonButton onClick={startProduction}>
-            {translation.buttons.production}
-          </IonButton>
-          <IonButton onClick={startDowntime}>
-            {translation.buttons.downTime}
-          </IonButton>
+          {toggleMock ? null : (
+            <>
+              <IonButton onClick={startProduction}>
+                {translation.buttons.production}
+              </IonButton>
+              <IonButton onClick={startDowntime}>
+                {translation.buttons.downTime}
+              </IonButton>
+            </>
+          )}
           <IonRow>
             <div className={styles.idle}>{showPhase1 && <p>Phase 01</p>}</div>
             <div className={styles.idle}>{showPhase2 && <p>Phase 02</p>}</div>

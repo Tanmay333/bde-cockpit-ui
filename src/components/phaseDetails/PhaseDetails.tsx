@@ -70,9 +70,7 @@ const PhaseDetails: React.FC = () => {
         <Fragment key={index}>
           <div className={styles.reason}>
             <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
-            <p>
-              {translation.text.pauseAt} {pauseTime} : {item.reason}
-            </p>
+            {translation.text.pauseAt} {pauseTime} : {item.reason}
           </div>
           <div className={styles.reason}>
             <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
@@ -172,7 +170,7 @@ const PhaseDetails: React.FC = () => {
         position={'start'}
         style={{ overflow: 'auto' }}
       >
-        <IonCardContent>
+        <IonCardContent style={{ fontSize: '16px !important' }}>
           {state && state.process.currentPhaseDetails.phaseName === null ? (
             <>
               <div className={styles.reason} key={'stTime'}>
@@ -181,7 +179,7 @@ const PhaseDetails: React.FC = () => {
                   alt={'bullet'}
                   className={styles.bullet}
                 />
-                <p>{translation.text.startTime}: --:--</p>
+                {translation.text.startTime}: --:--
               </div>
               <div className={styles.reason} key={'endTime'}>
                 <img
@@ -189,9 +187,9 @@ const PhaseDetails: React.FC = () => {
                   alt={'bullet'}
                   className={styles.bullet}
                 />
-                <p className={styles.reason}>
+                <span className={styles.reason}>
                   {translation.text.endTime}: --:--
-                </p>{' '}
+                </span>{' '}
               </div>
             </>
           ) : null}
@@ -205,10 +203,8 @@ const PhaseDetails: React.FC = () => {
                   alt={'bullet'}
                   className={styles.bullet}
                 />
-                <p>
-                  {translation.text.startTime}:
-                  {formatTime(state.process.currentPhaseDetails.startTime)}
-                </p>
+                {translation.text.startTime}:
+                {formatTime(state.process.currentPhaseDetails.startTime)}
               </div>
               {downtimeReasonsList()}
             </>
@@ -227,8 +223,7 @@ const PhaseDetails: React.FC = () => {
                     alt={'bullet'}
                     className={styles.bullet}
                   />
-                  <p></p>
-                  <p>{`${item.label} : ${item.value}`}</p>
+                  {`${item.label} : ${item.value}`}
                 </div>
               ),
             )

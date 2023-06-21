@@ -8,7 +8,10 @@ export const formatTime = (dateString: string | null): string => {
   const hours = dateObj.getHours();
   const minutes = dateObj.getMinutes();
 
-  const formattedTime = `${hours}:${minutes}`;
+  const hrsFormat = hours < 10 ? `0${hours}` : hours;
+  const minFormat = minutes < 10 ? `0${minutes}` : minutes;
+
+  const formattedTime = ` ${hrsFormat}:${minFormat}`;
 
   return formattedTime;
 };

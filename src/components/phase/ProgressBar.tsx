@@ -6,6 +6,8 @@ const ProgressBar: React.FC = () => {
   const [progressProduction, setProgressProduction] = useState(0);
   const [progressDowntime, setProgressDowntime] = useState(0);
   const [mode, setMode] = useState('production');
+  const toggleMock = useAppSelector((state) => state.mockData.data);
+
   const [items, setItems] = useState<
     { index: number; value: string; progress: number }[]
   >(() => {
@@ -175,19 +177,6 @@ const ProgressBar: React.FC = () => {
     }
   }, [startorder]);
 
-  // const [value, setValue] = useState(false); // Initial value
-
-  // useEffect(() => {
-  //   // Toggles the value every 5 seconds
-  //   const interval = setInterval(() => {
-  //     setValue((prevValue) => !prevValue); // Toggle the value
-  //   }, 5000); // 5000 milliseconds = 5 seconds
-
-  //   return () => {
-  //     clearInterval(interval); // Clean up the interval when the component unmounts
-  //   };
-  // });
-  // console.log(value, '12');
   const [diff, setDiff] = useState<any>();
   useEffect(() => {
     const interval = setInterval(() => {
@@ -195,8 +184,7 @@ const ProgressBar: React.FC = () => {
         return;
       }
       if (
-        state.process.currentPhaseDetails.state === 'FINISHED' &&
-        state.process.previousPhases &&
+        state.process.previousPhases.length >= 3 &&
         state.process.previousPhases[2].downtimes
       ) {
         const startTimeOfProd = state.process.currentPhaseDetails.startTime;
@@ -237,13 +225,11 @@ const ProgressBar: React.FC = () => {
         }
         differences.unshift(firstObjectOfArray);
         setDiff(differences);
-      } else if (
-        state.process.currentPhaseDetails.downtimes.length !== 0 ||
-        state.process.currentPhaseDetails.startTime !== null
-      ) {
+      } else if (state.process.currentPhaseDetails.downtimes.length !== 0) {
         const startTimeOfProd = state.process.currentPhaseDetails.startTime;
         const startTimeOfFirstDowntime =
           state.process.currentPhaseDetails.downtimes[0].startTime;
+
         const stPr =
           startTimeOfProd === null
             ? new Date().getTime() / 1000
@@ -283,13 +269,30 @@ const ProgressBar: React.FC = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [state]);
+  }, [state, toggleMock]);
 
   useEffect(() => {
     if (startorder && startorder.data === true) {
       setDiff([]);
     }
-  }, [startorder]);
+    if (
+      (state && state.process.currentPhaseDetails.phaseName !== 'production') ||
+      (state && state.process.currentPhaseDetails.phaseName !== 'unmounting') ||
+      (state && state.process.currentPhaseDetails.phaseName !== 'cleaning')
+    ) {
+      setDiff([]);
+    }
+  }, [startorder, state]);
+
+  useEffect(() => {
+    if (
+      (state && state.process.currentPhaseDetails.phaseName !== 'production') ||
+      (state && state.process.currentPhaseDetails.phaseName !== 'unmounting') ||
+      (state && state.process.currentPhaseDetails.phaseName !== 'cleaning')
+    ) {
+      setDiff([]);
+    } else return;
+  }, [state && state.process.currentPhaseDetails.phaseName]);
 
   return (
     <div
@@ -307,7 +310,7 @@ const ProgressBar: React.FC = () => {
             className={styles.progressBar}
             key={index}
             style={{
-              width: data.progress + '%',
+              width: data.progress / 30 + '%',
               height: '100%',
               backgroundColor: data.value,
               transition: 'width 0.2s',

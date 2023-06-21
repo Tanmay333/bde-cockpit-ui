@@ -37,22 +37,24 @@ import { useEffect, useState } from 'react';
 import EditOrderdetails from './components/editOrderDetails/EditOrderDetails';
 import EditTeamSize from './components/editOrderDetails/EditTeamSize';
 import { getCurrentDimension } from './store/utils/getCurrentDimension';
+import { useAppSelector } from './store/utils/hooks';
 
 setupIonicReact();
 
 const App: React.FC = () => {
   const { sendMessage, isConnected } = useWebSocket();
+  const toggleMock = useAppSelector((state) => state.mockData.data);
 
   const message = {
     action: 'getCurrentProductionState',
-    stationId: '1.203.4.245',
+    stationId: toggleMock ? 'poc_station' : '1.203.4.245',
   };
 
   useEffect(() => {
-    if (isConnected === true) {
+    if (isConnected === true || toggleMock) {
       sendMessage(message);
     }
-  }, [isConnected]);
+  }, [isConnected, toggleMock]);
 
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
 

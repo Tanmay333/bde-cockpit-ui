@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { IonPage, IonContent } from '@ionic/react';
+import { IonPage, IonContent, IonToggle, IonText } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { useAppSelector } from '../store/utils/hooks';
+import { useAppDispatch, useAppSelector } from '../store/utils/hooks';
 import Header from '../components/common/header/Header';
 import OrderInfoCard from '../components/orderInfoCard/OrderInfoCard';
 import WorkDetails from '../components/orderDetails/OrderDetails';
@@ -10,9 +10,12 @@ import PhaseDetails from '../components/phaseDetails/PhaseDetails';
 import SplashScreen from '../components/splashScreen/SplashScreen';
 import styles from './Home.module.scss';
 import Buttons from '../components/common/buttons/Buttons';
+import { toggleMockData } from '../store/slices/mockData.slice';
 
 const Home: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  const toggleMock = useAppSelector((state) => state.mockData.data);
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const [timeLeft, setTimeLeft] = useState(5);
 
@@ -58,9 +61,21 @@ const Home: React.FC = () => {
     return <SplashScreen />;
   }
 
+  const handleToggleChange = (event: any) => {
+    dispatch(toggleMockData(event.detail.checked));
+  };
+
   return (
     <IonPage>
       <Header />
+      <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
+        <IonText>Toggle</IonText>
+        <IonToggle
+          checked={toggleMock}
+          onIonChange={handleToggleChange}
+          color="primary"
+        />
+      </div>
       <IonContent>
         <OrderInfoCard />
         <Phase />
