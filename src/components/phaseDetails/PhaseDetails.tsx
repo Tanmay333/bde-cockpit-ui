@@ -149,7 +149,7 @@ const PhaseDetails: React.FC = () => {
       phaseName === 'cleaning' &&
       state?.process.currentPhaseDetails.state === 'RUNNING'
     ) {
-      return [{ label: 'Start time', value: startTime() }];
+      return [{ label: translation.text.startTime, value: startTime() }];
     }
     if (
       phaseName === 'cleaning' &&
