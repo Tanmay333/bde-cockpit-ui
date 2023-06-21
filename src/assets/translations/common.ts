@@ -17,6 +17,7 @@ interface MachineStatus {
 }
 
 interface Buttons {
+  toggle: string;
   scanBarCode: string;
   confirmDetails: string;
   scanAgain: string;

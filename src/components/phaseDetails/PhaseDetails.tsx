@@ -70,7 +70,7 @@ const PhaseDetails: React.FC = () => {
         <Fragment key={index}>
           <div className={styles.reason}>
             <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
-            {translation.text.pauseAt} {pauseTime} : {item.reason}
+            {translation.text.pauseAt} {pauseTime}: {item.reason}
           </div>
           <div className={styles.reason}>
             <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
@@ -170,7 +170,7 @@ const PhaseDetails: React.FC = () => {
         position={'start'}
         style={{ overflow: 'auto' }}
       >
-        <IonCardContent style={{ fontSize: '16px !important' }}>
+        <IonCardContent>
           {state && state.process.currentPhaseDetails.phaseName === null ? (
             <>
               <div className={styles.reason} key={'stTime'}>

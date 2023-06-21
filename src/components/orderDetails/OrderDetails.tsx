@@ -104,12 +104,12 @@ const OrderDetails: React.FC = () => {
     <CardContainer title={translation.text.orderDetails} position="start">
       <IonCardContent>
         <div className={styles.order}>
-          <p>
-            {translation.text.orderNumber}: {data.orderId}{' '}
-          </p>
-          <p>
+          <span>
+            {translation.text.orderNumber}: {data.orderId} <br />
+          </span>
+          <span>
             {translation.text.orderQuantity}: {data.quantity}
-          </p>
+          </span>
         </div>
         {isPhasePreparing() && (
           <IonRow className={styles.worker}>

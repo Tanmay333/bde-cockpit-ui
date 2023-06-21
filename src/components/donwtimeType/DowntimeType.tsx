@@ -104,8 +104,7 @@ const DowntimeType: React.FC = () => {
         <div className={styles.statement}>
           <div className={styles.title}>
             <p>
-              {translation.text.downtimeAt}
-              {downTimesData}
+              {translation.text.downtimeAt} {downTimesData}
             </p>
           </div>
           <div>

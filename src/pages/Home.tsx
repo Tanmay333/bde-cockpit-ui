@@ -11,8 +11,11 @@ import SplashScreen from '../components/splashScreen/SplashScreen';
 import styles from './Home.module.scss';
 import Buttons from '../components/common/buttons/Buttons';
 import { toggleMockData } from '../store/slices/mockData.slice';
+import { useTranslations } from '../store/slices/translation.slice';
 
 const Home: React.FC = () => {
+  const translation = useTranslations();
+
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const toggleMock = useAppSelector((state) => state.mockData.data);
   const dispatch = useAppDispatch();
@@ -69,7 +72,7 @@ const Home: React.FC = () => {
     <IonPage>
       <Header />
       <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
-        <IonText>Toggle</IonText>
+        <IonText>{translation.buttons.toggle}</IonText>
         <IonToggle
           checked={toggleMock}
           onIonChange={handleToggleChange}

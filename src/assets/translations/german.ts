@@ -11,6 +11,7 @@ export const germanTranslations: Translations = {
   },
 
   buttons: {
+    toggle: 'Umschalten',
     scanBarCode: 'Barcode scannen ',
     confirmDetails: 'Details bestätigen ',
     scanAgain: 'Erneut scannen ',
