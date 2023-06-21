@@ -44,6 +44,7 @@ export const englishTranslations: Translations = {
     members: 'Members',
     enterOrderQuantity: 'Enter order quantity',
     orderDetails: 'Order details',
+    phaseDetails: 'Phase details',
     hrs: 'hrs',
     machine: 'Machine',
   },

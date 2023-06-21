@@ -175,6 +175,122 @@ const ProgressBar: React.FC = () => {
     }
   }, [startorder]);
 
+  // const [value, setValue] = useState(false); // Initial value
+
+  // useEffect(() => {
+  //   // Toggles the value every 5 seconds
+  //   const interval = setInterval(() => {
+  //     setValue((prevValue) => !prevValue); // Toggle the value
+  //   }, 5000); // 5000 milliseconds = 5 seconds
+
+  //   return () => {
+  //     clearInterval(interval); // Clean up the interval when the component unmounts
+  //   };
+  // });
+  // console.log(value, '12');
+  const [diff, setDiff] = useState<any>();
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (state === null) {
+        return;
+      }
+      if (
+        state.process.currentPhaseDetails.state === 'FINISHED' &&
+        state.process.previousPhases &&
+        state.process.previousPhases[2].downtimes
+      ) {
+        const startTimeOfProd = state.process.currentPhaseDetails.startTime;
+        const startTimeOfFirstDowntime =
+          state.process.previousPhases[2].downtimes[0].startTime;
+        const stPr =
+          startTimeOfProd === null
+            ? 0
+            : new Date(startTimeOfProd).getTime() / 1000;
+        const stDt =
+          startTimeOfFirstDowntime === null
+            ? 0
+            : new Date(startTimeOfFirstDowntime).getTime() / 1000;
+        const firstObjectOfArray = { progress: stDt - stPr, value: '#2AD127' };
+        const downtimes = state.process.previousPhases[2].downtimes;
+        const differences = [];
+
+        for (let i = 0; i < downtimes.length; i++) {
+          const downtime = downtimes[i];
+          const st = downtime.startTime === null ? 0 : downtime.startTime;
+          const et = downtime.endTime === null ? 0 : downtime.endTime;
+          const duration =
+            new Date(et).getTime() / 1000 - new Date(st).getTime() / 1000;
+
+          if (i > 0) {
+            const previousDowntime = downtimes[i - 1];
+            const st = downtime.startTime === null ? 0 : downtime.startTime;
+            const prevT =
+              previousDowntime.endTime === null ? 0 : previousDowntime.endTime;
+            const progress =
+              new Date(st).getTime() / 1000 - new Date(prevT).getTime() / 1000;
+            const timeGapObj = { progress, value: '#2AD127' };
+            differences.push(timeGapObj);
+          }
+
+          const durationObj = { progress: duration, value: '#E20031' };
+          differences.push(durationObj);
+        }
+        differences.unshift(firstObjectOfArray);
+        setDiff(differences);
+      } else if (
+        state.process.currentPhaseDetails.downtimes.length !== 0 ||
+        state.process.currentPhaseDetails.startTime !== null
+      ) {
+        const startTimeOfProd = state.process.currentPhaseDetails.startTime;
+        const startTimeOfFirstDowntime =
+          state.process.currentPhaseDetails.downtimes[0].startTime;
+        const stPr =
+          startTimeOfProd === null
+            ? new Date().getTime() / 1000
+            : new Date(startTimeOfProd).getTime() / 1000;
+        const stDt =
+          startTimeOfFirstDowntime === null
+            ? new Date().getTime() / 1000
+            : new Date(startTimeOfFirstDowntime).getTime() / 1000;
+        const firstObjectOfArray = { progress: stDt - stPr, value: '#2AD127' };
+        const downtimes = state.process.currentPhaseDetails.downtimes;
+        const differences = [];
+
+        for (let i = 0; i < downtimes.length; i++) {
+          const downtime = downtimes[i];
+          const st = downtime.startTime === null ? 0 : downtime.startTime;
+          const et = downtime.endTime === null ? 0 : downtime.endTime;
+          const duration =
+            new Date(et).getTime() / 1000 - new Date(st).getTime() / 1000;
+
+          if (i > 0) {
+            const previousDowntime = downtimes[i - 1];
+            const st = downtime.startTime === null ? 0 : downtime.startTime;
+            const prevT =
+              previousDowntime.endTime === null ? 0 : previousDowntime.endTime;
+            const progress =
+              new Date(st).getTime() / 1000 - new Date(prevT).getTime() / 1000;
+            const timeGapObj = { progress, value: '#2AD127' };
+            differences.push(timeGapObj);
+          }
+
+          const durationObj = { progress: duration, value: '#E20031' };
+          differences.push(durationObj);
+        }
+        differences.unshift(firstObjectOfArray);
+        setDiff(differences);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [state]);
+
+  useEffect(() => {
+    if (startorder && startorder.data === true) {
+      setDiff([]);
+    }
+  }, [startorder]);
+
   return (
     <div
       ref={progressRef}
@@ -185,20 +301,21 @@ const ProgressBar: React.FC = () => {
         display: 'flex',
       }}
     >
-      {items.map((data) => (
-        <div
-          className={styles.progressBar}
-          key={data.index}
-          style={{
-            width: data.progress / 20 + '%',
-            height: '100%',
-            backgroundColor: data.value,
-            transition: 'width 0.2s',
-            position: 'relative',
-            display: 'flex',
-          }}
-        ></div>
-      ))}
+      {diff &&
+        diff.map((data: any, index: number) => (
+          <div
+            className={styles.progressBar}
+            key={index}
+            style={{
+              width: data.progress + '%',
+              height: '100%',
+              backgroundColor: data.value,
+              transition: 'width 0.2s',
+              position: 'relative',
+              display: 'flex',
+            }}
+          ></div>
+        ))}
     </div>
   );
 };

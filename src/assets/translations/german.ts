@@ -44,6 +44,7 @@ export const germanTranslations: Translations = {
     members: 'Mitarbeiter',
     enterOrderQuantity: 'Auftragsdetails bearbeiten ',
     orderDetails: 'Auftragsdetails ',
+    phaseDetails: 'Details Phase',
     hrs: 'Stunden',
     machine: 'Maschine ',
   },

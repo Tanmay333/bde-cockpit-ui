@@ -101,7 +101,7 @@ const OrderInfoCard: React.FC = () => {
     const interval = setInterval(() => {
       const result = totalTimeOfJobProcess();
       setStartTimeOfProcess(result);
-    }, 5000);
+    }, 1000);
 
     return () => {
       clearInterval(interval);
@@ -138,7 +138,7 @@ const OrderInfoCard: React.FC = () => {
     const interval = setInterval(() => {
       setCurrentPhaseTime(currentPhaseTime());
       setCurrentPhaseName(currentPhaseName());
-    }, 5000);
+    }, 1000);
 
     return () => {
       clearInterval(interval);
@@ -183,7 +183,7 @@ const OrderInfoCard: React.FC = () => {
         currentPhaseName: currentPhaseName || 'N/A',
         currentPhaseTime: currentPhaseTime || '00:00',
       });
-    }, 5000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [
@@ -214,7 +214,9 @@ const OrderInfoCard: React.FC = () => {
       </IonCardHeader>
       <IonCardContent>
         <div>
-          <IonCardTitle>{data.startTimeOfCompleteProcess} hrs</IonCardTitle>
+          <IonCardTitle>
+            {data.startTimeOfCompleteProcess} {translation.text.hrs}
+          </IonCardTitle>
           <IonCardSubtitle>{translation.text.today}</IonCardSubtitle>
         </div>
         <div>

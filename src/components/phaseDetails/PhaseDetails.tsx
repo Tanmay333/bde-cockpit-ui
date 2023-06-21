@@ -168,7 +168,7 @@ const PhaseDetails: React.FC = () => {
   return (
     <>
       <CardContainer
-        title="Phase details"
+        title={translation.text.phaseDetails}
         position={'start'}
         style={{ overflow: 'auto' }}
       >

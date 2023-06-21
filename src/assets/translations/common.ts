@@ -16,15 +16,6 @@ interface MachineStatus {
   off: string;
 }
 
-interface Description {
-  mounting: string;
-  preparing: string;
-  production: string;
-  unmounting: string;
-  cleaning: string;
-
-}
-
 interface Buttons {
   scanBarCode: string;
   confirmDetails: string;
@@ -38,7 +29,6 @@ interface Buttons {
   editOrderDetails: string;
   startNewOrder: string;
   editMemberDetails: string;
-
 }
 
 interface Text {
@@ -57,6 +47,7 @@ interface Text {
   members: string;
   enterOrderQuantity: string;
   orderDetails: string;
+  phaseDetails: string;
   hrs: string;
   machine: string;
 }
@@ -67,7 +58,6 @@ interface Reasons {
   sickLeave: string;
   teamMeeting: string;
   urgentCall: string;
-
 }
 
 export interface Translations {
@@ -76,4 +66,3 @@ export interface Translations {
   text: Text;
   reason: Reasons;
 }
-
