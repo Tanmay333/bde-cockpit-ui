@@ -54,7 +54,14 @@ const App: React.FC = () => {
   }, [isConnected]);
 
   return (
-    <IonApp>
+    <IonApp
+      style={{
+        width: 1400,
+        display: 'flex',
+        justifyContent: 'center',
+        margin: '0 auto',
+      }}
+    >
       <IonPage id="main-content">
         <IonRouterOutlet>
           <Route path={urls.root} component={Home} />

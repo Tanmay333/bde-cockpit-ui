@@ -111,7 +111,7 @@ const OrderInfoCard: React.FC = () => {
   useEffect(() => {
     const currentPhaseName = () => {
       if (!state?.process?.currentPhaseDetails?.phaseName) {
-        return 'N/A';
+        return 'NA';
       }
 
       return state.process.currentPhaseDetails.phaseName;
@@ -199,7 +199,6 @@ const OrderInfoCard: React.FC = () => {
     state.process &&
     state.process.currentPhaseDetails &&
     state.process.currentPhaseDetails.state === 'FINISHED';
-
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader>
@@ -207,7 +206,7 @@ const OrderInfoCard: React.FC = () => {
           {translation.text.order}: {data.orderId}
         </IonCardTitle>
         <IonCardSubtitle>
-          {translation.text.machine}
+          {translation.text.machine}{' '}
           {data.machineStatus === 'RUNNING'
             ? translation.text.machineStatus.on
             : translation.text.machineStatus.off}
