@@ -74,6 +74,7 @@ const Home: React.FC = () => {
       <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
         <IonText>{translation.buttons.toggle}</IonText>
         <IonToggle
+          style={{ margin: 20 }}
           checked={toggleMock}
           onIonChange={handleToggleChange}
           color="primary"
