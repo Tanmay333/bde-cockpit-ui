@@ -11,7 +11,8 @@ export const englishTranslations: Translations = {
   },
 
   buttons: {
-    toggle: 'Toggle',
+    realMachine: 'Ovalläufer 3',
+    mockMachine: 'Mock Machine',
     scanBarCode: 'Scan bar-code',
     confirmDetails: 'Confirm details',
     scanAgain: 'Scan again',

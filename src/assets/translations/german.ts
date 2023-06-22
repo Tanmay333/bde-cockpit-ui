@@ -11,7 +11,8 @@ export const germanTranslations: Translations = {
   },
 
   buttons: {
-    toggle: 'Umschalten',
+    realMachine: 'Ovalläufer 3',
+    mockMachine: 'Test-Anlage',
     scanBarCode: 'Barcode scannen ',
     confirmDetails: 'Details bestätigen ',
     scanAgain: 'Erneut scannen ',

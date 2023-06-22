@@ -17,7 +17,8 @@ interface MachineStatus {
 }
 
 interface Buttons {
-  toggle: string;
+  realMachine: string;
+  mockMachine: string;
   scanBarCode: string;
   confirmDetails: string;
   scanAgain: string;
