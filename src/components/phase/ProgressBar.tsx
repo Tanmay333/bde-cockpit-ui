@@ -5,6 +5,7 @@ import styles from './Phase.module.scss';
 const ProgressBar: React.FC = () => {
   const [progressProduction, setProgressProduction] = useState(0);
   const [progressDowntime, setProgressDowntime] = useState(0);
+
   const [mode, setMode] = useState('production');
   const toggleMock = useAppSelector((state) => state.mockData.data);
 
@@ -28,8 +29,6 @@ const ProgressBar: React.FC = () => {
     // Save the items to localStorage
     localStorage.setItem('progressItems', JSON.stringify(items));
   }, [items]);
-
-  //const [index, setIndex] = useState(1);
 
   const [index, setIndex] = useState(() => {
     const savedItems = localStorage.getItem('progressItems');
@@ -56,6 +55,9 @@ const ProgressBar: React.FC = () => {
     const parsedItems = savedItems ? JSON.parse(savedItems) : [];
     setItems(parsedItems);
 
+    // localStorage.setItem('progressProduction', progressProduction.toString());
+    // localStorage.setItem('progressDowntime', progressDowntime.toString());
+
     if (
       state.process &&
       state.process.currentPhaseDetails &&
@@ -80,7 +82,7 @@ const ProgressBar: React.FC = () => {
           );
           return newProgress;
         });
-      }, 100);
+      }, 1000);
     } else if (
       (state.process &&
         state.process.currentPhaseDetails &&
@@ -125,27 +127,25 @@ const ProgressBar: React.FC = () => {
           state.process.currentPhaseDetails.state === 'DOWNTIME' &&
           unknownEvent
         ) {
-          {
-            if (mode === 'production') {
-              setMode('DOWNTIME');
-            }
-            const newItem = { index: index, value: '#E20031', progress: 0 };
-            setItems((prevItems) => [...prevItems, newItem]);
-            setIndex((prevIndex: number) => prevIndex + 1);
-            setProgressDowntime(0); // Reset progressB to 0
-            timerRefDowntime.current = window.setInterval(() => {
-              setProgressDowntime((prevProgress) => {
-                const newProgress = prevProgress + 1;
-                newItem.progress = newProgress;
-                setItems((prevItems) =>
-                  prevItems.map((item) =>
-                    item.index === newItem.index ? newItem : item,
-                  ),
-                );
-                return newProgress;
-              });
-            }, 100);
+          if (mode === 'production') {
+            setMode('DOWNTIME');
           }
+          const newItem = { index: index, value: '#E20031', progress: 0 };
+          setItems((prevItems) => [...prevItems, newItem]);
+          setIndex((prevIndex: number) => prevIndex + 1);
+          setProgressDowntime(0);
+          timerRefDowntime.current = window.setInterval(() => {
+            setProgressDowntime((prevProgress) => {
+              const newProgress = prevProgress + 1;
+              newItem.progress = newProgress;
+              setItems((prevItems) =>
+                prevItems.map((item) =>
+                  item.index === newItem.index ? newItem : item,
+                ),
+              );
+              return newProgress;
+            });
+          }, 1000);
         } else if (
           (state.process &&
             state.process.currentPhaseDetails &&
@@ -168,16 +168,18 @@ const ProgressBar: React.FC = () => {
   const startorder = useAppSelector((state) => state.startneworderslice);
 
   useEffect(() => {
-    const savedItems = localStorage.getItem('progressItems');
-    const parsedItems = savedItems ? JSON.parse(savedItems) : [];
-    setItems(parsedItems);
+    // const savedItems = localStorage.getItem('progressItems');
+    // const parsedItems = savedItems ? JSON.parse(savedItems) : [];
+    // setItems(parsedItems);
 
     if (startorder && startorder.data === true) {
       setItems([]);
     }
   }, [startorder]);
 
-  const [diff, setDiff] = useState<any>();
+  //const [diff, setDiff] = useState<any>();
+  const [diff, setDiff] = useState<{ progress: number; value: string }[]>([]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (state === null) {
@@ -187,13 +189,20 @@ const ProgressBar: React.FC = () => {
         state.process.previousPhases.length >= 3 &&
         state.process.previousPhases[2].downtimes
       ) {
-        const startTimeOfProd = state.process.currentPhaseDetails.startTime;
+        //const startTimeOfProd = state.process.currentPhaseDetails.startTime;
+        const startTimeOfProd =
+          state.process.currentPhaseDetails.phaseName === 'production'
+            ? state.process.currentPhaseDetails.startTime
+            : state.process.previousPhases.find(
+                (phase) => phase.phaseName === 'production',
+              )?.startTime;
+
         const startTimeOfFirstDowntime =
           state.process.previousPhases[2].downtimes[0].startTime;
-        const stPr =
-          startTimeOfProd === null
-            ? 0
-            : new Date(startTimeOfProd).getTime() / 1000;
+        const stPr = //startTimeOfProd === null;
+          startTimeOfProd !== undefined
+            ? new Date(startTimeOfProd ?? '').getTime() / 1000
+            : 0;
         const stDt =
           startTimeOfFirstDowntime === null
             ? 0
@@ -224,6 +233,7 @@ const ProgressBar: React.FC = () => {
           differences.push(durationObj);
         }
         differences.unshift(firstObjectOfArray);
+        differences.pop();
         setDiff(differences);
       } else if (state.process.currentPhaseDetails.downtimes.length !== 0) {
         const startTimeOfProd = state.process.currentPhaseDetails.startTime;
@@ -264,6 +274,7 @@ const ProgressBar: React.FC = () => {
           differences.push(durationObj);
         }
         differences.unshift(firstObjectOfArray);
+        differences.pop();
         setDiff(differences);
       }
     }, 1000);
@@ -286,13 +297,48 @@ const ProgressBar: React.FC = () => {
 
   useEffect(() => {
     if (
-      (state && state.process.currentPhaseDetails.phaseName !== 'production') ||
-      (state && state.process.currentPhaseDetails.phaseName !== 'unmounting') ||
-      (state && state.process.currentPhaseDetails.phaseName !== 'cleaning')
+      state &&
+      state.process.currentPhaseDetails.phaseName !== 'production' &&
+      state &&
+      state.process.currentPhaseDetails.phaseName !== 'unmounting' &&
+      state &&
+      state.process.currentPhaseDetails.phaseName !== 'cleaning'
     ) {
       setDiff([]);
     } else return;
   }, [state && state.process.currentPhaseDetails.phaseName]);
+
+  useEffect(() => {
+    if (state && state.process.currentPhaseDetails.phaseName === 'unmounting') {
+      const updatedItems = items.slice(0, -1);
+      setItems(updatedItems);
+    } else return;
+  }, [state]);
+
+  useEffect(() => {
+    const savedItems = localStorage.getItem('updatedItems');
+    if (savedItems) {
+      setItems(JSON.parse(savedItems));
+    } else {
+      setItems([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Save the items to localStorage
+    localStorage.setItem('updatedItems', JSON.stringify(items));
+  }, [items]);
+
+  useEffect(() => {
+    if (
+      state?.process.currentPhaseDetails.phaseName === 'mounting' ||
+      state?.process.currentPhaseDetails.phaseName === 'preparing' ||
+      state?.process.currentPhaseDetails.phaseName === 'unmounting' ||
+      state?.process.currentPhaseDetails.phaseName === 'cleaning'
+    ) {
+      setItems([]);
+    }
+  }, [state?.process.currentPhaseDetails.phaseName]);
 
   return (
     <div
@@ -304,13 +350,21 @@ const ProgressBar: React.FC = () => {
         display: 'flex',
       }}
     >
-      {diff &&
-        diff.map((data: any, index: number) => (
+      {items.map((data) => {
+        // if (
+        //   data.value === '#E20031' &&
+        //   data.progress < 10 &&
+        //   mode !== 'DOWNTIME'
+        // ) {
+        //   return null;
+        // }
+
+        return (
           <div
             className={styles.progressBar}
-            key={index}
+            key={data.index}
             style={{
-              width: data.progress / 30 + '%',
+              width: data.progress + '%',
               height: '100%',
               backgroundColor: data.value,
               transition: 'width 0.2s',
@@ -318,7 +372,35 @@ const ProgressBar: React.FC = () => {
               display: 'flex',
             }}
           ></div>
-        ))}
+        );
+      })}
+
+      {items.length < 1 &&
+        diff &&
+        diff.map((data, index: number) => {
+          // if (
+          //   data.value === '#E20031' &&
+          //   data.progress < 10 &&
+          //   mode !== 'DOWNTIME'
+          // ) {
+          //   return null;
+          // }
+
+          return (
+            <div
+              key={index}
+              className={styles.progressBar}
+              style={{
+                width: data.progress + '%',
+                height: '100%',
+                backgroundColor: data.value,
+                transition: 'width 0.2s',
+                position: 'relative',
+                display: 'flex',
+              }}
+            ></div>
+          );
+        })}
     </div>
   );
 };
