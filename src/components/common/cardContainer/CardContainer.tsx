@@ -24,12 +24,14 @@ const CardContainer: React.FC<Props> = ({
         style={style}
         className={getPosition(position) ? styles.start : styles.center}
       >
+        <div className={styles.border}></div>
         {title && (
           <IonCardHeader>
             <IonCardTitle
               style={{
                 fontSize: '28px',
                 fontWeight: '700',
+                top: '0',
               }}
             >
               {title}

@@ -157,7 +157,7 @@ const ConfirmOrderDetails: React.FC = () => {
                   min="0"
                   onKeyDown={handleKeyPress}
                   onChange={onChangeQuantity}
-                  placeholder="Enter order quantity"
+                  placeholder={translation.text.enterOrderQuantity}
                   required
                 />
               </p>

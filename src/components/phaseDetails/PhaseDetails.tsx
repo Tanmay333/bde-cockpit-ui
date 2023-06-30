@@ -72,10 +72,12 @@ const PhaseDetails: React.FC = () => {
             <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
             {translation.text.pauseAt} {pauseTime}: {item.reason}
           </div>
-          <div className={styles.reason}>
-            <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
-            {translation.text.resumeAt}: {resumeTime}
-          </div>
+          {state.process.currentPhaseDetails.downtimes !== null && (
+            <div className={styles.reason}>
+              <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
+              {translation.text.resumeAt}: {resumeTime}
+            </div>
+          )}
         </Fragment>,
       );
     });
@@ -165,11 +167,7 @@ const PhaseDetails: React.FC = () => {
 
   return (
     <>
-      <CardContainer
-        title={translation.text.phaseDetails}
-        position={'start'}
-        style={{ overflow: 'auto' }}
-      >
+      <CardContainer title={translation.text.phaseDetails} position={'start'}>
         <IonCardContent>
           {state && state.process.currentPhaseDetails.phaseName === null ? (
             <>
@@ -194,40 +192,54 @@ const PhaseDetails: React.FC = () => {
             </>
           ) : null}
 
-          {state &&
-          state.process.currentPhaseDetails.phaseName === 'production' ? (
-            <>
-              <div className={styles.reason} key={'stTime'}>
-                <img
-                  src={bulletpoint}
-                  alt={'bullet'}
-                  className={styles.bullet}
-                />
-                {translation.text.startTime}:
-                {formatTime(state.process.currentPhaseDetails.startTime)}
-              </div>
-              {downtimeReasonsList()}
-            </>
-          ) : (
-            phaseDescription().map(
-              (
-                item: {
-                  label: any;
-                  value: any;
-                },
-                index: Key | null | undefined,
-              ) => (
-                <div key={index} className={styles.reason}>
+          <div
+            style={{
+              height: '225px',
+              overflow: 'scroll',
+            }}
+          >
+            <style>
+              {`
+                ::-webkit-scrollbar {
+                  display: none;
+                }
+              `}
+            </style>
+            {state &&
+            state.process.currentPhaseDetails.phaseName === 'production' ? (
+              <>
+                <div className={styles.reason} key={'stTime'}>
                   <img
                     src={bulletpoint}
                     alt={'bullet'}
                     className={styles.bullet}
                   />
-                  {`${item.label} : ${item.value}`}
+                  {translation.text.startTime}:
+                  {formatTime(state.process.currentPhaseDetails.startTime)}
                 </div>
-              ),
-            )
-          )}
+                {downtimeReasonsList()}
+              </>
+            ) : (
+              phaseDescription().map(
+                (
+                  item: {
+                    label: any;
+                    value: any;
+                  },
+                  index: Key | null | undefined,
+                ) => (
+                  <div key={index} className={styles.reason}>
+                    <img
+                      src={bulletpoint}
+                      alt={'bullet'}
+                      className={styles.bullet}
+                    />
+                    {`${item.label} : ${item.value}`}
+                  </div>
+                ),
+              )
+            )}
+          </div>
         </IonCardContent>
       </CardContainer>
     </>
