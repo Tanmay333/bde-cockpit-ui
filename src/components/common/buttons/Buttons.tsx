@@ -14,16 +14,6 @@ const Buttons = () => {
   const history = useHistory();
   const [startNewOrder, setStartNewOrder] = useState(false);
 
-  useEffect(() => {
-    const storedValue = localStorage.getItem('startNewOrder');
-    const parsedValue = storedValue ? JSON.parse(storedValue) : false;
-    setStartNewOrder(parsedValue);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('startNewOrder', JSON.stringify(startNewOrder));
-  }, [startNewOrder]);
-
   const onClick = useCallback(() => {
     const updatedValue = !startNewOrder;
     setStartNewOrder(updatedValue);
