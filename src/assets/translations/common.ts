@@ -17,8 +17,7 @@ interface MachineStatus {
 }
 
 interface Buttons {
-  realMachine: string;
-  mockMachine: string;
+  toggle: string;
   scanBarCode: string;
   confirmDetails: string;
   scanAgain: string;
@@ -55,11 +54,11 @@ interface Text {
 }
 
 interface Reasons {
-  machineIssue: string;
-  lunchBreak: string;
-  sickLeave: string;
-  teamMeeting: string;
-  urgentCall: string;
+  mechanicalIncident: string;
+  electricalIncident: string;
+  misuse: string;
+  defectiveFillingMaterial: string;
+  otherIncident: string;
 }
 
 export interface Translations {

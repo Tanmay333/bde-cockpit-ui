@@ -11,8 +11,7 @@ export const englishTranslations: Translations = {
   },
 
   buttons: {
-    realMachine: 'Ovalläufer 3',
-    mockMachine: 'Mock Machine',
+    toggle: 'Toggle',
     scanBarCode: 'Scan bar-code',
     confirmDetails: 'Confirm details',
     scanAgain: 'Scan again',
@@ -52,11 +51,11 @@ export const englishTranslations: Translations = {
   },
 
   reason: {
-    machineIssue: 'Machine issue',
-    lunchBreak: 'Lunch break',
-    sickLeave: 'Sick leave',
-    teamMeeting: 'Team meeting',
-    urgentCall: 'Urgent call',
+    mechanicalIncident: 'Mechanical Incident',
+    electricalIncident: 'Electrical Incident',
+    misuse: 'Misuse',
+    defectiveFillingMaterial: 'Defective Filling Material',
+    otherIncident: 'Other Incident',
   },
 };
 

@@ -11,8 +11,7 @@ export const germanTranslations: Translations = {
   },
 
   buttons: {
-    realMachine: 'Ovalläufer 3',
-    mockMachine: 'Test-Anlage',
+    toggle: 'Umschalten',
     scanBarCode: 'Barcode scannen ',
     confirmDetails: 'Details bestätigen ',
     scanAgain: 'Erneut scannen ',
@@ -52,11 +51,11 @@ export const germanTranslations: Translations = {
   },
 
   reason: {
-    machineIssue: 'Maschinenproblem',
-    lunchBreak: 'Mittagspause ',
-    sickLeave: ' Krankheit',
-    teamMeeting: ' Team-Meeting ',
-    urgentCall: 'Wichtiger Anruf  ',
+    mechanicalIncident: 'Mechanische Störung ',
+    electricalIncident: 'Elektrische Störung ',
+    misuse: 'Fehlbedienung',
+    defectiveFillingMaterial: 'Fehlerhaftes Füllgut',
+    otherIncident: 'Sonstige Störung',
   },
 };
 

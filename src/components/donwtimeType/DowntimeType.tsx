@@ -12,19 +12,19 @@ const DowntimeType: React.FC = () => {
 
   const Downtimereason = [
     {
-      reason: translation.reason.machineIssue,
+      reason: translation.reason.mechanicalIncident,
     },
     {
-      reason: translation.reason.lunchBreak,
+      reason: translation.reason.electricalIncident,
     },
     {
-      reason: translation.reason.sickLeave,
+      reason: translation.reason.misuse,
     },
     {
-      reason: translation.reason.teamMeeting,
+      reason: translation.reason.defectiveFillingMaterial,
     },
     {
-      reason: translation.reason.urgentCall,
+      reason: translation.reason.otherIncident,
     },
   ];
 

@@ -72,11 +72,7 @@ const Home: React.FC = () => {
     <IonPage>
       <Header />
       <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
-        <IonText>
-          {toggleMock
-            ? translation.buttons.realMachine
-            : translation.buttons.mockMachine}
-        </IonText>
+        <IonText>{translation.buttons.toggle}</IonText>
         <IonToggle
           style={{ margin: 20 }}
           checked={toggleMock}
