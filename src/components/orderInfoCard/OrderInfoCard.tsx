@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   IonCard,
   IonCardContent,
@@ -199,6 +199,11 @@ const OrderInfoCard: React.FC = () => {
     state.process &&
     state.process.currentPhaseDetails &&
     state.process.currentPhaseDetails.state === 'FINISHED';
+
+  const station = useMemo(() => {
+    return state === null ? 'N/A' : state.station.mainSpeed;
+  }, [state]);
+
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader>
@@ -211,6 +216,7 @@ const OrderInfoCard: React.FC = () => {
             ? translation.text.machineStatus.on
             : translation.text.machineStatus.off}
         </IonCardSubtitle>
+        <IonCardSubtitle>Machine speed: {station} rpm</IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent>
         <div>
