@@ -55,9 +55,6 @@ const ProgressBar: React.FC = () => {
     const parsedItems = savedItems ? JSON.parse(savedItems) : [];
     setItems(parsedItems);
 
-    // localStorage.setItem('progressProduction', progressProduction.toString());
-    // localStorage.setItem('progressDowntime', progressDowntime.toString());
-
     if (
       state.process &&
       state.process.currentPhaseDetails &&
@@ -166,18 +163,12 @@ const ProgressBar: React.FC = () => {
   }, [state]);
 
   const startorder = useAppSelector((state) => state.startneworderslice);
-
   useEffect(() => {
-    // const savedItems = localStorage.getItem('progressItems');
-    // const parsedItems = savedItems ? JSON.parse(savedItems) : [];
-    // setItems(parsedItems);
-
     if (startorder && startorder.data === true) {
       setItems([]);
     }
   }, [startorder]);
 
-  //const [diff, setDiff] = useState<any>();
   const [diff, setDiff] = useState<{ progress: number; value: string }[]>([]);
 
   useEffect(() => {
@@ -351,14 +342,6 @@ const ProgressBar: React.FC = () => {
       }}
     >
       {items.map((data) => {
-        // if (
-        //   data.value === '#E20031' &&
-        //   data.progress < 10 &&
-        //   mode !== 'DOWNTIME'
-        // ) {
-        //   return null;
-        // }
-
         return (
           <div
             className={styles.progressBar}
@@ -378,14 +361,6 @@ const ProgressBar: React.FC = () => {
       {items.length < 1 &&
         diff &&
         diff.map((data, index: number) => {
-          // if (
-          //   data.value === '#E20031' &&
-          //   data.progress < 10 &&
-          //   mode !== 'DOWNTIME'
-          // ) {
-          //   return null;
-          // }
-
           return (
             <div
               key={index}
