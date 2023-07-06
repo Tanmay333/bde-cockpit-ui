@@ -1,52 +1,53 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { FetchingStatus } from '../../types/common';
-import { fetchData } from '../../integration/workers';
+import { fetchData } from '../../integration/startneworder';
 
-export const SELECT_WORKERS = 'SelectworkersSlice';
+export const START_NEW_ORDER_SLICE = 'startneworderslice';
 
-export interface WorkersDetailsState {
+export interface State {
   status: FetchingStatus;
   error: string | null;
-  data: number | null;
+  data: boolean | null;
 }
 
-const initialState: WorkersDetailsState = {
+const initialState: State = {
   status: FetchingStatus.IDLE,
   error: null,
   data: null,
 };
 
-export const getworkersDetails = createAsyncThunk<number | null, number>(
-  'getworkersDetails',
-  (value: number | null) => {
+export const getData = createAsyncThunk<boolean | null, boolean>(
+  'getData',
+  (value: boolean | null) => {
     return fetchData(value);
   },
 );
 
-const selectWorkersSlice = createSlice({
-  name: SELECT_WORKERS,
+const DataSlice = createSlice({
+  name: START_NEW_ORDER_SLICE,
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(getworkersDetails.pending, (state) => {
+      .addCase(getData.pending, (state) => {
         state.status = FetchingStatus.PENDING;
       })
-      .addCase(getworkersDetails.fulfilled, (state, action) => {
+      .addCase(getData.fulfilled, (state, action) => {
         state.status = FetchingStatus.SUCCESS;
         state.data = action.payload;
       })
-      .addCase(getworkersDetails.rejected, (state, action) => {
+      .addCase(getData.rejected, (state, action) => {
         const requestCancelled = action.meta.aborted;
         if (requestCancelled) {
           return;
         }
         state.status = FetchingStatus.ERROR;
+        state.data = null;
         state.error = action.error.message || 'Something went wrong.';
       });
   },
 });
 
-const { reducer } = selectWorkersSlice;
+const { reducer } = DataSlice;
 
-export const selectWorkersReducer = reducer;
+export const DataReducer = reducer;

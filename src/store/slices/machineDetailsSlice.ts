@@ -1,8 +1,42 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { FetchingStatus } from '../../types/common';
-import { webSocket } from '../../integration/webScokets';
 
 export const MACHINE_DETAILS_KEY = 'machineDetailsSlice';
+const initialData: MachineDetails = {
+  stationId: null,
+  assignedJobDetails: {
+    jobId: null,
+    orderId: null,
+    customer: null,
+    itemId: null,
+    quantity: null,
+    description: null,
+    productionTeamSize: null,
+  },
+  process: {
+    currentPhaseDetails: {
+      phaseName: null,
+      startTime: null,
+      endTime: null,
+      downtimes: [],
+      state: null,
+    },
+    previousPhases: [],
+    producedItems: [
+      {
+        startTime: null,
+        endTime: null,
+        quantity: null,
+        result: null,
+      },
+    ],
+  },
+  station: {
+    stationId: null,
+    mainSpeed: null,
+  },
+  data: undefined
+};
 
 interface AssignedOrderDetails {
   jobId: string | null;
@@ -20,10 +54,10 @@ interface Downtimes {
 }
 interface CurrentPhaseDetails {
   phaseName: string | null;
-  startTime: string;
+  startTime: string | null;
   endTime: string | null;
-  downtimes: Downtimes[] | null;
-  state: string;
+  downtimes: Downtimes[];
+  state: string | null;
 }
 interface PreviousPhases {
   phaseName: string | null;
@@ -42,10 +76,15 @@ interface Process {
   previousPhases: PreviousPhases[];
   producedItems: ProducedItems[] | null;
 }
+interface Station {
+  mainSpeed: number | null;
+  stationId: string | null;
+}
 export interface MachineDetails {
-  stationId: string;
+  data: any;
+  stationId: string | null;
+  station: Station;
   assignedJobDetails: AssignedOrderDetails;
-  assignOrderQuantity: AssignedOrderDetails;
   process: Process;
 }
 
@@ -58,42 +97,8 @@ export interface MachineDetailsState {
 const initialState: MachineDetailsState = {
   status: FetchingStatus.IDLE,
   error: null,
-  data: null,
+  data: initialData,
 };
-const socket = webSocket();
-const ws = socket.init();
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getMachineDetails = createAsyncThunk<MachineDetails, any>(
-  'getMachineDetails',
-  async (message, { dispatch }) => {
-    // Send the message to the opened WebSocket connection
-    ws.send(JSON.stringify(message));
-
-    await new Promise<void>((resolve, reject) => {
-      ws.onmessage = (event) => {
-        const parsedData: MachineDetails = JSON.parse(event.data);
-        if (event.type === 'message') {
-          dispatch(updateMachineDetails(parsedData));
-        }
-      };
-
-      ws.onerror = (error) => {
-        reject(error);
-      };
-
-      // Resolve the promise once the WebSocket connection is open
-      if (ws.readyState === WebSocket.OPEN) {
-        resolve();
-      } else {
-        ws.onopen = () => {
-          resolve();
-        };
-      }
-    });
-
-    return message;
-  },
-);
 
 const machineDetailsSlice = createSlice({
   name: MACHINE_DETAILS_KEY,
@@ -101,27 +106,17 @@ const machineDetailsSlice = createSlice({
   reducers: {
     updateMachineDetails: (state, action: PayloadAction<MachineDetails>) => {
       state.status = FetchingStatus.SUCCESS;
+
       state.data = action.payload;
     },
-  },
-  extraReducers(builder) {
-    builder
-      .addCase(getMachineDetails.pending, (state) => {
-        state.status = FetchingStatus.PENDING;
-      })
-      .addCase(getMachineDetails.rejected, (state, action) => {
-        const requestCancelled = action.meta.aborted;
-        if (requestCancelled) {
-          return;
-        }
-        state.status = FetchingStatus.ERROR;
-        state.data = null;
-        state.error = action.error.message || 'Something went wrong.';
-      });
+
+    StartNewOrder: (state) => {
+      state.data = initialData;
+    },
   },
 });
 
 const { reducer, actions } = machineDetailsSlice;
 
-const { updateMachineDetails } = actions;
+export const { updateMachineDetails, StartNewOrder } = actions;
 export const machineDetailsReducer = reducer;

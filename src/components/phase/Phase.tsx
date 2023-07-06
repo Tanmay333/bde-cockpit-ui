@@ -1,11 +1,18 @@
-import { IonGrid, IonRow, IonCol, IonModal } from '@ionic/react';
-import React, { useCallback, useRef, useState } from 'react';
+import { IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './Phase.module.scss';
+import { useAppSelector } from '../../store/utils/hooks';
+import useWebSocket from '../../store/hooks/useWebSocket';
+import './Phase.module.scss';
+import ProgressBar from './ProgressBar';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const Phase: React.FC = () => {
-  const [downTime, setDownType] = useState(false);
-  const modal = useRef<HTMLIonModalElement>(null);
+  const translation = useTranslations();
+
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  const toggleMock = useAppSelector((state) => state.mockData.data);
   const history = useHistory();
 
   const [showPhase1, setShowPhase1] = useState(true);
@@ -14,61 +21,202 @@ const Phase: React.FC = () => {
   const [showPhase4, setShowPhase4] = useState(false);
   const [showPhase5, setShowPhase5] = useState(false);
 
+  const [phaseOne, setPhaseOne] = useState('#E0E0E0');
   const [phaseTwo, setPhaseTwo] = useState('#E0E0E0');
-  const [phaseThree, setPhaseThree] = useState('#E0E0E0');
+
   const [phaseFour, setPhaseFour] = useState('#E0E0E0');
   const [phaseFive, setPhaseFive] = useState('#E0E0E0');
 
-  const onClickDowntime = useCallback(() => {
-    history.push('/downtimetype');
-  }, [history]);
+  useEffect(() => {
+    if (state === null || state === undefined) {
+      return setPhaseOne('#E0E0E0');
+    }
+    const hasMountingPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'mounting',
+      );
 
-  const onClickPhase2 = useCallback(() => {
-    setShowPhase1(false);
-    setShowPhase2(true);
-    setPhaseTwo('#2799D1');
-    history.push('/SelectWorkers');
-  }, [phaseTwo, history]);
+    if (
+      state.process &&
+      state.process.currentPhaseDetails &&
+      (state.process.currentPhaseDetails.phaseName === 'mounting' ||
+        hasMountingPhase)
+    ) {
+      setPhaseOne('#2799D1');
+      setShowPhase1(true);
+      setShowPhase2(false);
+      setShowPhase3(false);
+      setShowPhase4(false);
+      setShowPhase5(false);
+      setPhaseTwo('#E0E0E0');
+      setPhaseFour('#E0E0E0');
+      setPhaseFive('#E0E0E0');
+    }
 
-  const onClickPhase3 = useCallback(() => {
-    setShowPhase3(true);
-    setShowPhase2(false);
-    setPhaseThree('#2AD127');
-    setDownType(false);
-  }, [phaseThree, history]);
+    const hasPreparationPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'preparing',
+      );
+
+    if (
+      (state.process &&
+        state.process.currentPhaseDetails &&
+        state.process.currentPhaseDetails.phaseName === 'preparing') ||
+      hasPreparationPhase
+    ) {
+      setShowPhase1(false);
+      setShowPhase2(true);
+      setShowPhase3(false);
+      setShowPhase4(false);
+      setShowPhase5(false);
+      setPhaseTwo('#2799D1');
+      setPhaseFour('#E0E0E0');
+      setPhaseFive('#E0E0E0');
+    }
+    const hasProductionPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'production',
+      );
+
+    if (
+      (state.process &&
+        state.process.currentPhaseDetails &&
+        state.process.currentPhaseDetails.phaseName === 'production') ||
+      hasProductionPhase
+    ) {
+      setShowPhase3(true);
+      setShowPhase4(false);
+      setShowPhase5(false);
+      setShowPhase2(false);
+      setShowPhase1(false);
+      setPhaseFour('#E0E0E0');
+      setPhaseFive('#E0E0E0');
+    }
+    const hasUnMountingPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'unmounting',
+      );
+    if (
+      (state.process &&
+        state.process.currentPhaseDetails &&
+        state.process.currentPhaseDetails.phaseName === 'unmounting') ||
+      hasUnMountingPhase
+    ) {
+      setShowPhase3(false);
+      setShowPhase5(false);
+      setShowPhase1(false);
+      setShowPhase2(false);
+
+      setShowPhase4(true);
+      setPhaseFive('#E0E0E0');
+      setPhaseFour('#2799D1');
+    }
+    const hasCleaningPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'cleaning',
+      );
+
+    if (
+      (state.process &&
+        state.process.currentPhaseDetails &&
+        state.process.currentPhaseDetails.phaseName === 'cleaning') ||
+      hasCleaningPhase
+    ) {
+      setShowPhase5(true);
+      setShowPhase4(false);
+      setShowPhase3(false);
+      setShowPhase1(false);
+      setShowPhase2(false);
+      setPhaseFive('#2799D1');
+    }
+  }, [state]);
+
+  const startorder = useAppSelector((state) => state.startneworderslice);
+
+  useEffect(() => {
+    if (startorder === null || startorder === undefined) {
+      return;
+    }
+    if (startorder && startorder.data === true) {
+      {
+        setPhaseOne('#E0E0E0');
+        setPhaseTwo('#E0E0E0');
+        setPhaseFour('#E0E0E0');
+        setPhaseFive('#E0E0E0');
+        setShowPhase1(true);
+        setShowPhase2(false);
+        setShowPhase3(false);
+        setShowPhase4(false);
+        setShowPhase5(false);
+      }
+    }
+  }, [startorder]);
 
   const onClickPhase4 = useCallback(() => {
-    setShowPhase3(false);
-    setShowPhase4(true);
-    setPhaseFour('#2799D1');
     history.push('/');
-  }, [phaseFour, history]);
+  }, [history]);
 
   const onClickPhase5 = useCallback(() => {
-    setShowPhase5(true);
-    setShowPhase4(false);
-    setPhaseFive('#2799D1');
     history.push('/');
-  }, [phaseFive, history]);
+  }, [history]);
+
+  const { sendMessage } = useWebSocket();
+
+  if (state === null || state === undefined) {
+    return null;
+  }
+
+  const jobId = state && state.assignedJobDetails.jobId;
+  const startProduction = useCallback(() => {
+    if (jobId === null) {
+      return null;
+    }
+    const message = {
+      action: 'startProduction',
+      jobId: jobId,
+    };
+    sendMessage(message);
+  }, [jobId]);
+
+  const startDowntime = useCallback(() => {
+    const message = {
+      action: 'toggleDowntime',
+      jobId: jobId,
+    };
+    sendMessage(message);
+
+    history.push('/');
+  }, [jobId]);
 
   return (
     <IonGrid className={styles.container}>
       <IonCol>
         <IonGrid>
+          {toggleMock ? null : (
+            <>
+              <IonButton onClick={startProduction}>
+                {translation.buttons.production}
+              </IonButton>
+              <IonButton onClick={startDowntime}>
+                {translation.buttons.downTime}
+              </IonButton>
+            </>
+          )}
           <IonRow>
             <div className={styles.idle}>{showPhase1 && <p>Phase 01</p>}</div>
             <div className={styles.idle}>{showPhase2 && <p>Phase 02</p>}</div>
             <div className={styles.working}>
               {showPhase3 && <p>Phase 03</p>}
-              <button onClick={onClickDowntime}>Downtime</button>
-              <IonModal
-                style={{
-                  '--width': '100%',
-                  '--height': '100%',
-                }}
-                ref={modal}
-                isOpen={downTime}
-              ></IonModal>
             </div>
             <div className={styles.idle}>{showPhase4 && <p>Phase 04</p>}</div>
             <div className={styles.idle}>{showPhase5 && <p> Phase 05</p>}</div>
@@ -77,31 +225,19 @@ const Phase: React.FC = () => {
             <div
               className={styles.boxidle}
               id="phase-one"
-              //onClick={onClick}
               style={{
-                backgroundColor: '#E0E0E0',
-                //backgroundColor: bgColor,
+                backgroundColor: phaseOne,
               }}
             ></div>
 
             <div
               className={styles.boxidle}
               id={'phase 2'}
-              onClick={onClickPhase2}
               style={{
                 backgroundColor: phaseTwo,
               }}
             ></div>
-
-            <div
-              className={styles.boxworking}
-              style={{
-                backgroundColor: phaseThree,
-                // transition: 'all 20s ease',
-              }}
-              onClick={onClickPhase3}
-            ></div>
-
+            <ProgressBar />
             <div
               className={styles.boxidle}
               onClick={onClickPhase4}

@@ -6,18 +6,31 @@ import {
 } from './slices/machineDetailsSlice';
 import {
   SELECT_WORKERS,
-  selectWorkersReducer,
-} from './slices/SelectworkersSlice';
+  selectTeamSizeReducer,
+} from './slices/selectTeamSizeSlice';
 import {
   ORDER_QUANTITY,
   orderQuantityReducer,
 } from './slices/orderQuantitySlice';
-
+import { ORDER_Number, orderNumberReducer } from './slices/orderNumber';
+import {
+  DataReducer,
+  START_NEW_ORDER_SLICE,
+} from './slices/startNewOrderSlice';
+import {
+  TRANSLATION_KEY,
+  translationReducer,
+} from './slices/translation.slice';
+import { MOCK_DATA_KEY, mockReducer } from './slices/mockData.slice';
 const reducers = {
   [TEST_SLICE_KEY]: testDataReducer,
   [MACHINE_DETAILS_KEY]: machineDetailsReducer,
-  [SELECT_WORKERS]: selectWorkersReducer,
+  [SELECT_WORKERS]: selectTeamSizeReducer,
   [ORDER_QUANTITY]: orderQuantityReducer,
+  [ORDER_Number]: orderNumberReducer,
+  [START_NEW_ORDER_SLICE]: DataReducer,
+  [TRANSLATION_KEY]: translationReducer,
+  [MOCK_DATA_KEY]: mockReducer,
 };
 
 export const store = configureStore({ reducer: reducers });

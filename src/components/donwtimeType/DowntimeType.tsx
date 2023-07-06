@@ -1,24 +1,104 @@
+import React, { useCallback, useMemo } from 'react';
 import { IonButton, IonContent, IonPage, IonRow } from '@ionic/react';
-import React, { useCallback } from 'react';
+import { useHistory } from 'react-router';
+import useWebSocket from '../../store/hooks/useWebSocket';
 import styles from './DowntimeType.module.scss';
 import Header from '../common/header/Header';
-import { useHistory } from 'react-router';
-import { useAppDispatch } from '../../store/utils/hooks';
-import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
+import { useAppSelector } from '../../store/utils/hooks';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const DowntimeType: React.FC = () => {
-  const history = useHistory();
-  const dispatch = useAppDispatch();
+  const translation = useTranslations();
 
+  const Downtimereason = [
+    {
+      reason: translation.reason.mechanicalIncident,
+    },
+    {
+      reason: translation.reason.electricalIncident,
+    },
+    {
+      reason: translation.reason.misuse,
+    },
+    {
+      reason: translation.reason.defectiveFillingMaterial,
+    },
+    {
+      reason: translation.reason.otherIncident,
+    },
+  ];
+
+  const history = useHistory();
+  const { sendMessage } = useWebSocket();
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+
+  if (!state) {
+    return null;
+  }
+
+  const phaseState = state.process.currentPhaseDetails.state;
+  const jobId = state.assignedJobDetails.jobId;
   const onEndProduction = useCallback(() => {
-    dispatch(
-      getMachineDetails({
-        action: 'setEndOfProduction',
-        jobId: '782e0622-c9d8-4f5d-a026-d51ef99f2c08',
-      }),
-    );
+    const message = {
+      action: 'setEndOfProduction',
+      jobId: jobId,
+    };
+    sendMessage(message);
     history.push('/');
-  }, [history]);
+  }, [sendMessage, jobId, history]);
+
+  const onClick = useCallback(
+    (reason: string) => {
+      if (!state.process.currentPhaseDetails.downtimes) {
+        return null;
+      }
+
+      const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
+        (event) => event.reason === 'unknown',
+      );
+
+      if (phaseState === 'DOWNTIME' && unknownEvent) {
+        const { startTime } = unknownEvent;
+
+        const message = {
+          action: 'saveDowntimeReason',
+          downtimeStartTime: startTime,
+          jobId: jobId,
+          downtimeReason: reason,
+        };
+        sendMessage(message);
+        history.push('/');
+      }
+
+      history.push('/');
+    },
+    [state, phaseState, sendMessage, jobId, history],
+  );
+  const downTimesData = useMemo(() => {
+    if (!state.process.currentPhaseDetails.downtimes) {
+      return null;
+    }
+
+    const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
+      (event) => event.reason === 'unknown',
+    );
+    if (unknownEvent === undefined || unknownEvent.startTime === null) {
+      return null;
+    }
+    const dateObj = new Date(unknownEvent.startTime);
+
+    // Get the hours, minutes, and seconds from the Date object
+    const hours = dateObj.getHours();
+    const minutes = dateObj.getMinutes();
+    const seconds = dateObj.getSeconds();
+
+    const hoursFormat = hours < 10 ? `0${hours}` : hours;
+    const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
+    const secondsFormat = seconds < 10 ? `0${seconds}` : seconds;
+
+    const formattedTime = `${hoursFormat}:${minutesFormat}:${secondsFormat}`;
+    return formattedTime;
+  }, []);
 
   return (
     <IonPage>
@@ -26,20 +106,26 @@ const DowntimeType: React.FC = () => {
       <IonContent>
         <div className={styles.statement}>
           <div className={styles.title}>
-            <p>Downtime</p>
+            <p>
+              {translation.text.downtimeAt} {downTimesData}
+            </p>
           </div>
           <div>
             <IonRow className={styles.classes}>
-              <IonButton className={styles.button}>Machine issue</IonButton>
-              <IonButton className={styles.button}>Lunch Break</IonButton>
-              <IonButton className={styles.button}>Sick leave</IonButton>
-              <IonButton className={styles.button}>Team meeting </IonButton>
-              <IonButton className={styles.button}>Urgent call</IonButton>
+              {Downtimereason.map((data) => (
+                <IonButton
+                  onClick={() => onClick(data.reason)}
+                  key={data.reason}
+                  className={styles.button}
+                >
+                  {data.reason}
+                </IonButton>
+              ))}
             </IonRow>
           </div>
           <div className={styles.endBtn}>
             <IonButton className={styles.end} onClick={onEndProduction}>
-              End Production
+              {translation.buttons.endProduction}
             </IonButton>
           </div>
         </div>

@@ -1,17 +1,21 @@
-.bowl{
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    color: #333333;
+.reason {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+  color: #333333;
+  display: flex;
+  align-items: center;
 }
 
-.bowl p{
-    padding: 10px 0px;
+.reason p {
+  padding: 4px 0px;
+  top: 0;
 }
 
-.BtnHolder{
-
-    position: absolute;
-    width: 100%;
-    bottom: 25px;
+.bullet {
+  font-size: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
 }

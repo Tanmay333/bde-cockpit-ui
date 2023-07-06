@@ -1,14 +1,21 @@
 .start {
-  border-top: 16px solid #e20031;
+  border-top: 16px solid #ffa901;
   position: relative;
   height: 325px;
   background: #ffffff;
   box-shadow: 0px 5px 15px rgba(114, 114, 114, 0.15);
   border-radius: 15px;
+  border: 0px solid;
+}
+
+.border {
+  position: sticky;
+  z-index: 999;
+  border-top: 16px solid #ffa901;
+  height: 10px;
 }
 
 .center {
-  border-top: 16px solid #e20031;
   height: 392px;
   width: 759px;
   background: #ffffff;

@@ -8,16 +8,19 @@ import {
   IonRow,
 } from '@ionic/react';
 import lohnpack from '../../static/assets/lohnpack.svg';
-import SelectWorkersIcon from '../../static/assets/images/SelectWorkersIcon';
-import { useEffect, useState } from 'react';
+import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
+import { useCallback, useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
-import styles from './SelectWorkers.module.scss';
+import styles from '../selectWorkers/SelectTeamSize.module.scss';
 import { useHistory } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
-import { getworkersDetails } from '../../store/slices/SelectworkersSlice';
-import { getMachineDetails } from '../../store/slices/machineDetailsSlice';
+import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
+import useWebSocket from '../../store/hooks/useWebSocket';
+import { useTranslations } from '../../store/slices/translation.slice';
 
-const SelectWorkers = () => {
+const SelectTeamSize = () => {
+  const translation = useTranslations();
+
   const Workers = [
     {
       id: 1,
@@ -54,17 +57,18 @@ const SelectWorkers = () => {
 
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const dispatch = useAppDispatch();
-  const selectworkers = (index: number) => {
+  const { sendMessage } = useWebSocket();
+
+  const selectteamsize = useCallback((index: number) => {
     setSelectedIndex(index);
     setTimeout(routeToHomePage, 1000);
-    dispatch(
-      getMachineDetails({
-        action: 'setTeamSize',
-        jobId: state?.assignedJobDetails.jobId,
-        productionTeamSize: index + 1,
-      }),
-    );
-  };
+    const message = {
+      action: 'setTeamSize',
+      jobId: state?.assignedJobDetails.jobId,
+      productionTeamSize: index + 1,
+    };
+    sendMessage(message);
+  }, []);
 
   useEffect(() => {
     dispatch(getworkersDetails(selectedIndex));
@@ -77,7 +81,7 @@ const SelectWorkers = () => {
           <IonImg src={lohnpack} />
         </div>
         <CardContainer
-          title={' Number of workers'}
+          title={translation.text.numberOfWorkers}
           position={'middle'}
           style={{ paddingTop: '36px' }}
         >
@@ -91,21 +95,12 @@ const SelectWorkers = () => {
             <IonList>
               <IonCardContent>
                 <div className={styles.statement}>
-                  <p>How many of employees is working </p> on the order?
+                  <p>{translation.text.employeesOnOrder}</p>
                 </div>
               </IonCardContent>
             </IonList>
           </IonGrid>
-          <IonGrid
-            style={
-              {
-                //marginTop: "10%",
-                // textAlign: 'center',
-                // width: '100%',
-                //bottom: "10%",
-              }
-            }
-          >
+          <IonGrid>
             <IonRow
               style={{
                 padding: '20px',
@@ -123,10 +118,10 @@ const SelectWorkers = () => {
                     margin: '10px',
                   }}
                   key={data.id}
-                  onClick={() => selectworkers(index)}
+                  onClick={() => selectteamsize(index)}
                 >
                   <IonRow style={{ textAlign: 'center' }}>
-                    <SelectWorkersIcon
+                    <SelectTeamSizeIcon
                       isSelected={selectedIndex >= index ? true : false}
                     />
                   </IonRow>
@@ -140,4 +135,4 @@ const SelectWorkers = () => {
   );
 };
 
-export default SelectWorkers;
+export default SelectTeamSize;

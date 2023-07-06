@@ -1,0 +1,13 @@
+.endBtn {
+  position: fixed;
+  bottom: 20px; /* Adjust the bottom margin as needed */
+  right: 50px; /* Adjust the right margin as needed */
+  z-index: 999;
+}
+
+.end {
+  width: 210px;
+  height: 50px;
+  font-size: 16px;
+  border-radius: 7px;
+}

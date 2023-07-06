@@ -13,6 +13,7 @@
   display: flex;
   align-items: center;
 }
+
 .working {
   font-size: 20px;
   font-weight: 700;
@@ -22,6 +23,7 @@
   display: flex;
   align-items: center;
 }
+
 .boxidle {
   height: 39px;
   width: 14%;
@@ -34,4 +36,14 @@
   width: 44%;
   border-radius: 5px;
   margin: 3px;
+
+  :first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  :last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
 }
