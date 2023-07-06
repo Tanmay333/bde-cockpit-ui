@@ -92,8 +92,11 @@ const DowntimeType: React.FC = () => {
     const minutes = dateObj.getMinutes();
     const seconds = dateObj.getSeconds();
 
-    // Format the time as a string
-    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    const hoursFormat = hours < 10 ? `0${hours}` : hours;
+    const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
+    const secondsFormat = seconds < 10 ? `0${seconds}` : seconds;
+
+    const formattedTime = `${hoursFormat}:${minutesFormat}:${secondsFormat}`;
     return formattedTime;
   }, []);
 
