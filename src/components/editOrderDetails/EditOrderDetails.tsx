@@ -71,13 +71,13 @@ const EditOrderDetails: React.FC = () => {
   const ordernumbervalue = useAppSelector(
     (state) => state.OrderNumberSlice.data,
   );
-
+  const toggleMock = useAppSelector((state) => state.mockData.data);
   const onClick = useCallback(() => {
     {
       const message = {
         action: 'assignNewJob',
         orderId: ordernumbervalue,
-        stationId: '1.203.4.245',
+        stationId: toggleMock ? 'poc_station' : '1.203.4.245',
         orderQuantity: orderquantityvalue,
       };
 
