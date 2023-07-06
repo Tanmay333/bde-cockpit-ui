@@ -216,7 +216,9 @@ const OrderInfoCard: React.FC = () => {
             ? translation.text.machineStatus.on
             : translation.text.machineStatus.off}
         </IonCardSubtitle>
-        <IonCardSubtitle>Machine speed: {station} rpm</IonCardSubtitle>
+        <IonCardSubtitle>
+          {translation.text.machineSpeed}: {station} {translation.text.ppm}
+        </IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent>
         <div>

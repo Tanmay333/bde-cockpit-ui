@@ -51,6 +51,8 @@ interface Text {
   phaseDetails: string;
   hrs: string;
   machine: string;
+  ppm: string;
+  machineSpeed: string;
 }
 
 interface Reasons {

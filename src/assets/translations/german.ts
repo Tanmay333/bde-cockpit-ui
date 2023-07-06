@@ -48,6 +48,8 @@ export const germanTranslations: Translations = {
     phaseDetails: 'Details Phase',
     hrs: 'Stunden',
     machine: 'Maschine ',
+    ppm: 'Stück/Minute',
+    machineSpeed: 'Takt',
   },
 
   reason: {
