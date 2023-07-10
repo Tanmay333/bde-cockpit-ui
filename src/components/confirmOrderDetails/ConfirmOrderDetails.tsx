@@ -36,7 +36,7 @@ const ConfirmOrderDetails: React.FC = () => {
     (state) => state.machineDetailsSlice.data,
   );
   const data = {
-    orderId: state?.assignedJobDetails?.orderId ?? '1869485',
+    orderId: state?.assignedJobDetails?.orderId ?? '--:--',
     quantity: state?.assignedJobDetails?.quantity ?? '--:--',
   };
 
@@ -93,12 +93,14 @@ const ConfirmOrderDetails: React.FC = () => {
     setBarcodeState(false);
   }, [history]);
 
+  const [pressedKeys, setPressedKeys] = useState<string[]>([]);
+
   const { sendMessage } = useWebSocket();
   const toggleMock = useAppSelector((state) => state.mockData.data);
   const onClick = useCallback(() => {
     const message = {
       action: 'assignNewJob',
-      orderId: ordernumbervalue,
+      orderId: pressedKeys.join(''),
       stationId: toggleMock ? 'poc_station' : '1.203.4.245',
       orderQuantity: orderquantityvalue,
     };
@@ -120,6 +122,56 @@ const ConfirmOrderDetails: React.FC = () => {
       ></IonIcon>
     </IonButton>
   );
+
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    const keypressHandler = (e: KeyboardEvent) => {
+      setPressedKeys((prevKeys) => {
+        const newKeys = prevKeys.slice();
+        if (e.keyCode === 13) {
+          newKeys.push('<br>');
+        } else {
+          newKeys.push(e.key);
+        }
+        return newKeys;
+      });
+    };
+
+    if (!isFocused) {
+      document.addEventListener('keypress', keypressHandler);
+    } else {
+      document.removeEventListener('keypress', keypressHandler);
+    }
+
+    return () => {
+      document.removeEventListener('keypress', keypressHandler);
+    };
+  }, [isFocused]);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  useEffect(() => {
+    const inputElement = document.getElementById('orderQuantity');
+
+    if (inputElement) {
+      inputElement.addEventListener('focus', handleFocus);
+      inputElement.addEventListener('blur', handleBlur);
+    }
+
+    return () => {
+      if (inputElement) {
+        inputElement.removeEventListener('focus', handleFocus);
+        inputElement.removeEventListener('blur', handleBlur);
+      }
+    };
+  }, [isFocused]);
 
   return (
     <IonPage>
@@ -147,11 +199,15 @@ const ConfirmOrderDetails: React.FC = () => {
                   />
                 </p>
               ) : (
-                <p> {translation.text.orderNumber}: 1869485</p>
+                <p>
+                  {' '}
+                  {translation.text.orderNumber}: {pressedKeys}
+                </p>
               )}
               <p>
                 {translation.text.orderQuantity}:
                 <input
+                  id="orderQuantity"
                   className={styles.focus}
                   type="number"
                   min="0"
