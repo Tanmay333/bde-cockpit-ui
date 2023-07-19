@@ -20,8 +20,8 @@ import useWebSocket from '../../store/hooks/useWebSocket';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 import { getnumberDetails } from '../../store/slices/orderNumber';
 import editIcon from '../../static/assets/images/edit.svg';
-import Scanner from '../../static/assets/images/Scanner.svg';
 import { useTranslations } from '../../store/slices/translation.slice';
+import Scan from '../common/Scanner/Scan';
 
 const ConfirmOrderDetails: React.FC = () => {
   const translation = useTranslations();
@@ -254,16 +254,7 @@ const ConfirmOrderDetails: React.FC = () => {
                 isOpen={barcodeState}
               >
                 <button onClick={onBarcodeScanComplete}>
-                  <IonImg
-                    style={{
-                      width: '100%',
-                      height: '100vh',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    src={Scanner}
-                  ></IonImg>
+                  <Scan />
                 </button>
               </IonModal>
             </IonGrid>
