@@ -50,6 +50,9 @@ export const germanTranslations: Translations = {
     machine: 'Maschine ',
     ppm: 'Stück/Minute',
     machineSpeed: 'Takt',
+    min: 'Min',
+    notStarted: 'Nicht gestartet',
+    startedAt: 'Start um',
   },
 
   reason: {
@@ -58,6 +61,9 @@ export const germanTranslations: Translations = {
     misuse: 'Fehlbedienung',
     defectiveFillingMaterial: 'Fehlerhaftes Füllgut',
     otherIncident: 'Sonstige Störung',
+    changingBarrel: 'Fasswechsel',
+    changingLabels: 'Etikettenwechsel',
+    break: 'Pause',
   },
 };
 
