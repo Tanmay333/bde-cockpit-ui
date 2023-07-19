@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { IonButton, IonContent, IonModal, IonRow } from '@ionic/react';
 import { useHistory } from 'react-router';
 import useWebSocket from '../../store/hooks/useWebSocket';
@@ -65,6 +71,7 @@ const DowntimeType: React.FC = () => {
     };
     sendMessage(message);
     history.push('/');
+    setToggleDowntime(false);
   }, [sendMessage, jobId, history]);
 
   const onClick = useCallback(
@@ -89,8 +96,8 @@ const DowntimeType: React.FC = () => {
         sendMessage(message);
         history.push('/');
       }
-
       history.push('/');
+      setToggleDowntime(false);
     },
     [state, phaseState, sendMessage, jobId, history],
   );
@@ -120,50 +127,82 @@ const DowntimeType: React.FC = () => {
     return formattedTime;
   }, []);
 
+  useEffect(() => {
+    if (
+      state &&
+      state.process &&
+      state.process.currentPhaseDetails &&
+      state.process.currentPhaseDetails.downtimes &&
+      state.process.currentPhaseDetails.downtimes.length > 0
+    ) {
+      const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
+        (event) => event.reason === 'unknown',
+      );
+      if (
+        state.process.currentPhaseDetails.phaseName === 'production' &&
+        state.process.currentPhaseDetails.state === 'DOWNTIME' &&
+        unknownEvent
+      ) {
+        setToggleDowntime(true);
+      }
+    }
+  }, [state, history]);
+
   return (
     <>
-      <Header />
-      <IonContent>
-        <div className={styles.statement}>
-          <div className={styles.title}>
-            <p>
-              {translation.text.downtimeAt} {downTimesData}
-            </p>
-          </div>
-          <div>
-            <IonRow className={styles.classes}>
-              {Downtimereason.slice(0, 3).map((data) => (
-                <IonButton
-                  onClick={() => onClick(data.reason)}
-                  key={data.reason}
-                  className={styles.button}
-                >
-                  {data.reason}
-                </IonButton>
-              ))}
-            </IonRow>
+      <IonModal
+        key="4"
+        style={{
+          '--border-radius': '0px',
+          '--width': '100%',
+          '--height': '100%',
+        }}
+        isOpen={toggleDowntime}
+        onIonModalDidDismiss={closeModal}
+      >
+        <Header />
+        <IonContent>
+          <div className={styles.statement}>
+            <div className={styles.title}>
+              <p>
+                {translation.text.downtimeAt} {downTimesData}
+              </p>
+            </div>
+            <div>
+              <IonRow className={styles.classes}>
+                {Downtimereason.slice(0, 3).map((data) => (
+                  <IonButton
+                    onClick={() => onClick(data.reason)}
+                    key={data.reason}
+                    className={styles.button}
+                  >
+                    {data.reason}
+                  </IonButton>
+                ))}
+              </IonRow>
 
-            <div className={styles.spacing}></div>
+              <div className={styles.spacing}></div>
 
-            <IonRow className={styles.classes}>
-              {Downtimereason.slice(3).map((data) => (
-                <IonButton
-                  onClick={() => onClick(data.reason)}
-                  key={data.reason}
-                  className={styles.button}
-                >
-                  {data.reason}
-                </IonButton>
-              ))}
-            </IonRow>
+              <IonRow className={styles.classes}>
+                {Downtimereason.slice(3).map((data) => (
+                  <IonButton
+                    onClick={() => onClick(data.reason)}
+                    key={data.reason}
+                    className={styles.button}
+                  >
+                    {data.reason}
+                  </IonButton>
+                ))}
+              </IonRow>
+            </div>
+            <div className={styles.endBtn}>
+              <IonButton className={styles.end} onClick={onEndProduction}>
+                {translation.buttons.endProduction}
+              </IonButton>
+            </div>
           </div>
-          <div className={styles.endBtn}>
-            <IonButton className={styles.end} onClick={onEndProduction}>
-              {translation.buttons.endProduction}
-            </IonButton>
-          </div>
-        </div>
-      </IonContent>
+        </IonContent>
+      </IonModal>
     </>
   );
 };

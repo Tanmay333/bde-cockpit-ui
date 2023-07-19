@@ -1,12 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  IonPage,
-  IonContent,
-  IonToggle,
-  IonText,
-  IonModal,
-} from '@ionic/react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { IonPage, IonContent, IonToggle, IonText } from '@ionic/react';
 import { useAppDispatch, useAppSelector } from '../store/utils/hooks';
 import Header from '../components/common/header/Header';
 import OrderInfoCard from '../components/orderInfoCard/OrderInfoCard';
@@ -22,51 +15,9 @@ import DowntimeType from '../components/donwtimeType/DowntimeType';
 
 const Home: React.FC = () => {
   const translation = useTranslations();
-
-  const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const toggleMock = useAppSelector((state) => state.mockData.data);
   const dispatch = useAppDispatch();
-  const history = useHistory();
   const [timeLeft, setTimeLeft] = useState(5);
-  const [toggleDowntime, setToggleDowntime] = useState(false);
-  const modal = useRef<HTMLIonModalElement>(null);
-
-  const openModal = () => {
-    setToggleDowntime(true);
-  };
-
-  const closeModal = () => {
-    setToggleDowntime(false);
-  };
-
-  useEffect(() => {
-    if (
-      state &&
-      state.process &&
-      state.process.currentPhaseDetails &&
-      state.process.currentPhaseDetails.downtimes &&
-      state.process.currentPhaseDetails.downtimes.length > 0
-    ) {
-      const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
-        (event) => event.reason === 'unknown',
-      );
-
-      if (
-        state.process.currentPhaseDetails.phaseName === 'production' &&
-        state.process.currentPhaseDetails.state === 'DOWNTIME' &&
-        unknownEvent
-      ) {
-        setToggleDowntime(true);
-      }
-      if (
-        state.process.currentPhaseDetails.phaseName === 'production' &&
-        state.process.currentPhaseDetails.state === 'RUNNING' &&
-        unknownEvent
-      ) {
-        setToggleDowntime(true);
-      }
-    }
-  }, [state, history]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -106,18 +57,7 @@ const Home: React.FC = () => {
             <PhaseDetails />
           </div>
           <Buttons />
-          <IonModal
-            key="4"
-            style={{
-              '--border-radius': '0px',
-              '--width': '100%',
-              '--height': '100%',
-            }}
-            isOpen={toggleDowntime}
-            onIonModalDidDismiss={closeModal}
-          >
-            <DowntimeType />
-          </IonModal>
+          <DowntimeType />
         </IonContent>
       </IonPage>
     </>
