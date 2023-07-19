@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { IonPage, IonContent, IonToggle, IonText } from '@ionic/react';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  IonPage,
+  IonContent,
+  IonToggle,
+  IonText,
+  IonModal,
+} from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/utils/hooks';
 import Header from '../components/common/header/Header';
@@ -12,6 +18,7 @@ import styles from './Home.module.scss';
 import Buttons from '../components/common/buttons/Buttons';
 import { toggleMockData } from '../store/slices/mockData.slice';
 import { useTranslations } from '../store/slices/translation.slice';
+import DowntimeType from '../components/donwtimeType/DowntimeType';
 
 const Home: React.FC = () => {
   const translation = useTranslations();
@@ -21,6 +28,16 @@ const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const [timeLeft, setTimeLeft] = useState(5);
+  const [toggleDowntime, setToggleDowntime] = useState(false);
+  const modal = useRef<HTMLIonModalElement>(null);
+
+  const openModal = () => {
+    setToggleDowntime(true);
+  };
+
+  const closeModal = () => {
+    setToggleDowntime(false);
+  };
 
   useEffect(() => {
     if (
@@ -39,14 +56,14 @@ const Home: React.FC = () => {
         state.process.currentPhaseDetails.state === 'DOWNTIME' &&
         unknownEvent
       ) {
-        history.push('/downtimetype');
+        setToggleDowntime(true);
       }
       if (
         state.process.currentPhaseDetails.phaseName === 'production' &&
         state.process.currentPhaseDetails.state === 'RUNNING' &&
         unknownEvent
       ) {
-        history.push('/downtimetype');
+        setToggleDowntime(true);
       }
     }
   }, [state, history]);
@@ -69,27 +86,41 @@ const Home: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <Header />
-      <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
-        <IonText>{translation.buttons.toggle}</IonText>
-        <IonToggle
-          style={{ margin: 20 }}
-          checked={toggleMock}
-          onIonChange={handleToggleChange}
-          color="primary"
-        />
-      </div>
-      <IonContent>
-        <OrderInfoCard />
-        <Phase />
-        <div className={styles.details}>
-          <WorkDetails />
-          <PhaseDetails />
+    <>
+      <IonPage>
+        <Header />
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
+          <IonText>{translation.buttons.toggle}</IonText>
+          <IonToggle
+            style={{ margin: 20 }}
+            checked={toggleMock}
+            onIonChange={handleToggleChange}
+            color="primary"
+          />
         </div>
-        <Buttons />
-      </IonContent>
-    </IonPage>
+        <IonContent>
+          <OrderInfoCard />
+          <Phase />
+          <div className={styles.details}>
+            <WorkDetails />
+            <PhaseDetails />
+          </div>
+          <Buttons />
+          <IonModal
+            key="4"
+            style={{
+              '--border-radius': '0px',
+              '--width': '100%',
+              '--height': '100%',
+            }}
+            isOpen={toggleDowntime}
+            onIonModalDidDismiss={closeModal}
+          >
+            <DowntimeType />
+          </IonModal>
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 

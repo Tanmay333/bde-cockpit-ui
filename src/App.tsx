@@ -31,7 +31,6 @@ import Home from './pages/Home';
 import SelectTeamSize from './components/selectWorkers/SelectTeamSize';
 import OrderDetails from './components/orderDetails/OrderDetails';
 import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDetails';
-import DowntimeType from './components/donwtimeType/DowntimeType';
 import useWebSocket from './store/hooks/useWebSocket';
 import { useEffect, useState } from 'react';
 import EditOrderdetails from './components/editOrderDetails/EditOrderDetails';
@@ -93,9 +92,6 @@ const App: React.FC = () => {
             component={ConfirmOrderdetails}
           >
             <ConfirmOrderdetails />
-          </Route>
-          <Route exact path={urls.downtimetype}>
-            <DowntimeType />
           </Route>
           <Route
             exact

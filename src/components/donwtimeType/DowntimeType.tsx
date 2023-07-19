@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
-import { IonButton, IonContent, IonPage, IonRow } from '@ionic/react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { IonButton, IonContent, IonModal, IonRow } from '@ionic/react';
 import { useHistory } from 'react-router';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import styles from './DowntimeType.module.scss';
@@ -9,8 +9,28 @@ import { useTranslations } from '../../store/slices/translation.slice';
 
 const DowntimeType: React.FC = () => {
   const translation = useTranslations();
+  const [toggleDowntime, setToggleDowntime] = useState(false);
+  const modal = useRef<HTMLIonModalElement>(null);
+
+  const openModal = () => {
+    setToggleDowntime(true);
+  };
+
+  const closeModal = () => {
+    setToggleDowntime(false);
+  };
 
   const Downtimereason = [
+    {
+      reason: translation.reason.changingBarrel,
+    },
+    {
+      reason: translation.reason.changingLabels,
+    },
+    {
+      reason: translation.reason.break,
+    },
+
     {
       reason: translation.reason.mechanicalIncident,
     },
@@ -101,7 +121,7 @@ const DowntimeType: React.FC = () => {
   }, []);
 
   return (
-    <IonPage>
+    <>
       <Header />
       <IonContent>
         <div className={styles.statement}>
@@ -112,7 +132,21 @@ const DowntimeType: React.FC = () => {
           </div>
           <div>
             <IonRow className={styles.classes}>
-              {Downtimereason.map((data) => (
+              {Downtimereason.slice(0, 3).map((data) => (
+                <IonButton
+                  onClick={() => onClick(data.reason)}
+                  key={data.reason}
+                  className={styles.button}
+                >
+                  {data.reason}
+                </IonButton>
+              ))}
+            </IonRow>
+
+            <div className={styles.spacing}></div>
+
+            <IonRow className={styles.classes}>
+              {Downtimereason.slice(3).map((data) => (
                 <IonButton
                   onClick={() => onClick(data.reason)}
                   key={data.reason}
@@ -130,7 +164,7 @@ const DowntimeType: React.FC = () => {
           </div>
         </div>
       </IonContent>
-    </IonPage>
+    </>
   );
 };
 
