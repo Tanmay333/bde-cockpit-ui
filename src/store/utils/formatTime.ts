@@ -15,3 +15,18 @@ export const formatTime = (dateString: string | null): string => {
 
   return formattedTime;
 };
+
+export const formatDate = (timeString: string | null): string => {
+  if (timeString === null) {
+    return '--:--';
+  }
+
+  const date = new Date(timeString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear().toString();
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+
+  return `${day}.${month}.${year} ${hours}:${minutes}`;
+};
