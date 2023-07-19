@@ -35,7 +35,7 @@ const initialData: MachineDetails = {
     stationId: null,
     mainSpeed: null,
   },
-  data: undefined
+  data: undefined,
 };
 
 interface AssignedOrderDetails {
@@ -91,7 +91,7 @@ export interface MachineDetails {
 export interface MachineDetailsState {
   status: FetchingStatus;
   error: string | null;
-  data: MachineDetails | null;
+  data: MachineDetails;
 }
 
 const initialState: MachineDetailsState = {
