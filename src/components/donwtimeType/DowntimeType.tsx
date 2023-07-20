@@ -12,6 +12,7 @@ import styles from './DowntimeType.module.scss';
 import Header from '../common/header/Header';
 import { useAppSelector } from '../../store/utils/hooks';
 import { useTranslations } from '../../store/slices/translation.slice';
+import { formatTime } from '../../store/utils/formatTime';
 
 const DowntimeType: React.FC = () => {
   const translation = useTranslations();
@@ -26,34 +27,6 @@ const DowntimeType: React.FC = () => {
     setToggleDowntime(false);
   };
 
-  const Downtimereason = [
-    {
-      reason: translation.reason.changingBarrel,
-    },
-    {
-      reason: translation.reason.changingLabels,
-    },
-    {
-      reason: translation.reason.break,
-    },
-
-    {
-      reason: translation.reason.mechanicalIncident,
-    },
-    {
-      reason: translation.reason.electricalIncident,
-    },
-    {
-      reason: translation.reason.misuse,
-    },
-    {
-      reason: translation.reason.defectiveFillingMaterial,
-    },
-    {
-      reason: translation.reason.otherIncident,
-    },
-  ];
-
   const history = useHistory();
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
@@ -61,71 +34,26 @@ const DowntimeType: React.FC = () => {
   if (!state) {
     return null;
   }
+  const Downtimereason = [
+    translation.reason.changingBarrel,
 
-  const phaseState = state.process.currentPhaseDetails.state;
-  const jobId = state.assignedJobDetails.jobId;
-  const onEndProduction = useCallback(() => {
-    const message = {
-      action: 'setEndOfProduction',
-      jobId: jobId,
-    };
-    sendMessage(message);
-    history.push('/');
-    setToggleDowntime(false);
-  }, [sendMessage, jobId, history]);
+    translation.reason.changingLabels,
 
-  const onClick = useCallback(
-    (reason: string) => {
-      if (!state.process.currentPhaseDetails.downtimes) {
-        return null;
-      }
+    translation.reason.break,
 
-      const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
-        (event) => event.reason === 'unknown',
-      );
+    translation.reason.mechanicalIncident,
 
-      if (phaseState === 'DOWNTIME' && unknownEvent) {
-        const { startTime } = unknownEvent;
+    translation.reason.electricalIncident,
 
-        const message = {
-          action: 'saveDowntimeReason',
-          downtimeStartTime: startTime,
-          jobId: jobId,
-          downtimeReason: reason,
-        };
-        sendMessage(message);
-        history.push('/');
-      }
-      history.push('/');
-      setToggleDowntime(false);
-    },
-    [state, phaseState, sendMessage, jobId, history],
-  );
-  const downTimesData = useMemo(() => {
-    if (!state.process.currentPhaseDetails.downtimes) {
-      return null;
-    }
+    translation.reason.misuse,
 
-    const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
-      (event) => event.reason === 'unknown',
-    );
-    if (unknownEvent === undefined || unknownEvent.startTime === null) {
-      return null;
-    }
-    const dateObj = new Date(unknownEvent.startTime);
+    translation.reason.defectiveFillingMaterial,
 
-    // Get the hours, minutes, and seconds from the Date object
-    const hours = dateObj.getHours();
-    const minutes = dateObj.getMinutes();
-    const seconds = dateObj.getSeconds();
-
-    const hoursFormat = hours < 10 ? `0${hours}` : hours;
-    const minutesFormat = minutes < 10 ? `0${minutes}` : minutes;
-    const secondsFormat = seconds < 10 ? `0${seconds}` : seconds;
-
-    const formattedTime = `${hoursFormat}:${minutesFormat}:${secondsFormat}`;
-    return formattedTime;
-  }, []);
+    translation.reason.otherIncident,
+  ];
+  const [li, setLi] = useState<
+    { startTime: string | null; reason: string[] }[]
+  >([]);
 
   useEffect(() => {
     if (
@@ -138,16 +66,83 @@ const DowntimeType: React.FC = () => {
       const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
         (event) => event.reason === 'unknown',
       );
+
       if (
         state.process.currentPhaseDetails.phaseName === 'production' &&
-        state.process.currentPhaseDetails.state === 'DOWNTIME' &&
+        unknownEvent
+      ) {
+        const dt = state.process.currentPhaseDetails.downtimes;
+        const filteredData = dt.filter((obj) => obj.reason === 'unknown');
+        const dtRs = filteredData.map((data) => {
+          return {
+            startTime: data.startTime,
+            reason: Downtimereason,
+          };
+        });
+        setLi(dtRs);
+        setToggleDowntime(true);
+      }
+
+      if (
+        state.process.currentPhaseDetails.phaseName === 'production' &&
+        state.process.currentPhaseDetails.state === 'RUNNING' &&
         unknownEvent
       ) {
         setToggleDowntime(true);
       }
+      if (
+        state.process.currentPhaseDetails.phaseName === 'production' &&
+        !unknownEvent
+      ) {
+        setLi([]);
+        setToggleDowntime(false);
+      }
     }
-  }, [state, history]);
+  }, [state]);
 
+  const phaseState = state.process.currentPhaseDetails.state;
+  const jobId = state.assignedJobDetails.jobId;
+  const onEndProduction = useCallback(() => {
+    const message = {
+      action: 'setEndOfProduction',
+      jobId: jobId,
+    };
+    sendMessage(message);
+    history.push('/');
+    setLi([]);
+    setToggleDowntime(false);
+  }, []);
+
+  const startDowntime = useCallback(() => {
+    const message = {
+      action: 'toggleDowntime',
+      jobId: jobId,
+    };
+    sendMessage(message);
+
+    history.push('/');
+  }, []);
+
+  const onClick = useCallback(
+    (reason: string, startTime: string | null) => {
+      if (!state.process.currentPhaseDetails.downtimes) {
+        return null;
+      }
+      if (phaseState === 'DOWNTIME' || phaseState === 'RUNNING') {
+        const message = {
+          action: 'saveDowntimeReason',
+          downtimeStartTime: startTime,
+          jobId: jobId,
+          downtimeReason: reason,
+        };
+        sendMessage(message);
+        history.push('/');
+      }
+      history.push('/');
+    },
+    [state, phaseState, li],
+  );
+  console.log(li, 'line 133');
   return (
     <>
       <IonModal
@@ -163,39 +158,34 @@ const DowntimeType: React.FC = () => {
         <Header />
         <IonContent>
           <div className={styles.statement}>
-            <div className={styles.title}>
-              <p>
-                {translation.text.downtimeAt} {downTimesData}
-              </p>
-            </div>
             <div>
               <IonRow className={styles.classes}>
-                {Downtimereason.slice(0, 3).map((data) => (
-                  <IonButton
-                    onClick={() => onClick(data.reason)}
-                    key={data.reason}
-                    className={styles.button}
-                  >
-                    {data.reason}
-                  </IonButton>
-                ))}
-              </IonRow>
-
-              <div className={styles.spacing}></div>
-
-              <IonRow className={styles.classes}>
-                {Downtimereason.slice(3).map((data) => (
-                  <IonButton
-                    onClick={() => onClick(data.reason)}
-                    key={data.reason}
-                    className={styles.button}
-                  >
-                    {data.reason}
-                  </IonButton>
-                ))}
+                {li &&
+                  li.map((data, index) => (
+                    <div key={index}>
+                      <div className={styles.title}>
+                        <p>
+                          {translation.text.downtimeAt}
+                          {formatTime(data.startTime)}
+                        </p>
+                      </div>
+                      {data.reason.map((value, i) => (
+                        <IonButton
+                          onClick={() => onClick(value, data.startTime)}
+                          key={i}
+                          className={styles.button}
+                        >
+                          {value}
+                        </IonButton>
+                      ))}
+                    </div>
+                  ))}
               </IonRow>
             </div>
             <div className={styles.endBtn}>
+              <IonButton onClick={startDowntime}>
+                {translation.buttons.downTime}
+              </IonButton>
               <IonButton className={styles.end} onClick={onEndProduction}>
                 {translation.buttons.endProduction}
               </IonButton>
