@@ -18,6 +18,7 @@ const DowntimeType: React.FC = () => {
   const translation = useTranslations();
   const [toggleDowntime, setToggleDowntime] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
+  const toggleMock = useAppSelector((state) => state.mockData.data);
 
   const openModal = () => {
     setToggleDowntime(true);
@@ -142,7 +143,6 @@ const DowntimeType: React.FC = () => {
     },
     [state, phaseState, li],
   );
-  console.log(li, 'line 133');
   return (
     <>
       <IonModal
@@ -183,9 +183,11 @@ const DowntimeType: React.FC = () => {
               </IonRow>
             </div>
             <div className={styles.endBtn}>
-              <IonButton onClick={startDowntime}>
-                {translation.buttons.downTime}
-              </IonButton>
+              {!toggleMock && (
+                <IonButton onClick={startDowntime}>
+                  {translation.buttons.downTime}
+                </IonButton>
+              )}
               <IonButton className={styles.end} onClick={onEndProduction}>
                 {translation.buttons.endProduction}
               </IonButton>

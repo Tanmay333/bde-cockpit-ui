@@ -1,5 +1,5 @@
 .title {
-  padding-left: 4rem;
+  // padding-left: 4rem;
   font-weight: 700;
   font-size: 28px;
   line-height: 58px;
@@ -9,6 +9,7 @@
 .classes {
   padding-left: 3rem;
 }
+
 .button {
   justify-content: space-between;
   font-size: 16px;
@@ -25,8 +26,10 @@
 
 .endBtn {
   position: fixed;
-  bottom: 20px; /* Adjust the bottom margin as needed */
-  right: 50px; /* Adjust the right margin as needed */
+  bottom: 20px;
+  /* Adjust the bottom margin as needed */
+  right: 50px;
+  /* Adjust the right margin as needed */
   z-index: 999;
 }
 

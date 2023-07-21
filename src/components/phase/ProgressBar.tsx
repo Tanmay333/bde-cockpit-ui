@@ -7,7 +7,7 @@ const ProgressBar: React.FC = () => {
   const { process, assignedJobDetails } = useAppSelector(
     (state) => state.machineDetailsSlice.data,
   );
-
+  const startorder = useAppSelector((state) => state.startneworderslice);
   const toggleMock = useAppSelector((state) => state.mockData.data);
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const currentTime = new Date().getTime();
@@ -160,8 +160,23 @@ const ProgressBar: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [state, toggleMock]);
+
   const test =
     process.currentPhaseDetails.phaseName === 'production' ? data : [];
+
+  useEffect(() => {
+    if (startorder && startorder.data === true) {
+      setDiff([]);
+    }
+
+    if (
+      (state && state.process.currentPhaseDetails.phaseName !== 'production') ||
+      (state && state.process.currentPhaseDetails.phaseName !== 'unmounting') ||
+      (state && state.process.currentPhaseDetails.phaseName !== 'cleaning')
+    ) {
+      setDiff([]);
+    }
+  }, [startorder, state]);
 
   return (
     <div

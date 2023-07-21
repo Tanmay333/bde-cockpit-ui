@@ -68,16 +68,16 @@ const PhaseDetails: React.FC = () => {
 
       renderedList.unshift(
         <Fragment key={index}>
-          <div className={styles.reason}>
-            <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
-            {translation.text.pauseAt} {pauseTime}: {item.reason}
-          </div>
           {state.process.currentPhaseDetails.downtimes !== null && (
             <div className={styles.reason}>
               <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
               {translation.text.resumeAt}: {resumeTime}
             </div>
           )}
+          <div className={styles.reason}>
+            <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
+            {translation.text.pauseAt} {pauseTime}: {item.reason}
+          </div>
         </Fragment>,
       );
     });
