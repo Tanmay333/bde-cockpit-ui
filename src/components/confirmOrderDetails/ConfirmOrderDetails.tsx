@@ -216,6 +216,7 @@ const ConfirmOrderDetails: React.FC = () => {
                   onChange={onChangeQuantity}
                   placeholder={translation.text.enterOrderQuantity}
                   required
+                  disabled={pressedKeys.length === 0}
                 />
               </p>
             </IonText>
