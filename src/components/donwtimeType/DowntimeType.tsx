@@ -122,7 +122,7 @@ const DowntimeType: React.FC = () => {
     sendMessage(message);
 
     history.push('/');
-  }, []);
+  }, [jobId, sendMessage, history]);
 
   const onClick = useCallback(
     (reason: string, startTime: string | null) => {
