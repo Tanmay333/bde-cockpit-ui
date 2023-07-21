@@ -5,8 +5,9 @@ import styles from './Phase.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import './Phase.module.scss';
-import ProgressBar from './ProgressBar';
 import { useTranslations } from '../../store/slices/translation.slice';
+import FixProgressBar from './FixProgressBar';
+import IncrementalProgressBar from './IncrementalProgressBar';
 
 const Phase: React.FC = () => {
   const translation = useTranslations();
@@ -237,7 +238,12 @@ const Phase: React.FC = () => {
                 backgroundColor: phaseTwo,
               }}
             ></div>
-            <ProgressBar />
+            {state.process.currentPhaseDetails.phaseName === 'production' && (
+              <IncrementalProgressBar />
+            )}
+            {state.process.currentPhaseDetails.phaseName !== 'production' && (
+              <FixProgressBar />
+            )}
             <div
               className={styles.boxidle}
               onClick={onClickPhase4}

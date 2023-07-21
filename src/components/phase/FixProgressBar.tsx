@@ -1,61 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Phase.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
-import { isDefined } from '../../utils/isDefined';
 
-const ProgressBar: React.FC = () => {
-  const { process, assignedJobDetails } = useAppSelector(
-    (state) => state.machineDetailsSlice.data,
-  );
+const FixProgressBar: React.FC = () => {
   const startorder = useAppSelector((state) => state.startneworderslice);
   const toggleMock = useAppSelector((state) => state.mockData.data);
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-  const currentTime = new Date().getTime();
-  const startTimeOfProduction = process.currentPhaseDetails.startTime;
-  const downTimes = process.currentPhaseDetails.downtimes;
-
-  const data = useMemo(() => {
-    if (!isDefined(startTimeOfProduction)) return [];
-
-    const differences = [];
-    let lastEndTime = new Date(startTimeOfProduction).getTime();
-
-    // Check if there are downtimes or not
-    if (isDefined(downTimes)) {
-      for (let i = 0; i < downTimes.length; i++) {
-        const downtime = downTimes[i];
-        const st =
-          downtime.startTime === null
-            ? 0
-            : new Date(downtime.startTime).getTime();
-        const et =
-          downtime.endTime === null
-            ? currentTime
-            : new Date(downtime.endTime).getTime();
-        const duration = (et - st) / 1000;
-
-        const progress2AD127 = (st - lastEndTime) / 1000;
-        differences.push({ progress: progress2AD127, value: '#2AD127' });
-
-        const progressE20031 = duration;
-        differences.push({ progress: progressE20031, value: '#E20031' });
-
-        lastEndTime = et;
-      }
-    }
-
-    {
-      // Calculate the progress for the current time after the last downtime (or production start if no downtimes)
-      const currentTimeProgress = (currentTime - lastEndTime) / 1000;
-      differences.push({ progress: currentTimeProgress, value: '#2AD127' });
-    }
-    return differences;
-  }, [
-    startTimeOfProduction,
-    downTimes,
-    currentTime,
-    process.currentPhaseDetails.phaseName,
-  ]);
 
   const [diff, setDiff] = useState<{ progress: number; value: string }[]>([]);
 
@@ -161,9 +111,6 @@ const ProgressBar: React.FC = () => {
     return () => clearInterval(interval);
   }, [state, toggleMock]);
 
-  const test =
-    process.currentPhaseDetails.phaseName === 'production' ? data : [];
-
   useEffect(() => {
     if (startorder && startorder.data === true) {
       setDiff([]);
@@ -187,23 +134,7 @@ const ProgressBar: React.FC = () => {
         display: 'flex',
       }}
     >
-      {test &&
-        test.map((data, index) => (
-          <div
-            key={index}
-            className={styles.progressBar}
-            style={{
-              width: `${data.progress}%`,
-              height: '100%',
-              backgroundColor: data.value,
-              transition: 'width 0.2s',
-              position: 'relative',
-              display: 'flex',
-            }}
-          ></div>
-        ))}
-      {test.length < 1 &&
-        diff &&
+      {diff &&
         diff.map((data, index: number) => {
           return (
             <div
@@ -224,4 +155,4 @@ const ProgressBar: React.FC = () => {
   );
 };
 
-export default ProgressBar;
+export default FixProgressBar;
