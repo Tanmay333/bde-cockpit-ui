@@ -112,7 +112,7 @@ const DowntimeType: React.FC = () => {
     history.push('/');
     setLi([]);
     setToggleDowntime(false);
-  }, []);
+  }, [jobId, sendMessage, history]);
 
   const startDowntime = useCallback(() => {
     const message = {
@@ -169,7 +169,17 @@ const DowntimeType: React.FC = () => {
                           {formatTime(data.startTime)}
                         </p>
                       </div>
-                      {data.reason.map((value, i) => (
+                      {data.reason.slice(0, 3).map((value, i) => (
+                        <IonButton
+                          onClick={() => onClick(value, data.startTime)}
+                          key={i}
+                          className={styles.button}
+                        >
+                          {value}
+                        </IonButton>
+                      ))}
+                      <div className={styles.spacing}></div>
+                      {data.reason.slice(3).map((value, i) => (
                         <IonButton
                           onClick={() => onClick(value, data.startTime)}
                           key={i}
