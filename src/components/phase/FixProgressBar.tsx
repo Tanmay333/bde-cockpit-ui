@@ -115,15 +115,7 @@ const FixProgressBar: React.FC = () => {
     if (startorder && startorder.data === true) {
       setDiff([]);
     }
-
-    if (
-      (state && state.process.currentPhaseDetails.phaseName !== 'production') ||
-      (state && state.process.currentPhaseDetails.phaseName !== 'unmounting') ||
-      (state && state.process.currentPhaseDetails.phaseName !== 'cleaning')
-    ) {
-      setDiff([]);
-    }
-  }, [startorder, state]);
+  }, [startorder]);
 
   return (
     <div

@@ -107,7 +107,7 @@ const Buttons = () => {
             {translation.buttons.startPreparation}
           </IonButton>
         )}
-        {isPhaseUnmounting && (
+        {isPhaseUnmounting && !isStateFinished && (
           <IonButton
             onClick={onEndUnmounting}
             type="submit"
@@ -121,7 +121,7 @@ const Buttons = () => {
             {translation.buttons.endUnmounting}
           </IonButton>
         )}
-        {isPhasecleaning && !isStateFinished && (
+        {isPhasecleaning && (
           <IonButton
             onClick={onEndCleaning}
             type="submit"

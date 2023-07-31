@@ -181,9 +181,9 @@ const OrderInfoCard: React.FC = () => {
         return 'Phase 2';
       case 'production':
         return 'Phase 3';
-      case 'unmounting':
-        return 'Phase 4';
       case 'cleaning':
+        return 'Phase 4';
+      case 'unmounting':
         return 'Phase 5';
       default:
         return 'Phase';

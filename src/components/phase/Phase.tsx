@@ -99,27 +99,6 @@ const Phase: React.FC = () => {
       setPhaseFour('#E0E0E0');
       setPhaseFive('#E0E0E0');
     }
-    const hasUnMountingPhase =
-      state.process &&
-      state.process.previousPhases &&
-      state.process.previousPhases.some(
-        (phase) => phase.phaseName === 'unmounting',
-      );
-    if (
-      (state.process &&
-        state.process.currentPhaseDetails &&
-        state.process.currentPhaseDetails.phaseName === 'unmounting') ||
-      hasUnMountingPhase
-    ) {
-      setShowPhase3(false);
-      setShowPhase5(false);
-      setShowPhase1(false);
-      setShowPhase2(false);
-
-      setShowPhase4(true);
-      setPhaseFive('#E0E0E0');
-      setPhaseFour('#2799D1');
-    }
     const hasCleaningPhase =
       state.process &&
       state.process.previousPhases &&
@@ -133,11 +112,32 @@ const Phase: React.FC = () => {
         state.process.currentPhaseDetails.phaseName === 'cleaning') ||
       hasCleaningPhase
     ) {
-      setShowPhase5(true);
-      setShowPhase4(false);
+      setShowPhase5(false);
+      setShowPhase4(true);
       setShowPhase3(false);
       setShowPhase1(false);
       setShowPhase2(false);
+      setPhaseFive('#E0E0E0');
+      setPhaseFour('#2799D1');
+    }
+    const hasUnMountingPhase =
+      state.process &&
+      state.process.previousPhases &&
+      state.process.previousPhases.some(
+        (phase) => phase.phaseName === 'unmounting',
+      );
+    if (
+      (state.process &&
+        state.process.currentPhaseDetails &&
+        state.process.currentPhaseDetails.phaseName === 'unmounting') ||
+      hasUnMountingPhase
+    ) {
+      setShowPhase3(false);
+      setShowPhase5(true);
+      setShowPhase1(false);
+      setShowPhase2(false);
+
+      setShowPhase4(false);
       setPhaseFive('#2799D1');
     }
   }, [state]);
