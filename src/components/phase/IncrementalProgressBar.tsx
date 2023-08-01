@@ -54,8 +54,6 @@ const IncrementalProgressBar: React.FC = () => {
 
   // ... (rest of the code)
 
-  // console.log(new Date(), 'line 66');
-
   return (
     <div
       className={styles.boxworking}

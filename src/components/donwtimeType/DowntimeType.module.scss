@@ -46,3 +46,19 @@
 .spacing {
   height: 1.5rem;
 }
+
+/* Hide the background and default text */
+.ionloading {
+  --background: transparent;
+  --background-rgb: transparent;
+  --inner-border-color: transparent;
+  --inner-background: transparent;
+}
+
+/* Customize the loading spinner */
+.ionloading::part(spinner) {
+  font-size: 440px;
+  /* Adjust the size of the icon */
+  color: #007aff;
+  /* Change the color of the icon */
+}

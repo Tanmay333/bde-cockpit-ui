@@ -1,24 +1,25 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import { IonButton, IonContent, IonModal, IonRow } from '@ionic/react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  IonButton,
+  IonContent,
+  IonLoading,
+  IonModal,
+  IonRow,
+} from '@ionic/react';
 import { useHistory } from 'react-router';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import styles from './DowntimeType.module.scss';
 import Header from '../common/header/Header';
 import { useAppSelector } from '../../store/utils/hooks';
 import { useTranslations } from '../../store/slices/translation.slice';
-import { formatTime } from '../../store/utils/formatTime';
+import { formatDownTime } from '../../store/utils/formatDownTime';
 
 const DowntimeType: React.FC = () => {
   const translation = useTranslations();
   const [toggleDowntime, setToggleDowntime] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
   const toggleMock = useAppSelector((state) => state.mockData.data);
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setToggleDowntime(true);
@@ -140,9 +141,31 @@ const DowntimeType: React.FC = () => {
         history.push('/');
       }
       history.push('/');
+      setIsLoading(true);
     },
     [state, phaseState, li],
   );
+  useEffect(() => {
+    if (
+      state &&
+      state.process &&
+      state.process.currentPhaseDetails &&
+      state.process.currentPhaseDetails.downtimes &&
+      state.process.currentPhaseDetails.downtimes.length > 0
+    ) {
+      const knownEvent = state.process.currentPhaseDetails.downtimes.find(
+        (event) => event.reason !== 'unknown',
+      );
+
+      if (
+        state.process.currentPhaseDetails.phaseName === 'production' &&
+        knownEvent
+      ) {
+        setIsLoading(false);
+      }
+    }
+  }, [state]);
+
   return (
     <>
       <IonModal
@@ -166,7 +189,7 @@ const DowntimeType: React.FC = () => {
                       <div className={styles.title}>
                         <p>
                           {translation.text.downtimeAt}
-                          {formatTime(data.startTime)}
+                          {formatDownTime(data.startTime)}
                         </p>
                       </div>
                       {data.reason.slice(0, 3).map((value, i) => (
@@ -190,6 +213,12 @@ const DowntimeType: React.FC = () => {
                       ))}
                     </div>
                   ))}
+                <IonLoading
+                  isOpen={isLoading}
+                  spinner="circles"
+                  //message="Please wait..."
+                  cssClass={styles.ionloading}
+                />
               </IonRow>
             </div>
             <div className={styles.endBtn}>

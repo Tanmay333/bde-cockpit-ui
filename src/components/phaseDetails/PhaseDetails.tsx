@@ -66,18 +66,18 @@ const PhaseDetails: React.FC = () => {
       const pauseTime = formatTime(item.startTime);
       const resumeTime = formatTime(item.endTime);
 
-      renderedList.unshift(
+      renderedList.push(
         <Fragment key={index}>
+          <div className={styles.reason}>
+            <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
+            {translation.text.pauseAt} {pauseTime}: {item.reason}
+          </div>
           {state.process.currentPhaseDetails.downtimes !== null && (
             <div className={styles.reason}>
               <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
               {translation.text.resumeAt}: {resumeTime}
             </div>
           )}
-          <div className={styles.reason}>
-            <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
-            {translation.text.pauseAt} {pauseTime}: {item.reason}
-          </div>
         </Fragment>,
       );
     });

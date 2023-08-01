@@ -106,8 +106,9 @@ const machineDetailsSlice = createSlice({
   reducers: {
     updateMachineDetails: (state, action: PayloadAction<MachineDetails>) => {
       state.status = FetchingStatus.SUCCESS;
-
-      state.data = action.payload;
+      if (sessionStorage.getItem('stationId') === action.payload.stationId) {
+        state.data = action.payload;
+      }
     },
 
     StartNewOrder: (state) => {

@@ -44,16 +44,16 @@ const App: React.FC = () => {
   const { sendMessage, isConnected } = useWebSocket();
   const toggleMock = useAppSelector((state) => state.mockData.data);
 
-  const message = {
-    action: 'getCurrentProductionState',
-    stationId: toggleMock ? 'poc_station' : '1.203.4.245',
-  };
+  // const message = {
+  //   action: 'getCurrentProductionState',
+  //   stationId: toggleMock ? 'poc_station' : '1.203.4.245',
+  // };
 
-  useEffect(() => {
-    if (isConnected === true || toggleMock) {
-      sendMessage(message);
-    }
-  }, [isConnected, toggleMock]);
+  // useEffect(() => {
+  //   if (isConnected === true || toggleMock) {
+  //     sendMessage(message);
+  //   }
+  // }, [isConnected, toggleMock]);
 
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
 

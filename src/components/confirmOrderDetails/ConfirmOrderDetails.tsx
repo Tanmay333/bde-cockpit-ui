@@ -95,13 +95,13 @@ const ConfirmOrderDetails: React.FC = () => {
 
   const [pressedKeys, setPressedKeys] = useState<string[]>([]);
 
+  const StationId = useAppSelector((state) => state.StationIdsSlice.value);
   const { sendMessage } = useWebSocket();
-  const toggleMock = useAppSelector((state) => state.mockData.data);
   const onClick = useCallback(() => {
     const message = {
       action: 'assignNewJob',
       orderId: pressedKeys.join(''),
-      stationId: toggleMock ? 'poc_station' : '1.203.4.245',
+      stationId: StationId,
       orderQuantity: orderquantityvalue,
     };
     sendMessage(message);

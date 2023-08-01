@@ -12,10 +12,13 @@ import Buttons from '../components/common/buttons/Buttons';
 import { toggleMockData } from '../store/slices/mockData.slice';
 import { useTranslations } from '../store/slices/translation.slice';
 import DowntimeType from '../components/donwtimeType/DowntimeType';
+import StationIds from '../components/common/stationIds/StationID';
 
 const Home: React.FC = () => {
   const translation = useTranslations();
   const toggleMock = useAppSelector((state) => state.mockData.data);
+
+  const stationId = useAppSelector((state) => state.StationIdsSlice.value);
   const dispatch = useAppDispatch();
   const [timeLeft, setTimeLeft] = useState(5);
 
@@ -36,6 +39,9 @@ const Home: React.FC = () => {
     dispatch(toggleMockData(event.detail.checked));
   };
 
+  if (stationId === null && timeLeft === 0) {
+    return <StationIds />;
+  }
   return (
     <>
       <IonPage>
