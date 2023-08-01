@@ -53,6 +53,9 @@ interface Text {
   machine: string;
   ppm: string;
   machineSpeed: string;
+  min: string;
+  notStarted: string;
+  startedAt: string;
 }
 
 interface Reasons {
@@ -61,6 +64,10 @@ interface Reasons {
   misuse: string;
   defectiveFillingMaterial: string;
   otherIncident: string;
+  changingBarrel: string;
+  changingLabels: string;
+  break: string;
+
 }
 
 export interface Translations {

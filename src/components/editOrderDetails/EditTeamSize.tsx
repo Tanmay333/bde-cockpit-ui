@@ -87,7 +87,6 @@ const EditTeamSize = () => {
         <CardContainer
           title={translation.text.numberOfWorkers}
           position={'middle'}
-          style={{ paddingTop: '36px' }}
         >
           <IonGrid
             style={{

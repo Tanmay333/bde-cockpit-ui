@@ -20,8 +20,8 @@ import useWebSocket from '../../store/hooks/useWebSocket';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 import { getnumberDetails } from '../../store/slices/orderNumber';
 import editIcon from '../../static/assets/images/edit.svg';
-import Scanner from '../../static/assets/images/Scanner.svg';
 import { useTranslations } from '../../store/slices/translation.slice';
+import Scan from '../common/Scanner/Scan';
 
 const ConfirmOrderDetails: React.FC = () => {
   const translation = useTranslations();
@@ -36,7 +36,7 @@ const ConfirmOrderDetails: React.FC = () => {
     (state) => state.machineDetailsSlice.data,
   );
   const data = {
-    orderId: state?.assignedJobDetails?.orderId ?? '1869485',
+    orderId: state?.assignedJobDetails?.orderId ?? '--:--',
     quantity: state?.assignedJobDetails?.quantity ?? '--:--',
   };
 
@@ -93,13 +93,15 @@ const ConfirmOrderDetails: React.FC = () => {
     setBarcodeState(false);
   }, [history]);
 
+  const [pressedKeys, setPressedKeys] = useState<string[]>([]);
+
+  const StationId = useAppSelector((state) => state.StationIdsSlice.value);
   const { sendMessage } = useWebSocket();
-  const toggleMock = useAppSelector((state) => state.mockData.data);
   const onClick = useCallback(() => {
     const message = {
       action: 'assignNewJob',
-      orderId: ordernumbervalue,
-      stationId: toggleMock ? 'poc_station' : '1.203.4.245',
+      orderId: pressedKeys.join(''),
+      stationId: StationId,
       orderQuantity: orderquantityvalue,
     };
     sendMessage(message);
@@ -120,6 +122,56 @@ const ConfirmOrderDetails: React.FC = () => {
       ></IonIcon>
     </IonButton>
   );
+
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    const keypressHandler = (e: KeyboardEvent) => {
+      setPressedKeys((prevKeys) => {
+        const newKeys = prevKeys.slice();
+        if (e.keyCode === 13) {
+          newKeys.push('<br>');
+        } else {
+          newKeys.push(e.key);
+        }
+        return newKeys;
+      });
+    };
+
+    if (!isFocused) {
+      document.addEventListener('keypress', keypressHandler);
+    } else {
+      document.removeEventListener('keypress', keypressHandler);
+    }
+
+    return () => {
+      document.removeEventListener('keypress', keypressHandler);
+    };
+  }, [isFocused]);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  useEffect(() => {
+    const inputElement = document.getElementById('orderQuantity');
+
+    if (inputElement) {
+      inputElement.addEventListener('focus', handleFocus);
+      inputElement.addEventListener('blur', handleBlur);
+    }
+
+    return () => {
+      if (inputElement) {
+        inputElement.removeEventListener('focus', handleFocus);
+        inputElement.removeEventListener('blur', handleBlur);
+      }
+    };
+  }, [isFocused]);
 
   return (
     <IonPage>
@@ -147,11 +199,16 @@ const ConfirmOrderDetails: React.FC = () => {
                   />
                 </p>
               ) : (
-                <p> {translation.text.orderNumber}: 1869485</p>
+                <p>
+                  {' '}
+                  {translation.text.orderNumber}:{' '}
+                  {pressedKeys.length === 0 ? '--:--' : pressedKeys}
+                </p>
               )}
               <p>
                 {translation.text.orderQuantity}:
                 <input
+                  id="orderQuantity"
                   className={styles.focus}
                   type="number"
                   min="0"
@@ -159,6 +216,7 @@ const ConfirmOrderDetails: React.FC = () => {
                   onChange={onChangeQuantity}
                   placeholder={translation.text.enterOrderQuantity}
                   required
+                  disabled={pressedKeys.length === 0}
                 />
               </p>
             </IonText>
@@ -167,7 +225,7 @@ const ConfirmOrderDetails: React.FC = () => {
               onClick={onClick}
               fill="solid"
               className={styles.btn}
-              disabled={!enteredQuantity}
+              disabled={!enteredQuantity && pressedKeys.length === 0}
             >
               {translation.buttons.confirmDetails}
             </IonButton>
@@ -197,16 +255,7 @@ const ConfirmOrderDetails: React.FC = () => {
                 isOpen={barcodeState}
               >
                 <button onClick={onBarcodeScanComplete}>
-                  <IonImg
-                    style={{
-                      width: '100%',
-                      height: '100vh',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    src={Scanner}
-                  ></IonImg>
+                  <Scan />
                 </button>
               </IonModal>
             </IonGrid>

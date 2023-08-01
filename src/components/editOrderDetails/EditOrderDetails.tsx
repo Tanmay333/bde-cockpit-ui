@@ -19,6 +19,7 @@ import useWebSocket from '../../store/hooks/useWebSocket';
 import EditNumberQuantity from './EditNumberQuantity';
 import Scanner from '../../static/assets/images/Scanner.svg';
 import { useTranslations } from '../../store/slices/translation.slice';
+import Scan from '../common/Scanner/Scan';
 
 const EditOrderDetails: React.FC = () => {
   const translation = useTranslations();
@@ -135,16 +136,7 @@ const EditOrderDetails: React.FC = () => {
                 onDidDismiss={closeModal}
               >
                 <button onClick={onBarcodeScanComplete}>
-                  <IonImg
-                    style={{
-                      width: '100%',
-                      height: '100vh',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    src={Scanner}
-                  ></IonImg>
+                  <Scan />
                 </button>
               </IonModal>
             </IonGrid>

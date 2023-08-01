@@ -50,6 +50,9 @@ export const englishTranslations: Translations = {
     machine: 'Machine',
     ppm: 'ppm',
     machineSpeed: 'Machine speed',
+    min: 'min',
+    notStarted: 'Not Started',
+    startedAt: 'Started at',
   },
 
   reason: {
@@ -58,6 +61,9 @@ export const englishTranslations: Translations = {
     misuse: 'Misuse',
     defectiveFillingMaterial: 'Defective Filling Material',
     otherIncident: 'Other Incident',
+    changingBarrel: 'Changing Barrel',
+    changingLabels: 'Changing Labels',
+    break: 'Break',
   },
 };
 

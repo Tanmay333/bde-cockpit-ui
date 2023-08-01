@@ -1,4 +1,4 @@
-export const formatTime = (dateString: string | null): string => {
+export const formatDownTime = (dateString: string | null): string => {
   if (dateString === null) {
     return '--:--';
   }
@@ -7,16 +7,18 @@ export const formatTime = (dateString: string | null): string => {
 
   const hours = dateObj.getHours();
   const minutes = dateObj.getMinutes();
+  const seconds = dateObj.getSeconds();
 
   const hrsFormat = hours < 10 ? `0${hours}` : hours;
   const minFormat = minutes < 10 ? `0${minutes}` : minutes;
+  const secFormat = seconds < 10 ? `0${seconds}` : seconds;
 
-  const formattedTime = ` ${hrsFormat}:${minFormat}`;
+  const formattedDownTime = ` ${hrsFormat}:${minFormat}:${secFormat}`;
 
-  return formattedTime;
+  return formattedDownTime;
 };
 
-export const formatDate = (timeString: string | null): string => {
+export const formatDownTimeDate = (timeString: string | null): string => {
   if (timeString === null) {
     return '--:--';
   }

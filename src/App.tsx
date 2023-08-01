@@ -31,7 +31,6 @@ import Home from './pages/Home';
 import SelectTeamSize from './components/selectWorkers/SelectTeamSize';
 import OrderDetails from './components/orderDetails/OrderDetails';
 import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDetails';
-import DowntimeType from './components/donwtimeType/DowntimeType';
 import useWebSocket from './store/hooks/useWebSocket';
 import { useEffect, useState } from 'react';
 import EditOrderdetails from './components/editOrderDetails/EditOrderDetails';
@@ -45,16 +44,16 @@ const App: React.FC = () => {
   const { sendMessage, isConnected } = useWebSocket();
   const toggleMock = useAppSelector((state) => state.mockData.data);
 
-  const message = {
-    action: 'getCurrentProductionState',
-    stationId: toggleMock ? 'poc_station' : '1.203.4.245',
-  };
+  // const message = {
+  //   action: 'getCurrentProductionState',
+  //   stationId: toggleMock ? 'poc_station' : '1.203.4.245',
+  // };
 
-  useEffect(() => {
-    if (isConnected === true || toggleMock) {
-      sendMessage(message);
-    }
-  }, [isConnected, toggleMock]);
+  // useEffect(() => {
+  //   if (isConnected === true || toggleMock) {
+  //     sendMessage(message);
+  //   }
+  // }, [isConnected, toggleMock]);
 
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
 
@@ -93,9 +92,6 @@ const App: React.FC = () => {
             component={ConfirmOrderdetails}
           >
             <ConfirmOrderdetails />
-          </Route>
-          <Route exact path={urls.downtimetype}>
-            <DowntimeType />
           </Route>
           <Route
             exact

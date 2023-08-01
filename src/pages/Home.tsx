@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { IonPage, IonContent, IonToggle, IonText } from '@ionic/react';
-import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/utils/hooks';
 import Header from '../components/common/header/Header';
 import OrderInfoCard from '../components/orderInfoCard/OrderInfoCard';
@@ -12,44 +11,16 @@ import styles from './Home.module.scss';
 import Buttons from '../components/common/buttons/Buttons';
 import { toggleMockData } from '../store/slices/mockData.slice';
 import { useTranslations } from '../store/slices/translation.slice';
+import DowntimeType from '../components/donwtimeType/DowntimeType';
+import StationIds from '../components/common/stationIds/StationID';
 
 const Home: React.FC = () => {
   const translation = useTranslations();
-
-  const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const toggleMock = useAppSelector((state) => state.mockData.data);
+
+  const stationId = useAppSelector((state) => state.StationIdsSlice.value);
   const dispatch = useAppDispatch();
-  const history = useHistory();
   const [timeLeft, setTimeLeft] = useState(5);
-
-  useEffect(() => {
-    if (
-      state &&
-      state.process &&
-      state.process.currentPhaseDetails &&
-      state.process.currentPhaseDetails.downtimes &&
-      state.process.currentPhaseDetails.downtimes.length > 0
-    ) {
-      const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
-        (event) => event.reason === 'unknown',
-      );
-
-      if (
-        state.process.currentPhaseDetails.phaseName === 'production' &&
-        state.process.currentPhaseDetails.state === 'DOWNTIME' &&
-        unknownEvent
-      ) {
-        history.push('/downtimetype');
-      }
-      if (
-        state.process.currentPhaseDetails.phaseName === 'production' &&
-        state.process.currentPhaseDetails.state === 'RUNNING' &&
-        unknownEvent
-      ) {
-        history.push('/downtimetype');
-      }
-    }
-  }, [state, history]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -68,28 +39,34 @@ const Home: React.FC = () => {
     dispatch(toggleMockData(event.detail.checked));
   };
 
+  if (stationId === null && timeLeft === 0) {
+    return <StationIds />;
+  }
   return (
-    <IonPage>
-      <Header />
-      <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
-        <IonText>{translation.buttons.toggle}</IonText>
-        <IonToggle
-          style={{ margin: 20 }}
-          checked={toggleMock}
-          onIonChange={handleToggleChange}
-          color="primary"
-        />
-      </div>
-      <IonContent>
-        <OrderInfoCard />
-        <Phase />
-        <div className={styles.details}>
-          <WorkDetails />
-          <PhaseDetails />
+    <>
+      <IonPage>
+        <Header />
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
+          <IonText>{translation.buttons.toggle}</IonText>
+          <IonToggle
+            style={{ margin: 20 }}
+            checked={toggleMock}
+            onIonChange={handleToggleChange}
+            color="primary"
+          />
         </div>
-        <Buttons />
-      </IonContent>
-    </IonPage>
+        <IonContent>
+          <OrderInfoCard />
+          <Phase />
+          <div className={styles.details}>
+            <WorkDetails />
+            <PhaseDetails />
+          </div>
+          <Buttons />
+          <DowntimeType />
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 

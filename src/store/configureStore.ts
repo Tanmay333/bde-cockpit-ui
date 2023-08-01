@@ -22,6 +22,7 @@ import {
   translationReducer,
 } from './slices/translation.slice';
 import { MOCK_DATA_KEY, mockReducer } from './slices/mockData.slice';
+import { STATION_IDS, stationIdsReducer } from './slices/stationIdSlice';
 const reducers = {
   [TEST_SLICE_KEY]: testDataReducer,
   [MACHINE_DETAILS_KEY]: machineDetailsReducer,
@@ -31,6 +32,7 @@ const reducers = {
   [START_NEW_ORDER_SLICE]: DataReducer,
   [TRANSLATION_KEY]: translationReducer,
   [MOCK_DATA_KEY]: mockReducer,
+  [STATION_IDS]: stationIdsReducer,
 };
 
 export const store = configureStore({ reducer: reducers });
