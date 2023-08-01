@@ -4,9 +4,8 @@ import useWebSocket from '../../../store/hooks/useWebSocket';
 import { useHistory } from 'react-router';
 import { useAppDispatch } from '../../../store/utils/hooks';
 import Header from '../header/Header';
-import SplashScreen from '../../splashScreen/SplashScreen';
 import { StationIdsData } from '../../../store/slices/stationIdSlice';
-
+import styles from './StationID.module.scss';
 const StationIds: React.FC = () => {
   const { sendMessage, isConnected } = useWebSocket();
   const history = useHistory();
@@ -37,29 +36,37 @@ const StationIds: React.FC = () => {
     history.push('/');
   }, [isConnected, sendMessage, history]);
 
-  const onClickTest = useCallback(() => {
-    dispatch(StationIdsData('test_station'));
-    sessionStorage.setItem('stationId', 'test_station');
+  // const onClickTest = useCallback(() => {
+  //   dispatch(StationIdsData('test_station'));
+  //   sessionStorage.setItem('stationId', 'test_station');
 
-    const message = {
-      action: 'getCurrentProductionState',
-      stationId: 'test_station',
-    };
+  //   const message = {
+  //     action: 'getCurrentProductionState',
+  //     stationId: 'test_station',
+  //   };
 
-    sendMessage(message);
+  //   sendMessage(message);
 
-    history.push('/');
-  }, [isConnected, sendMessage, history]);
+  //   history.push('/');
+  // }, [isConnected, sendMessage, history]);
 
   return (
     <>
       <IonPage>
         <IonContent>
           <Header />
-          <IonRow>
-            <IonButton onClick={onClickPoc}>Poc</IonButton>
-            <IonButton onClick={onClickMock}>Mock</IonButton>
-            <IonButton onClick={onClickTest}>Test</IonButton>
+          <div className={styles.para}>Please select the Station ID</div>
+          <br />
+          <IonRow className={styles.container}>
+            <IonButton className={styles.text} onClick={onClickPoc}>
+              Poc Station{' '}
+            </IonButton>
+            <IonButton className={styles.text} onClick={onClickMock}>
+              Mock Station
+            </IonButton>
+            {/* <IonButton className={styles.text} onClick={onClickTest}>
+              Test Station
+            </IonButton> */}
           </IonRow>
         </IonContent>
       </IonPage>
