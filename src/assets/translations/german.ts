@@ -24,6 +24,8 @@ export const germanTranslations: Translations = {
     editOrderDetails: 'Auftragsdetails bearbeiten ',
     startNewOrder: 'Neuen Auftrag starten ',
     editMemberDetails: 'Anzahl Mitarbeiter bearbeiten ',
+    pocStation: 'Poc-Station',
+    mockStation: 'Scheinstation',
   },
 
   text: {
@@ -57,6 +59,7 @@ export const germanTranslations: Translations = {
     forcedDowntime: 'Erzwungene Ausfallzeit',
     production: 'Produktion',
     downTime: 'Stillstand ',
+    stationId: 'Please select the Station ID',
   },
 
   reason: {

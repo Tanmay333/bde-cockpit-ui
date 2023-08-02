@@ -6,11 +6,13 @@ import { useAppDispatch } from '../../../store/utils/hooks';
 import Header from '../header/Header';
 import { StationIdsData } from '../../../store/slices/stationIdSlice';
 import styles from './StationID.module.scss';
+import { useTranslations } from '../../../store/slices/translation.slice';
 
 const StationIds: React.FC = () => {
   const { sendMessage, isConnected } = useWebSocket();
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const translation = useTranslations();
 
   const onClickPoc = useCallback(() => {
     dispatch(StationIdsData('poc_station'));
@@ -56,14 +58,14 @@ const StationIds: React.FC = () => {
       <IonPage>
         <IonContent>
           <Header />
-          <div className={styles.para}>Please select the Station ID</div>
+          <div className={styles.para}>{translation.text.stationId}</div>
           <br />
           <IonRow className={styles.container}>
             <IonButton className={styles.text} onClick={onClickPoc}>
-              Poc Station{' '}
+              {translation.buttons.pocStation}{' '}
             </IonButton>
             <IonButton className={styles.text} onClick={onClickMock}>
-              Mock Station
+              {translation.buttons.mockStation}
             </IonButton>
             {/* <IonButton className={styles.text} onClick={onClickTest}>
               Test Station

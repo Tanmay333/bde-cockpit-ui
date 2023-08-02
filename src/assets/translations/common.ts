@@ -30,6 +30,8 @@ interface Buttons {
   editOrderDetails: string;
   startNewOrder: string;
   editMemberDetails: string;
+  pocStation: string;
+  mockStation: string;
 }
 
 interface Text {
@@ -60,6 +62,7 @@ interface Text {
   forcedDowntime: string;
   production: string;
   downTime: string;
+  stationId: string;
 }
 
 interface Reasons {

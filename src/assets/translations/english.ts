@@ -24,6 +24,8 @@ export const englishTranslations: Translations = {
     editOrderDetails: 'Edit order details',
     startNewOrder: 'Start new order ',
     editMemberDetails: 'Edit Member details ',
+    pocStation: 'Poc Station',
+    mockStation: 'Mock Station',
   },
 
   text: {
@@ -57,6 +59,7 @@ export const englishTranslations: Translations = {
     forcedDowntime: 'Forced Downtime',
     production: 'Production',
     downTime: 'DownTime',
+    stationId: 'Please select the Station ID',
   },
 
   reason: {
