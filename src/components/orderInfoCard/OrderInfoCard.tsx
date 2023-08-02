@@ -263,6 +263,37 @@ const OrderInfoCard: React.FC = () => {
     }
   };
 
+  const Productionsincetime = state.process.currentPhaseDetails.runningSince;
+  const downtimesincetime = state.process.currentPhaseDetails.downtimeSince;
+
+  const currentTime = new Date().getTime();
+  const Currentproductiontime = Productionsincetime
+    ? (currentTime - new Date(Productionsincetime).getTime()) / 1000
+    : 0;
+  const Currentdowntime = downtimesincetime
+    ? (currentTime - new Date(downtimesincetime).getTime()) / 1000
+    : 0;
+
+  const Totalproduction = state.process.currentPhaseDetails.totalUptime;
+  const Totaldowntime = state.process.currentPhaseDetails.totalDowntime;
+
+  const formattotalTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}`;
+  };
+
+  const totalProductionMinutes = Totalproduction ? Number(Totalproduction) : 0;
+  const totalDowntimeMinutes = Totaldowntime ? Number(Totaldowntime) : 0;
+
+  const sumofProdTime = Currentproductiontime + totalProductionMinutes;
+  const sumofDowntime = Currentdowntime + totalDowntimeMinutes;
+
+  const TotalProdTime = formattotalTime(sumofProdTime);
+  const TotalDowntime = formattotalTime(sumofDowntime);
+
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader>
@@ -294,6 +325,8 @@ const OrderInfoCard: React.FC = () => {
           <IonCardSubtitle>
             {getPhaseName()} - {translation.description[data.currentPhaseName]}
           </IonCardSubtitle>
+          <div>Total Production Time: {TotalProdTime}</div>
+          <div>Total Downtime: {TotalDowntime}</div>
         </div>
       </IonCardContent>
     </IonCard>

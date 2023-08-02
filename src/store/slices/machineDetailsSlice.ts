@@ -20,6 +20,10 @@ const initialData: MachineDetails = {
       endTime: null,
       downtimes: [],
       state: null,
+      downtimeSince: null,
+      runningSince: null,
+      totalDowntime: null,
+      totalUptime: null,
     },
     previousPhases: [],
     producedItems: [
@@ -58,6 +62,10 @@ interface CurrentPhaseDetails {
   endTime: string | null;
   downtimes: Downtimes[];
   state: string | null;
+  downtimeSince: string | null;
+  runningSince: string | null;
+  totalDowntime: number | string | null;
+  totalUptime: number | string | null;
 }
 interface PreviousPhases {
   phaseName: string | null;
