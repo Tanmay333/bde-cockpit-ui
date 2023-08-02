@@ -20,42 +20,30 @@ const DowntimeType: React.FC = () => {
   const modal = useRef<HTMLIonModalElement>(null);
   const toggleMock = useAppSelector((state) => state.mockData.data);
   const [isLoading, setIsLoading] = useState(false);
-
-  const openModal = () => {
-    setToggleDowntime(true);
-  };
+  const history = useHistory();
+  const { sendMessage } = useWebSocket();
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  const [li, setLi] = useState<
+    { startTime: string | null; reason: string[] }[]
+  >([]);
 
   const closeModal = () => {
     setToggleDowntime(false);
   };
-
-  const history = useHistory();
-  const { sendMessage } = useWebSocket();
-  const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
   if (!state) {
     return null;
   }
   const Downtimereason = [
     translation.reason.changingBarrel,
-
     translation.reason.changingLabels,
-
     translation.reason.break,
-
     translation.reason.mechanicalIncident,
-
     translation.reason.electricalIncident,
-
     translation.reason.misuse,
-
     translation.reason.defectiveFillingMaterial,
-
     translation.reason.otherIncident,
   ];
-  const [li, setLi] = useState<
-    { startTime: string | null; reason: string[] }[]
-  >([]);
 
   useEffect(() => {
     if (
@@ -68,7 +56,6 @@ const DowntimeType: React.FC = () => {
       const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
         (event) => event.reason === 'unknown',
       );
-
       if (
         state.process.currentPhaseDetails.phaseName === 'production' &&
         unknownEvent
@@ -84,7 +71,6 @@ const DowntimeType: React.FC = () => {
         setLi(dtRs);
         setToggleDowntime(true);
       }
-
       if (
         state.process.currentPhaseDetails.phaseName === 'production' &&
         state.process.currentPhaseDetails.state === 'RUNNING' &&
@@ -121,7 +107,6 @@ const DowntimeType: React.FC = () => {
       jobId: jobId,
     };
     sendMessage(message);
-
     history.push('/');
   }, [jobId, sendMessage, history]);
 
@@ -145,6 +130,7 @@ const DowntimeType: React.FC = () => {
     },
     [state, phaseState, li],
   );
+
   useEffect(() => {
     if (
       state &&

@@ -10,9 +10,11 @@ import { useTranslations } from '../../../store/slices/translation.slice';
 
 const Buttons = () => {
   const translation = useTranslations();
-
   const history = useHistory();
   const [startNewOrder, setStartNewOrder] = useState(false);
+  const dispatch = useAppDispatch();
+  const { sendMessage } = useWebSocket();
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
   const onClick = useCallback(() => {
     const updatedValue = !startNewOrder;
@@ -20,14 +22,13 @@ const Buttons = () => {
     dispatch(StartNewOrder());
   }, [startNewOrder, history]);
 
-  const dispatch = useAppDispatch();
+  const StartPreparation = useCallback(() => {
+    history.push('/selectteamsize');
+  }, [history]);
 
   useEffect(() => {
     dispatch(getData(startNewOrder));
   }, [startNewOrder, dispatch]);
-
-  const { sendMessage } = useWebSocket();
-  const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
   const jobId = useMemo(() => {
     if (
@@ -87,10 +88,6 @@ const Buttons = () => {
     state?.process &&
     state.process.currentPhaseDetails &&
     state?.process?.currentPhaseDetails?.phaseName === 'cleaning';
-
-  const StartPreparation = useCallback(() => {
-    history.push('/selectteamsize');
-  }, [history]);
 
   return (
     <IonGrid>

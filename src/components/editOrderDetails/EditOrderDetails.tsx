@@ -23,12 +23,11 @@ import Scan from '../common/Scanner/Scan';
 
 const EditOrderDetails: React.FC = () => {
   const translation = useTranslations();
-
   const [barcodeState, setBarcodeState] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
-
   const location = useLocation();
+  const { sendMessage } = useWebSocket();
 
   useEffect(() => {
     const handleLocationChange = () => {
@@ -64,16 +63,14 @@ const EditOrderDetails: React.FC = () => {
     setBarcodeState(false);
   }, []);
 
-  const { sendMessage } = useWebSocket();
-
   const orderquantityvalue = useAppSelector(
     (state) => state.OrderQuantitySlice.data,
   );
   const ordernumbervalue = useAppSelector(
     (state) => state.OrderNumberSlice.data,
   );
-  const StationId = useAppSelector((state) => state.StationIdsSlice.value);
 
+  const StationId = useAppSelector((state) => state.StationIdsSlice.value);
   const onClick = useCallback(() => {
     {
       const message = {
@@ -84,7 +81,6 @@ const EditOrderDetails: React.FC = () => {
       };
       sendMessage(message);
     }
-
     const phaseone = document.getElementById('phase-one');
     if (phaseone) {
       phaseone.style.backgroundColor = '#2799D1';

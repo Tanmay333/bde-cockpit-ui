@@ -12,7 +12,6 @@ import { useTranslations } from '../../store/slices/translation.slice';
 
 const PhaseDetails: React.FC = () => {
   const translation = useTranslations();
-
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
   const startTime = () => {
@@ -92,7 +91,6 @@ const PhaseDetails: React.FC = () => {
     ) {
       return [];
     }
-
     const downtimes = state.process.currentPhaseDetails.downtimes;
 
     const formattedDowntimes = downtimes.map((downtime) => {
@@ -103,7 +101,6 @@ const PhaseDetails: React.FC = () => {
         )}`,
       };
     });
-
     return formattedDowntimes;
   };
 
@@ -116,11 +113,9 @@ const PhaseDetails: React.FC = () => {
     if (phaseName === 'mounting') {
       return [{ label: translation.text.startTime, value: startTime() }];
     }
-
     if (phaseName === 'preparing') {
       return [{ label: translation.text.startTime, value: startTime() }];
     }
-
     if (phaseName === 'production') {
       const downtimeReasons = setUpDownTimes();
       const pauseResumeItems = downtimeReasons.map((item) => {
@@ -142,11 +137,9 @@ const PhaseDetails: React.FC = () => {
         ...pauseResumeItems,
       ];
     }
-
     if (phaseName === 'unmounting') {
       return [{ label: translation.text.startTime, value: startTime() }];
     }
-
     if (
       phaseName === 'cleaning' &&
       state?.process.currentPhaseDetails.state === 'RUNNING'

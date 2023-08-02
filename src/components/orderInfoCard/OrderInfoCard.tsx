@@ -17,13 +17,13 @@ import Green1 from '../../static/assets/images/Green1.svg';
 
 const OrderInfoCard: React.FC = () => {
   const translation = useTranslations();
+  const [startTimeOfProcess, setStartTimeOfProcess] = useState('N/A');
+  const [currentPhaseTime, setCurrentPhaseTime] = useState('00:00');
+  const [currentPhaseName, setCurrentPhaseName] = useState('N/A');
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const previousPhase = useAppSelector(
     (state) => state.machineDetailsSlice.data.process.previousPhases,
   );
-  const [startTimeOfProcess, setStartTimeOfProcess] = useState('N/A');
-  const [currentPhaseTime, setCurrentPhaseTime] = useState('00:00');
-  const [currentPhaseName, setCurrentPhaseName] = useState('N/A');
 
   const isPhaseProduction = useMemo(() => {
     if (state?.process?.currentPhaseDetails) {
@@ -106,14 +106,12 @@ const OrderInfoCard: React.FC = () => {
       if (totalTimeOfPreviousPhase === 'N/A' || currentStartTime === 'N/A') {
         return 'N/A';
       }
-
       const [previousHours, previousMinutes] = totalTimeOfPreviousPhase
         .split(':')
         .map(Number);
       const [currentHours, currentMinutes] = currentStartTime
         .split(':')
         .map(Number);
-
       const totalHours = previousHours + currentHours;
       const totalMinutes = previousMinutes + currentMinutes;
 
@@ -142,7 +140,6 @@ const OrderInfoCard: React.FC = () => {
       if (!state?.process?.currentPhaseDetails?.phaseName) {
         return 'NA';
       }
-
       return state.process.currentPhaseDetails.phaseName;
     };
 
@@ -150,7 +147,6 @@ const OrderInfoCard: React.FC = () => {
       if (!state?.process?.currentPhaseDetails?.startTime) {
         return `00 ${translation.text.hrs} 00 ${translation.text.min}`;
       }
-
       const startTime = new Date(state.process.currentPhaseDetails.startTime);
       const currentTime = new Date();
 
@@ -162,7 +158,6 @@ const OrderInfoCard: React.FC = () => {
         translation.text.hrs
       } ${minutes.toString().padStart(2, '0')} ${translation.text.min}`;
     };
-
     const interval = setInterval(() => {
       setCurrentPhaseTime(currentPhaseTime());
       setCurrentPhaseName(currentPhaseName());
@@ -330,7 +325,6 @@ const OrderInfoCard: React.FC = () => {
               00 {translation.text.hrs} 00 {translation.text.min}
             </IonCardTitle>
           )}
-
           <IonCardSubtitle>
             {getPhaseName()} - {translation.description[data.currentPhaseName]}
           </IonCardSubtitle>

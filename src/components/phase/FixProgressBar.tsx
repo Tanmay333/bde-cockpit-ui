@@ -5,7 +5,6 @@ import { useAppSelector } from '../../store/utils/hooks';
 const FixProgressBar: React.FC = () => {
   const toggleMock = useAppSelector((state) => state.mockData.data);
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-
   const [diff, setDiff] = useState<{ progress: number; value: string }[]>([]);
 
   useEffect(() => {

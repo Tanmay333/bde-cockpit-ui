@@ -20,43 +20,25 @@ import { useTranslations } from '../../store/slices/translation.slice';
 
 const EditTeamSize = () => {
   const translation = useTranslations();
+  const history = useHistory();
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  const dispatch = useAppDispatch();
+  const { sendMessage } = useWebSocket();
 
   const Workers = [
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 4,
-    },
-    {
-      id: 5,
-    },
-    {
-      id: 6,
-    },
-    {
-      id: 7,
-    },
-    {
-      id: 8,
-    },
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
+    { id: 4 },
+    { id: 5 },
+    { id: 6 },
+    { id: 7 },
+    { id: 8 },
   ];
-
-  const history = useHistory();
 
   const routeToHomePage = () => {
     return history.push('/');
   };
-
-  const state = useAppSelector((state) => state.machineDetailsSlice.data);
-  const dispatch = useAppDispatch();
-  const { sendMessage } = useWebSocket();
 
   const data = {
     teamsize: state?.assignedJobDetails.productionTeamSize ?? '--:--',

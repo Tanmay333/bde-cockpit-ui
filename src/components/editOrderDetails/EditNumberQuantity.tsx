@@ -8,7 +8,6 @@ import { useTranslations } from '../../store/slices/translation.slice';
 
 const EditOrderDetails: React.FC = () => {
   const translation = useTranslations();
-
   const dispatch = useAppDispatch();
 
   const state = useAppSelector<MachineDetails | null>(
@@ -18,7 +17,6 @@ const EditOrderDetails: React.FC = () => {
     orderId: state?.assignedJobDetails?.orderId ?? '--:--',
     quantity: state?.assignedJobDetails?.quantity ?? '--:--',
   };
-
   const [orderNumber, setOrderNumber] = useState(data.orderId);
   const [orderQuantity, setOrderQuantity] = useState(data.quantity);
 

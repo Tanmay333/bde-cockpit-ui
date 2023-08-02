@@ -13,8 +13,6 @@ const IncrementalProgressBar: React.FC = () => {
   const startTimeOfProduction = process.currentPhaseDetails.startTime;
   const downTimes = process.currentPhaseDetails.downtimes;
 
-  // ... (rest of the code)
-
   const data = useMemo(() => {
     if (!isDefined(startTimeOfProduction)) return [];
 
@@ -51,8 +49,6 @@ const IncrementalProgressBar: React.FC = () => {
 
     return differences;
   }, [startTimeOfProduction, downTimes, currentTime]);
-
-  // ... (rest of the code)
 
   return (
     <div

@@ -11,10 +11,10 @@ import IncrementalProgressBar from './IncrementalProgressBar';
 
 const Phase: React.FC = () => {
   const translation = useTranslations();
-
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const toggleMock = useAppSelector((state) => state.mockData.data);
   const history = useHistory();
+  const { sendMessage } = useWebSocket();
 
   const [showPhase1, setShowPhase1] = useState(true);
   const [showPhase2, setShowPhase2] = useState(false);
@@ -170,8 +170,6 @@ const Phase: React.FC = () => {
   const onClickPhase5 = useCallback(() => {
     history.push('/');
   }, [history]);
-
-  const { sendMessage } = useWebSocket();
 
   if (state === null || state === undefined) {
     return null;

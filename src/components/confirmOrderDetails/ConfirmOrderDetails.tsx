@@ -25,13 +25,15 @@ import Scan from '../common/Scanner/Scan';
 
 const ConfirmOrderDetails: React.FC = () => {
   const translation = useTranslations();
-
   const history = useHistory();
   const dispatch = useAppDispatch();
   const [enteredQuantity, setEnteredQuantity] = useState(Number);
   const [barcodeState, setBarcodeState] = useState(false);
-  const modal = useRef<HTMLIonModalElement>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [pressedKeys, setPressedKeys] = useState<string[]>([]);
+  const [isFocused, setIsFocused] = useState(false);
 
+  const modal = useRef<HTMLIonModalElement>(null);
   const state = useAppSelector<MachineDetails | null>(
     (state) => state.machineDetailsSlice.data,
   );
@@ -78,8 +80,6 @@ const ConfirmOrderDetails: React.FC = () => {
     }
   };
 
-  const [isEditMode, setIsEditMode] = useState(false);
-
   const enterEditMode = useCallback(() => {
     setIsEditMode(true);
   }, []);
@@ -92,8 +92,6 @@ const ConfirmOrderDetails: React.FC = () => {
     history.push('/confirmorderdetails');
     setBarcodeState(false);
   }, [history]);
-
-  const [pressedKeys, setPressedKeys] = useState<string[]>([]);
 
   const StationId = useAppSelector((state) => state.StationIdsSlice.value);
   const { sendMessage } = useWebSocket();
@@ -123,8 +121,6 @@ const ConfirmOrderDetails: React.FC = () => {
     </IonButton>
   );
 
-  const [isFocused, setIsFocused] = useState(false);
-
   useEffect(() => {
     const keypressHandler = (e: KeyboardEvent) => {
       setPressedKeys((prevKeys) => {
@@ -152,19 +148,16 @@ const ConfirmOrderDetails: React.FC = () => {
   const handleFocus = () => {
     setIsFocused(true);
   };
-
   const handleBlur = () => {
     setIsFocused(false);
   };
 
   useEffect(() => {
     const inputElement = document.getElementById('orderQuantity');
-
     if (inputElement) {
       inputElement.addEventListener('focus', handleFocus);
       inputElement.addEventListener('blur', handleBlur);
     }
-
     return () => {
       if (inputElement) {
         inputElement.removeEventListener('focus', handleFocus);
