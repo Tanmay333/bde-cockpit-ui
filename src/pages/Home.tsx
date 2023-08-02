@@ -9,17 +9,17 @@ import PhaseDetails from '../components/phaseDetails/PhaseDetails';
 import SplashScreen from '../components/splashScreen/SplashScreen';
 import styles from './Home.module.scss';
 import Buttons from '../components/common/buttons/Buttons';
-import { toggleMockData } from '../store/slices/mockData.slice';
-import { useTranslations } from '../store/slices/translation.slice';
+// import { toggleMockData } from '../store/slices/mockData.slice';
+// import { useTranslations } from '../store/slices/translation.slice';
 import DowntimeType from '../components/donwtimeType/DowntimeType';
 import StationIds from '../components/common/stationIds/StationID';
 
 const Home: React.FC = () => {
-  const translation = useTranslations();
-  const toggleMock = useAppSelector((state) => state.mockData.data);
+  // const translation = useTranslations();
+  // const toggleMock = useAppSelector((state) => state.mockData.data);
 
   const stationId = useAppSelector((state) => state.StationIdsSlice.value);
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const [timeLeft, setTimeLeft] = useState(5);
 
   useEffect(() => {
@@ -35,9 +35,9 @@ const Home: React.FC = () => {
     return <SplashScreen />;
   }
 
-  const handleToggleChange = (event: any) => {
-    dispatch(toggleMockData(event.detail.checked));
-  };
+  // const handleToggleChange = (event: any) => {
+  //   dispatch(toggleMockData(event.detail.checked));
+  // };
 
   if (stationId === null && timeLeft === 0) {
     return <StationIds />;
@@ -46,7 +46,7 @@ const Home: React.FC = () => {
     <>
       <IonPage>
         <Header />
-        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
+        {/* <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
           <IonText>{translation.buttons.toggle}</IonText>
           <IonToggle
             style={{ margin: 20 }}
@@ -54,7 +54,7 @@ const Home: React.FC = () => {
             onIonChange={handleToggleChange}
             color="primary"
           />
-        </div>
+        </div> */}
         <IonContent>
           <OrderInfoCard />
           <Phase />
