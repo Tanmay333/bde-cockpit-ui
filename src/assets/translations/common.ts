@@ -56,6 +56,10 @@ interface Text {
   min: string;
   notStarted: string;
   startedAt: string;
+  plannedDowntime: string;
+  forcedDowntime: string;
+  production: string;
+  downTime: string;
 }
 
 interface Reasons {
@@ -67,7 +71,6 @@ interface Reasons {
   changingBarrel: string;
   changingLabels: string;
   break: string;
-
 }
 
 export interface Translations {

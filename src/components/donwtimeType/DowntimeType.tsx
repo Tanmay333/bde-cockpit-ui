@@ -178,25 +178,32 @@ const DowntimeType: React.FC = () => {
                           {formatDownTime(data.startTime)}
                         </p>
                       </div>
-                      {data.reason.slice(0, 3).map((value, i) => (
-                        <IonButton
-                          onClick={() => onClick(value, data.startTime)}
-                          key={i}
-                          className={styles.button}
-                        >
-                          {value}
-                        </IonButton>
-                      ))}
+                      <div className={styles.title}>
+                        {translation.text.plannedDowntime}
+                        <br />
+                        {data.reason.slice(0, 3).map((value, i) => (
+                          <IonButton
+                            onClick={() => onClick(value, data.startTime)}
+                            key={i}
+                            className={styles.button}
+                          >
+                            {value}
+                          </IonButton>
+                        ))}
+                      </div>
                       <div className={styles.spacing}></div>
-                      {data.reason.slice(3).map((value, i) => (
-                        <IonButton
-                          onClick={() => onClick(value, data.startTime)}
-                          key={i}
-                          className={styles.button}
-                        >
-                          {value}
-                        </IonButton>
-                      ))}
+                      <div className={styles.title}>
+                        {translation.text.forcedDowntime} <br />
+                        {data.reason.slice(3).map((value, i) => (
+                          <IonButton
+                            onClick={() => onClick(value, data.startTime)}
+                            key={i}
+                            className={styles.button}
+                          >
+                            {value}
+                          </IonButton>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 <IonLoading

@@ -53,6 +53,10 @@ export const englishTranslations: Translations = {
     min: 'min',
     notStarted: 'Not Started',
     startedAt: 'Started at',
+    plannedDowntime: 'Planned Downtime',
+    forcedDowntime: 'Forced Downtime',
+    production: 'Production',
+    downTime: 'DownTime',
   },
 
   reason: {

@@ -12,8 +12,7 @@ import { useTranslations } from '../../store/slices/translation.slice';
 import Green from '../../static/assets/images/Green.svg';
 import Red from '../../static/assets/images/Red.svg';
 import { formatDate } from '../../store/utils/formatTime';
-import Red1 from '../../static/assets/images/Red1.svg';
-import Green1 from '../../static/assets/images/Green1.svg';
+import ProductionVsDowntime from './ProductionVsDowntime';
 
 const OrderInfoCard: React.FC = () => {
   const translation = useTranslations();
@@ -260,37 +259,6 @@ const OrderInfoCard: React.FC = () => {
     }
   };
 
-  const Productionsincetime = state.process.currentPhaseDetails.runningSince;
-  const downtimesincetime = state.process.currentPhaseDetails.downtimeSince;
-
-  const currentTime = new Date().getTime();
-  const Currentproductiontime = Productionsincetime
-    ? (currentTime - new Date(Productionsincetime).getTime()) / 1000
-    : 0;
-  const Currentdowntime = downtimesincetime
-    ? (currentTime - new Date(downtimesincetime).getTime()) / 1000
-    : 0;
-
-  const Totalproduction = state.process.currentPhaseDetails.totalUptime;
-  const Totaldowntime = state.process.currentPhaseDetails.totalDowntime;
-
-  const formattotalTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    return `${hours.toString().padStart(2, '0')}:${minutes
-      .toString()
-      .padStart(2, '0')}`;
-  };
-
-  const totalProductionMinutes = Totalproduction ? Number(Totalproduction) : 0;
-  const totalDowntimeMinutes = Totaldowntime ? Number(Totaldowntime) : 0;
-
-  const sumofProdTime = Currentproductiontime + totalProductionMinutes;
-  const sumofDowntime = Currentdowntime + totalDowntimeMinutes;
-
-  const TotalProdTime = formattotalTime(sumofProdTime);
-  const TotalDowntime = formattotalTime(sumofDowntime);
-
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader className={styles.property}>
@@ -301,13 +269,9 @@ const OrderInfoCard: React.FC = () => {
             {translation.text.machineSpeed}: {station} {translation.text.ppm}
           </IonCardSubtitle>
         </IonCardTitle>
-        <IonCardSubtitle className={styles.ionRightTop}>
-          <div>
-            <img src={Green1} alt={'status'} /> {TotalProdTime} Production{' '}
-            <br />
-            <img src={Red1} alt={'status'} /> {TotalDowntime} Downtime
-          </div>
-        </IonCardSubtitle>
+        {state.process.currentPhaseDetails.phaseName === 'production' && (
+          <ProductionVsDowntime />
+        )}
       </IonCardHeader>
       <IonCardContent>
         <div>

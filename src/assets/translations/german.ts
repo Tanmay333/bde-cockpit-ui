@@ -53,6 +53,10 @@ export const germanTranslations: Translations = {
     min: 'Min',
     notStarted: 'Nicht gestartet',
     startedAt: 'Start um',
+    plannedDowntime: 'Geplante Ausfallzeit',
+    forcedDowntime: 'Erzwungene Ausfallzeit',
+    production: 'Produktion',
+    downTime: 'Stillstand ',
   },
 
   reason: {
