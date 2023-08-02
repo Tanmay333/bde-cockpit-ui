@@ -12,6 +12,8 @@ import { useTranslations } from '../../store/slices/translation.slice';
 import Green from '../../static/assets/images/Green.svg';
 import Red from '../../static/assets/images/Red.svg';
 import { formatDate } from '../../store/utils/formatTime';
+import Red1 from '../../static/assets/images/Red1.svg';
+import Green1 from '../../static/assets/images/Green1.svg';
 
 const OrderInfoCard: React.FC = () => {
   const translation = useTranslations();
@@ -296,13 +298,20 @@ const OrderInfoCard: React.FC = () => {
 
   return (
     <IonCard className={styles.orderInfoCard}>
-      <IonCardHeader>
+      <IonCardHeader className={styles.property}>
         <IonCardTitle>
           <img src={getImageSource()} alt={'status'} /> {translation.text.order}
           : {data.orderId}
+          <IonCardSubtitle className={styles.speed}>
+            {translation.text.machineSpeed}: {station} {translation.text.ppm}
+          </IonCardSubtitle>
         </IonCardTitle>
-        <IonCardSubtitle className={styles.speed}>
-          {translation.text.machineSpeed}: {station} {translation.text.ppm}
+        <IonCardSubtitle className={styles.ionRightTop}>
+          <div>
+            <img src={Green1} alt={'status'} /> {TotalProdTime} Production{' '}
+            <br />
+            <img src={Red1} alt={'status'} /> {TotalDowntime} Downtime
+          </div>
         </IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent>
@@ -325,8 +334,6 @@ const OrderInfoCard: React.FC = () => {
           <IonCardSubtitle>
             {getPhaseName()} - {translation.description[data.currentPhaseName]}
           </IonCardSubtitle>
-          <div>Total Production Time: {TotalProdTime}</div>
-          <div>Total Downtime: {TotalDowntime}</div>
         </div>
       </IonCardContent>
     </IonCard>

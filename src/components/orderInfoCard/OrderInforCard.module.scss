@@ -32,7 +32,15 @@
     .ionRightSection {
         text-align: right;
     }
-.speed{
-    padding-left: 5%;
-}    
+    .property {
+        display: flex;
+        justify-content: space-between;
+      }
+    .speed {
+        padding-left: 10%;
+        width: 224px;
+    }  
+   .ionRightTop{
+    margin-top: 5px;
+    }
 }
