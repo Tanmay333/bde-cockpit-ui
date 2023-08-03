@@ -103,7 +103,12 @@ const EditOrderDetails: React.FC = () => {
               <EditNumberQuantity />
             </IonText>
             <IonGrid style={{ textAlign: 'center' }}>
-              <IonButton onClick={onClick} fill="solid" className={styles.btn}>
+              <IonButton
+                onClick={onClick}
+                fill="solid"
+                className={styles.btn}
+                disabled={!orderquantityvalue || !ordernumbervalue}
+              >
                 {translation.buttons.confirmDetails}
               </IonButton>
               <div className={styles.BtnContainer}>

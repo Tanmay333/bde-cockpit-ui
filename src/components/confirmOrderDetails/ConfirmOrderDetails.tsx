@@ -222,7 +222,7 @@ const ConfirmOrderDetails: React.FC = () => {
               onClick={onClick}
               fill="solid"
               className={styles.btn}
-              disabled={!enteredQuantity}
+              disabled={!enteredQuantity || pressedKeys.length === 0}
             >
               {translation.buttons.confirmDetails}
             </IonButton>
