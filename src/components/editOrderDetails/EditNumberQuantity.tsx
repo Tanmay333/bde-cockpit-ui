@@ -3,7 +3,7 @@ import styles from '../confirmOrderDetails/ConfirmOrderDetails.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getquantityDetails } from '../../store/slices/orderQuantitySlice';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
-import { getnumberDetails } from '../../store/slices/orderNumber';
+import { ORDER_Number, getnumberDetails } from '../../store/slices/orderNumber';
 import { useTranslations } from '../../store/slices/translation.slice';
 
 const EditOrderDetails: React.FC = () => {
@@ -67,12 +67,14 @@ const EditOrderDetails: React.FC = () => {
       <p>
         {translation.text.orderQuantity}:
         <input
+          placeholder={translation.text.enterOrderQuantity}
           className={styles.focus}
           type="number"
           value={orderQuantity}
           onKeyDown={handleKeyPress}
           onChange={handleOrderQuantityChange}
           required
+          disabled={!orderNumber}
         />
       </p>
     </>

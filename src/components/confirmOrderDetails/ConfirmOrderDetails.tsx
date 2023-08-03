@@ -123,15 +123,19 @@ const ConfirmOrderDetails: React.FC = () => {
 
   useEffect(() => {
     const keypressHandler = (e: KeyboardEvent) => {
-      setPressedKeys((prevKeys) => {
-        const newKeys = prevKeys.slice();
-        if (e.keyCode === 13) {
-          newKeys.push('<br>');
-        } else {
-          newKeys.push(e.key);
-        }
-        return newKeys;
-      });
+      const isNumber = /^[0-9]$/;
+
+      if (isNumber.test(e.key)) {
+        setPressedKeys((prevKeys) => {
+          const newKeys = prevKeys.slice();
+          if (e.keyCode === 13) {
+            newKeys.push('\n'); // Add a new line if Enter key (keyCode 13) is pressed
+          } else {
+            newKeys.push(e.key); // Add the pressed key if it's a number
+          }
+          return newKeys;
+        });
+      }
     };
 
     if (!isFocused) {
@@ -218,7 +222,7 @@ const ConfirmOrderDetails: React.FC = () => {
               onClick={onClick}
               fill="solid"
               className={styles.btn}
-              disabled={!enteredQuantity && pressedKeys.length === 0}
+              disabled={!enteredQuantity}
             >
               {translation.buttons.confirmDetails}
             </IonButton>
