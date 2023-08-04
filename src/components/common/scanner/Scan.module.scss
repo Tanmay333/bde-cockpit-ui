@@ -1,9 +1,12 @@
+/* Styling for the body */
 body {
   height: 100vh;
   position: relative;
 }
 
+/* Styling for the loading animation */
 .ocrloader p::before {
+  /* Small circle element */
   content: '';
   display: inline-block;
   width: 12px;
@@ -14,6 +17,7 @@ body {
   right: 10%;
 }
 .ocrloader p {
+  /* Text below the loading animation */
   color: #000000;
   position: absolute;
   bottom: -30px;
@@ -26,6 +30,7 @@ body {
 }
 
 .ocrloader {
+  /* Container for the loading animation */
   width: 360px;
   height: 225px;
   position: absolute;
@@ -37,6 +42,7 @@ body {
 }
 
 .ocrloader span {
+  /* Red line element */
   position: absolute;
   left: 10px;
   top: 15px;
@@ -50,6 +56,7 @@ body {
   animation-iteration-count: infinite;
 }
 
+/* Border styling for the loading animation */
 .ocrloader:before,
 .ocrloader:after,
 .ocrloader em:after,
@@ -91,6 +98,7 @@ body {
   border-radius: 0 0 5px 0;
 }
 
+/* Keyframes for the move animation */
 @keyframes move {
   0%,
   100% {
@@ -104,6 +112,7 @@ body {
   }
 }
 
+/* Keyframes for the blinker animation */
 @keyframes blinker {
   50% {
     opacity: 0;

@@ -27,6 +27,7 @@ const EditOrderDetails: React.FC = () => {
   const location = useLocation();
   const { sendMessage } = useWebSocket();
 
+  // Detect location changes and toggle the barcode modal accordingly
   useEffect(() => {
     const handleLocationChange = () => {
       const isConfirmOrderDetails =
@@ -46,6 +47,7 @@ const EditOrderDetails: React.FC = () => {
     setBarcodeState(true);
   }, []);
 
+  // Event handler for barcode scan completion
   const onBarcodeScanComplete = useCallback(() => {
     if (location.pathname === '/editorderdetails') {
       setBarcodeState(false); // Close the modal before navigating
@@ -57,10 +59,12 @@ const EditOrderDetails: React.FC = () => {
     }
   }, [history, location.pathname]);
 
+  // Event handler for closing the barcode modal
   const closeModal = useCallback(() => {
     setBarcodeState(false);
   }, []);
 
+  // Get order quantity and order number from the store
   const orderquantityvalue = useAppSelector(
     (state) => state.OrderQuantitySlice.data,
   );
@@ -69,7 +73,10 @@ const EditOrderDetails: React.FC = () => {
   );
 
   const StationId = useAppSelector((state) => state.StationIdsSlice.value);
+
+  // Event handler for the "Confirm Details" button click
   const onClick = useCallback(() => {
+    // Prepare and send the WebSocket message with order details
     {
       const message = {
         action: 'assignNewJob',
@@ -79,6 +86,7 @@ const EditOrderDetails: React.FC = () => {
       };
       sendMessage(message);
     }
+    // Update the phaseone element background color and navigate back to the main page
     const phaseone = document.getElementById('phase-one');
     if (phaseone) {
       phaseone.style.backgroundColor = '#2799D1';

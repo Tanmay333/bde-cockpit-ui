@@ -16,6 +16,7 @@ const PhaseOverview: React.FC = () => {
   const history = useHistory();
   const { sendMessage } = useWebSocket();
 
+  // States and useEffect to control the visibility and color of different phases
   const [showPhase1, setShowPhase1] = useState(true);
   const [showPhase2, setShowPhase2] = useState(false);
   const [showPhase3, setShowPhase3] = useState(false);
@@ -28,6 +29,7 @@ const PhaseOverview: React.FC = () => {
   const [phaseFour, setPhaseFour] = useState('#E0E0E0');
   const [phaseFive, setPhaseFive] = useState('#E0E0E0');
 
+  // useEffect to determine the current phase and set the visibility of phase name  and color accordingly
   useEffect(() => {
     if (state === null || state === undefined) {
       return setPhaseOne('#E0E0E0');
@@ -142,12 +144,14 @@ const PhaseOverview: React.FC = () => {
     }
   }, [state]);
 
+   // Additional useEffect to handle the start of a new order
   const startorder = useAppSelector((state) => state.startneworderslice);
 
   useEffect(() => {
     if (startorder === null || startorder === undefined) {
       return;
     }
+    // If a new order is started, reset the phase colors and visibility
     if (startorder && startorder.data === true) {
       {
         setPhaseOne('#E0E0E0');

@@ -5,6 +5,7 @@ import { useAppSelector } from '../../store/utils/hooks';
 const FixProgressBar: React.FC = () => {
   const toggleMock = useAppSelector((state) => state.mockData.data);
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  // State to hold the differences in progress and colors for the progress bar
   const [diff, setDiff] = useState<{ progress: number; value: string }[]>([]);
 
   useEffect(() => {
@@ -12,22 +13,26 @@ const FixProgressBar: React.FC = () => {
       if (state === null) {
         return;
       }
+      // Find the 'production' phase from previous phases
       const dts = state.process.previousPhases.find(
         (phase) => phase.phaseName === 'production',
       );
+
+      // Check if there are at least 3 previous phases and downtime data is available
       if (
         state.process.previousPhases.length >= 3 &&
         dts !== undefined &&
         dts.downtimes !== null &&
         dts.downtimes.length !== 0
       ) {
+        // Get the start time of 'production' phase
         const startTimeOfProd =
           state.process.currentPhaseDetails.phaseName === 'production'
             ? state.process.currentPhaseDetails.startTime
             : state.process.previousPhases.find(
                 (phase) => phase.phaseName === 'production',
               )?.startTime;
-
+        // Calculate the progress value for the first downtime
         const startTimeOfFirstDowntime = dts.downtimes[0].startTime;
         const stPr =
           startTimeOfProd !== undefined
@@ -67,18 +72,20 @@ const FixProgressBar: React.FC = () => {
         setDiff(differences);
       }
     }, 1000);
-
+    // Clear the interval on component unmount
     return () => clearInterval(interval);
   }, [state, toggleMock]);
 
   useEffect(() => {
     //We can also use startneworder if we recive any bug related to progress bar getting empty.
+    // Clear the progress bar if the stationId is null
     if (state.stationId === null) {
       setDiff([]);
     }
   }, [state]);
 
   return (
+    // Render the progress bar with colored segments representing downtimes and durations
     <div
       className={styles.boxworking}
       style={{

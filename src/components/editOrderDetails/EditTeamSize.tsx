@@ -18,6 +18,7 @@ import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import { useTranslations } from '../../store/slices/translation.slice';
 
+// Defining the EditTeamSize component
 const EditTeamSize = () => {
   const translation = useTranslations();
   const history = useHistory();
@@ -25,6 +26,7 @@ const EditTeamSize = () => {
   const dispatch = useAppDispatch();
   const { sendMessage } = useWebSocket();
 
+  // An array of worker objects
   const Workers = [
     { id: 1 },
     { id: 2 },
@@ -36,15 +38,18 @@ const EditTeamSize = () => {
     { id: 8 },
   ];
 
+  // Function to navigate to the home page
   const routeToHomePage = () => {
     return history.push('/');
   };
 
+  // Data object containing team size information
   const data = {
     teamsize: state?.assignedJobDetails.productionTeamSize ?? '--:--',
   };
   const [selectedIndex, setSelectedIndex] = useState(+data.teamsize - 1);
 
+  // Callback function to handle team size selection
   const selectteamsize = useCallback((index: number) => {
     setSelectedIndex(index);
     setTimeout(routeToHomePage, 1000);
@@ -56,6 +61,7 @@ const EditTeamSize = () => {
     sendMessage(message);
   }, []);
 
+  // Effect hook to fetch worker details when the selected index changes
   useEffect(() => {
     dispatch(getworkersDetails(selectedIndex));
   }, [dispatch, selectedIndex]);

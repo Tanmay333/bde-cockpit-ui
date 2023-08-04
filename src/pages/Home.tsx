@@ -18,10 +18,13 @@ const Home: React.FC = () => {
   // const translation = useTranslations();
   // const toggleMock = useAppSelector((state) => state.mockData.data);
 
+  // Get the stationId from the Redux store
   const stationId = useAppSelector((state) => state.StationIdsSlice.value);
   // const dispatch = useAppDispatch();
+  // Set up state to handle countdown timer
   const [timeLeft, setTimeLeft] = useState(5);
 
+  // useEffect to decrement the timeLeft every second
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
@@ -31,6 +34,7 @@ const Home: React.FC = () => {
     }
     return () => clearInterval(interval);
   }, [timeLeft]);
+  // If the countdown is not finished yet, show the SplashScreen
   if (timeLeft !== 0) {
     return <SplashScreen />;
   }
@@ -39,6 +43,7 @@ const Home: React.FC = () => {
   //   dispatch(toggleMockData(event.detail.checked));
   // };
 
+  // If stationId is not set and countdown is finished, show the StationIds component
   if (stationId === null && timeLeft === 0) {
     return <StationIds />;
   }

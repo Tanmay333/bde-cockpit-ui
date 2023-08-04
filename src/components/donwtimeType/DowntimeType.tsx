@@ -27,13 +27,17 @@ const DowntimeType: React.FC = () => {
     { startTime: string | null; reason: string[] }[]
   >([]);
 
+  // Close the downtime modal
   const closeModal = () => {
     setToggleDowntime(false);
   };
 
+  // If machine details are not available, return null
   if (!state) {
     return null;
   }
+
+  // List of Downtime reasons to display in buttons
   const Downtimereason = [
     translation.reason.changingBarrel,
     translation.reason.changingLabels,
@@ -45,6 +49,7 @@ const DowntimeType: React.FC = () => {
     translation.reason.otherIncident,
   ];
 
+  // useEffect to handle downtime toggling and displaying of downtime reasons
   useEffect(() => {
     if (
       state &&
@@ -88,8 +93,11 @@ const DowntimeType: React.FC = () => {
     }
   }, [state]);
 
+  // Define phaseState and jobId variables
   const phaseState = state.process.currentPhaseDetails.state;
   const jobId = state.assignedJobDetails.jobId;
+
+  // Function for ending production
   const onEndProduction = useCallback(() => {
     const message = {
       action: 'setEndOfProduction',
@@ -101,6 +109,7 @@ const DowntimeType: React.FC = () => {
     setToggleDowntime(false);
   }, [jobId, sendMessage, history]);
 
+  // Function for starting downtime
   const startDowntime = useCallback(() => {
     const message = {
       action: 'toggleDowntime',
@@ -110,6 +119,7 @@ const DowntimeType: React.FC = () => {
     history.push('/');
   }, [jobId, sendMessage, history]);
 
+  // Onclick function when a downtime reason button is clicked
   const onClick = useCallback(
     (reason: string, startTime: string | null) => {
       if (!state.process.currentPhaseDetails.downtimes) {
@@ -131,6 +141,7 @@ const DowntimeType: React.FC = () => {
     [state, phaseState, li],
   );
 
+  // useEffect to check if known downtime event exists and stop loading spinner
   useEffect(() => {
     if (
       state &&
@@ -172,6 +183,7 @@ const DowntimeType: React.FC = () => {
                 {li &&
                   li.map((data, index) => (
                     <div key={index}>
+                      {/*...Display downtime details and buttons...*/}
                       <div className={styles.title}>
                         <p>
                           {translation.text.downtimeAt}
@@ -206,6 +218,7 @@ const DowntimeType: React.FC = () => {
                       </div>
                     </div>
                   ))}
+                {/* Loading spinner */}
                 <IonLoading
                   isOpen={isLoading}
                   spinner="circles"

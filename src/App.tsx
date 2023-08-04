@@ -55,6 +55,7 @@ const App: React.FC = () => {
   //   }
   // }, [isConnected, toggleMock]);
 
+  // Get the current screen size and update it on window resize
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
 
   useEffect(() => {
@@ -69,6 +70,7 @@ const App: React.FC = () => {
   }, [screenSize]);
 
   return (
+    // Set the app's style based on the screen width
     <IonApp
       style={{
         width: screenSize.width < 1400 ? 'auto' : 1400,

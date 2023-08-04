@@ -8,6 +8,7 @@ import { getData } from '../../../store/slices/startNewOrderSlice';
 import { StartNewOrder } from '../../../store/slices/machineDetailsSlice';
 import { useTranslations } from '../../../store/slices/translation.slice';
 
+// Defining the Buttons component
 const Buttons = () => {
   const translation = useTranslations();
   const history = useHistory();
@@ -16,20 +17,24 @@ const Buttons = () => {
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
+  // Function to handle the click event on the start preparation button
   const onClick = useCallback(() => {
     const updatedValue = !startNewOrder;
     setStartNewOrder(updatedValue);
     dispatch(StartNewOrder());
   }, [startNewOrder, history]);
 
+  // Function to navigate to the select team size page
   const StartPreparation = useCallback(() => {
     history.push('/selectteamsize');
   }, [history]);
 
+  // Effect hook to fetch data when the startNewOrder state changes
   useEffect(() => {
     dispatch(getData(startNewOrder));
   }, [startNewOrder, dispatch]);
 
+  // Memoized job ID
   const jobId = useMemo(() => {
     if (
       state === null ||
@@ -42,6 +47,7 @@ const Buttons = () => {
     }
   }, [state]);
 
+  // Function to send the 'setEndOfUnmounting' message to the WebSocket
   const onEndUnmounting = () => {
     if (jobId === null) {
       return;
@@ -53,6 +59,7 @@ const Buttons = () => {
     sendMessage(message);
   };
 
+  // Function to send the 'setEndOfCleaning' message to the WebSocket
   const onEndCleaning = () => {
     if (jobId === null) {
       return;
@@ -64,6 +71,7 @@ const Buttons = () => {
     sendMessage(message);
   };
 
+  // Check various conditions to determine which buttons to display
   const isPhaseNull =
     state?.process &&
     state.process.currentPhaseDetails &&

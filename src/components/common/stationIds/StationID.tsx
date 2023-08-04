@@ -8,12 +8,14 @@ import { StationIdsData } from '../../../store/slices/stationIdSlice';
 import styles from './StationID.module.scss';
 import { useTranslations } from '../../../store/slices/translation.slice';
 
+// StationIds component
 const StationIds: React.FC = () => {
   const { sendMessage, isConnected } = useWebSocket();
   const history = useHistory();
   const dispatch = useAppDispatch();
   const translation = useTranslations();
 
+  // Function to handle click event for POC Station button
   const onClickPoc = useCallback(() => {
     dispatch(StationIdsData('poc_station'));
     sessionStorage.setItem('stationId', 'poc_station');
@@ -25,6 +27,7 @@ const StationIds: React.FC = () => {
     history.push('/');
   }, [isConnected, sendMessage, history]);
 
+  // Function to handle click event for Mock Station button
   const onClickMock = useCallback(() => {
     dispatch(StationIdsData('1.203.4.245'));
     sessionStorage.setItem('stationId', '1.203.4.245');
@@ -39,6 +42,7 @@ const StationIds: React.FC = () => {
     history.push('/');
   }, [isConnected, sendMessage, history]);
 
+  // Function to handle click event for test Station button
   // const onClickTest = useCallback(() => {
   //   dispatch(StationIdsData('test_station'));
   //   sessionStorage.setItem('stationId', 'test_station');
@@ -57,6 +61,7 @@ const StationIds: React.FC = () => {
     <>
       <IonPage>
         <IonContent>
+          {/* Render the Header component */}
           <Header />
           <div className={styles.para}>{translation.text.stationId}</div>
           <br />

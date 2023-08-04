@@ -23,6 +23,7 @@ import editIcon from '../../static/assets/images/Edit.svg';
 import { useTranslations } from '../../store/slices/translation.slice';
 import Scan from '../common/scanner/Scan';
 
+// ConfirmOrderDetails component
 const ConfirmOrderDetails: React.FC = () => {
   const translation = useTranslations();
   const history = useHistory();
@@ -34,6 +35,7 @@ const ConfirmOrderDetails: React.FC = () => {
   const [isFocused, setIsFocused] = useState(false);
 
   const modal = useRef<HTMLIonModalElement>(null);
+  // Access machine details from Redux store using useSelector hook
   const state = useAppSelector<MachineDetails | null>(
     (state) => state.machineDetailsSlice.data,
   );
@@ -44,6 +46,7 @@ const ConfirmOrderDetails: React.FC = () => {
 
   const [orderNumber, setOrderNumber] = useState(data.orderId);
 
+  // Handle order number change event
   const handleOrderNumberChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -51,11 +54,12 @@ const ConfirmOrderDetails: React.FC = () => {
     setOrderNumber(newOrderNumber);
   };
 
+  // Handle order quantity change event
   const onChangeQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
     const parsedNumber = parseFloat(event.target.value);
     setEnteredQuantity(parsedNumber);
   };
-
+  // Get order quantity and order number values from Redux store
   const orderquantityvalue = useAppSelector(
     (state) => state.OrderQuantitySlice.data,
   );
@@ -64,12 +68,15 @@ const ConfirmOrderDetails: React.FC = () => {
     (state) => state.OrderNumberSlice.data,
   );
 
+  // Dispatch Redux actions when order quantity or order number changes
   useEffect(() => {
     dispatch(getquantityDetails(enteredQuantity));
     dispatch(getnumberDetails(orderNumber));
   }, [dispatch, enteredQuantity, orderNumber]);
 
+  // Handle key press event for order number input field
   const handleKeyPress = (event: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     target: any;
     key: string;
     preventDefault: () => void;
@@ -80,21 +87,27 @@ const ConfirmOrderDetails: React.FC = () => {
     }
   };
 
+  // Enter edit mode for order number
   const enterEditMode = useCallback(() => {
     setIsEditMode(true);
   }, []);
 
+  // Handle click event for barcode scanning button
   const handleClick = useCallback(() => {
     setBarcodeState(true);
   }, []);
 
+  // Handle barcode scanning completion event
   const onBarcodeScanComplete = useCallback(() => {
     history.push('/confirmorderdetails');
     setBarcodeState(false);
   }, [history]);
 
+  // Access StationId from Redux store using useSelector hook
   const StationId = useAppSelector((state) => state.StationIdsSlice.value);
   const { sendMessage } = useWebSocket();
+
+  // Handle click event for Confirm button
   const onClick = useCallback(() => {
     const message = {
       action: 'assignNewJob',
@@ -104,6 +117,7 @@ const ConfirmOrderDetails: React.FC = () => {
     };
     sendMessage(message);
 
+    // Change background color and redirect to the homepage
     const phaseone = document.getElementById('phase-one');
     if (phaseone) {
       phaseone.style.backgroundColor = '#2799D1';
@@ -111,6 +125,7 @@ const ConfirmOrderDetails: React.FC = () => {
     history.push('/');
   }, [history, orderquantityvalue, ordernumbervalue]);
 
+  // JSX for right-aligned edit icon button
   const right = (
     <IonButton fill="clear" size="small" onClick={enterEditMode}>
       <IonIcon
@@ -121,6 +136,7 @@ const ConfirmOrderDetails: React.FC = () => {
     </IonButton>
   );
 
+  // Handle key press event for input field focus management
   useEffect(() => {
     const keypressHandler = (e: KeyboardEvent) => {
       const isNumber = /^[0-9]$/;
@@ -137,25 +153,28 @@ const ConfirmOrderDetails: React.FC = () => {
         });
       }
     };
-
+    // Add or remove key press event listener based on input field focus
     if (!isFocused) {
       document.addEventListener('keypress', keypressHandler);
     } else {
       document.removeEventListener('keypress', keypressHandler);
     }
-
+    // Clean up the event listener on unmount
     return () => {
       document.removeEventListener('keypress', keypressHandler);
     };
   }, [isFocused]);
 
+  // Handle focus event for input field
   const handleFocus = () => {
     setIsFocused(true);
   };
+  // Handle blur event for input field
   const handleBlur = () => {
     setIsFocused(false);
   };
 
+  // Add focus and blur event listeners for input field
   useEffect(() => {
     const inputElement = document.getElementById('orderQuantity');
     if (inputElement) {
@@ -183,6 +202,7 @@ const ConfirmOrderDetails: React.FC = () => {
             position={'middle'}
           >
             <IonText className={styles.orderDetails}>
+              {/* Conditional rendering based on edit mode */}
               {isEditMode ? (
                 <p>
                   {translation.text.orderNumber}:

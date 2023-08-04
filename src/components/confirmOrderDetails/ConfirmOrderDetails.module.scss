@@ -1,18 +1,21 @@
+/* Styling for the logo */
 .logo {
   margin-left: auto;
   margin-right: auto;
   width: 192px;
   height: 53px;
-  margin-top: 5rem;
+  margin-top: 5rem; /* Add top margin to center the logo vertically */
 }
 
+/* Styling for the container holding the content */
 .container {
-  margin-top: 20rem;
+  margin-top: 20rem; /* Add top margin to create space between the logo and content */
   padding-top: 20px;
   margin-left: auto;
   margin-right: auto;
 }
 
+/* Styling for the order details text */
 .orderDetails {
   margin-left: auto;
   margin-right: auto;
@@ -20,9 +23,10 @@
   font-size: 16px;
   line-height: 24px;
   margin-top: 30px;
-  color: #333333;
+  color: #333333; /* Set the text color to dark gray */
 }
 
+/* Styling for the Confirm button */
 .btn {
   text-align: center;
   font-style: normal;
@@ -34,16 +38,17 @@
   width: 210px;
   height: 50px;
   margin-top: 24px;
-  background-color: #2799d1;
+  background-color: #2799d1; /* Set the background color to a blue shade */
   border-radius: 8px;
 }
 
+/* Styling for the input field when in focus (edit mode) */
 .focus {
   border-top: none;
   border-left: none;
   border-right: none;
   margin-left: 12px;
-  outline: 0px;
+  outline: 0px; /* Remove the default focus outline */
   width: 148px;
 }
 

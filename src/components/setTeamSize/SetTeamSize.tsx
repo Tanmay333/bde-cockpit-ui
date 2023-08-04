@@ -19,8 +19,10 @@ import useWebSocket from '../../store/hooks/useWebSocket';
 import { useTranslations } from '../../store/slices/translation.slice';
 
 const SetTeamSize = () => {
+  // Get translations from the translation slice
   const translation = useTranslations();
 
+  //List of workers
   const Workers = [
     { id: 1 },
     { id: 2 },
@@ -32,9 +34,11 @@ const SetTeamSize = () => {
     { id: 8 },
   ];
 
+  // State to keep track of the selected index
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const history = useHistory();
 
+  // Function to navigate to the home page
   const routeToHomePage = () => {
     return history.push('/');
   };
@@ -54,6 +58,7 @@ const SetTeamSize = () => {
     sendMessage(message);
   }, []);
 
+  // Fetch worker details from Redux store when the selectedIndex changes
   useEffect(() => {
     dispatch(getworkersDetails(selectedIndex));
   }, [dispatch, selectedIndex]);

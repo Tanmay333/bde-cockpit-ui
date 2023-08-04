@@ -44,6 +44,7 @@ const OrderProcessSummary: React.FC = () => {
     return false;
   }, [state]);
 
+  // useEffect for calculating total time of previous phases and current phase start time
   useEffect(() => {
     const previousPhaseTotalTime = () => {
       if (!state?.process?.previousPhases?.length) {
@@ -134,6 +135,7 @@ const OrderProcessSummary: React.FC = () => {
     };
   }, [state]);
 
+  // useEffect for calculating the time depending on current phase name
   useEffect(() => {
     const currentPhaseName = () => {
       if (!state?.process?.currentPhaseDetails?.phaseName) {
@@ -167,6 +169,7 @@ const OrderProcessSummary: React.FC = () => {
     };
   }, [state]);
 
+  // Function to get the corresponding phase name for display
   const getPhaseName = () => {
     const phaseName = state?.process?.currentPhaseDetails?.phaseName;
 
@@ -232,6 +235,7 @@ const OrderProcessSummary: React.FC = () => {
       (phase) => phase.phaseName === 'mounting',
     );
 
+  // Function to get the start time or "Not started" message
   const getStart = () => {
     if (state && state.process.currentPhaseDetails.state === 'FINISHED') {
       return translation.text.notStarted;
@@ -249,6 +253,7 @@ const OrderProcessSummary: React.FC = () => {
     return translation.text.notStarted;
   };
 
+  // Function to get the image source based on the current phase state
   const getImageSource = () => {
     if (isPhaseProduction) {
       return Green;

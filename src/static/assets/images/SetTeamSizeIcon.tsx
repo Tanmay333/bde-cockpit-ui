@@ -3,6 +3,8 @@ import React from 'react';
 interface Props {
   isSelected?: boolean;
 }
+
+// SetTeamSizeIcon component receives a prop "isSelected" to determine if it's selected or not
 const SetTeamSizeIcon: React.FC<Props> = ({ isSelected }) => {
   return (
     <svg
