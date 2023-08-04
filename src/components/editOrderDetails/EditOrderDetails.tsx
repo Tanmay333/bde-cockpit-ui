@@ -12,14 +12,12 @@ import CardContainer from '../common/cardContainer/CardContainer';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import styles from '../confirmOrderDetails/ConfirmOrderDetails.module.scss';
-import Btnstyles from '../orderDetails/OrderDetails.module.scss';
 import ConfirmOrderLogo from '../../static/assets/images/LohnpackLogo.svg';
 import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import EditNumberQuantity from './EditNumberQuantity';
-import Scanner from '../../static/assets/images/Scanner.svg';
 import { useTranslations } from '../../store/slices/translation.slice';
-import Scan from '../common/Scanner/Scan';
+import Scan from '../common/scanner/Scan';
 
 const EditOrderDetails: React.FC = () => {
   const translation = useTranslations();

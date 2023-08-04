@@ -1,6 +1,6 @@
 import { IonRow, IonImg } from '@ionic/react';
-import image from '../../../static/assets/images/scanBarcode.svg';
-import styles from './scan.module.scss';
+import image from '../../../static/assets/images/ScanBarcode.svg';
+import styles from './Scan.module.scss';
 import React from 'react';
 
 const Scan: React.FC = () => {

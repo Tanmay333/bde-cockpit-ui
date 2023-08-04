@@ -5,7 +5,7 @@ import styles from './PhaseDetails.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { Fragment, Key } from 'react';
 import bulletPoint2 from '../../static/assets/images/BulletPoint2.svg';
-import bulletpoint from '../../static/assets/images/bulletpoint.svg';
+import bulletpoint from '../../static/assets/images/Bulletpoint.svg';
 import bulletpoint1 from '../../static/assets/images/BulletPoint1.svg';
 import { formatTime } from '../../store/utils/formatTime';
 import { useTranslations } from '../../store/slices/translation.slice';

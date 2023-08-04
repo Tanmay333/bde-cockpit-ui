@@ -2,7 +2,7 @@ import { IonButton, IonGrid } from '@ionic/react';
 import useWebSocket from '../../../store/hooks/useWebSocket';
 import { useAppDispatch, useAppSelector } from '../../../store/utils/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import style from './buttos.module.scss';
+import style from './Buttos.module.scss';
 import { useHistory } from 'react-router';
 import { getData } from '../../../store/slices/startNewOrderSlice';
 import { StartNewOrder } from '../../../store/slices/machineDetailsSlice';

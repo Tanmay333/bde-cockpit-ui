@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { TEST_SLICE_KEY, testDataReducer } from './slices/OrderInfoSlice';
+import { TEST_SLICE_KEY, testDataReducer } from './slices/orderInfoSlice';
 import {
   MACHINE_DETAILS_KEY,
   machineDetailsReducer,

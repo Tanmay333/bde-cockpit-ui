@@ -13,7 +13,7 @@ import SelectTeamSizeIcon from '../../static/assets/images/SetTeamSizeIcon';
 import styles from './OrderDetails.module.scss';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 import { useTranslations } from '../../store/slices/translation.slice';
-import Scan from '../common/Scanner/Scan';
+import Scan from '../common/scanner/Scan';
 
 const OrderDetails: React.FC = () => {
   const translation = useTranslations();

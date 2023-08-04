@@ -19,9 +19,9 @@ import { getquantityDetails } from '../../store/slices/orderQuantitySlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 import { getnumberDetails } from '../../store/slices/orderNumber';
-import editIcon from '../../static/assets/images/edit.svg';
+import editIcon from '../../static/assets/images/Edit.svg';
 import { useTranslations } from '../../store/slices/translation.slice';
-import Scan from '../common/Scanner/Scan';
+import Scan from '../common/scanner/Scan';
 
 const ConfirmOrderDetails: React.FC = () => {
   const translation = useTranslations();
