@@ -1,7 +1,7 @@
 import { IonCardSubtitle } from '@ionic/react';
 import Red1 from '../../static/assets/images/Red1.svg';
 import Green1 from '../../static/assets/images/Green1.svg';
-import styles from './OrderInforCard.module.scss';
+import styles from './OrderProcessSummary.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { useTranslations } from '../../store/slices/translation.slice';
 

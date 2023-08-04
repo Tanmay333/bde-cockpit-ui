@@ -28,7 +28,7 @@ import './theme/variables.css';
 
 import './styles.scss';
 import Home from './pages/Home';
-import SelectTeamSize from './components/selectWorkers/SelectTeamSize';
+import SelectTeamSize from './components/selectWorkers/SetTeamSize';
 import OrderDetails from './components/orderDetails/OrderDetails';
 import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDetails';
 import useWebSocket from './store/hooks/useWebSocket';

@@ -8,7 +8,7 @@ import {
   IonRow,
 } from '@ionic/react';
 import lohnpack from '../../static/assets/lohnpack.svg';
-import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
+import SelectTeamSizeIcon from '../../static/assets/images/SetTeamSizeIcon';
 import { useCallback, useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import styles from '../selectWorkers/SelectTeamSize.module.scss';
@@ -18,7 +18,7 @@ import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import { useTranslations } from '../../store/slices/translation.slice';
 
-const SelectTeamSize = () => {
+const SetTeamSize = () => {
   const translation = useTranslations();
 
   const Workers = [
@@ -118,4 +118,4 @@ const SelectTeamSize = () => {
   );
 };
 
-export default SelectTeamSize;
+export default SetTeamSize;

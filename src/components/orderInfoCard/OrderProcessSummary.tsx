@@ -6,7 +6,7 @@ import {
   IonCardSubtitle,
   IonCardTitle,
 } from '@ionic/react';
-import styles from './OrderInforCard.module.scss';
+import styles from './OrderProcessSummary.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { useTranslations } from '../../store/slices/translation.slice';
 import Green from '../../static/assets/images/Green.svg';
@@ -14,7 +14,7 @@ import Red from '../../static/assets/images/Red.svg';
 import { formatDate } from '../../store/utils/formatTime';
 import ProductionVsDowntime from './ProductionVsDowntime';
 
-const OrderInfoCard: React.FC = () => {
+const OrderProcessSummary: React.FC = () => {
   const translation = useTranslations();
   const [startTimeOfProcess, setStartTimeOfProcess] = useState('N/A');
   const [currentPhaseTime, setCurrentPhaseTime] = useState('00:00');
@@ -298,4 +298,4 @@ const OrderInfoCard: React.FC = () => {
   );
 };
 
-export default OrderInfoCard;
+export default OrderProcessSummary;

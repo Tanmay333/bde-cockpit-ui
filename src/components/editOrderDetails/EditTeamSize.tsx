@@ -8,7 +8,7 @@ import {
   IonRow,
 } from '@ionic/react';
 import lohnpack from '../../static/assets/lohnpack.svg';
-import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
+import SelectTeamSizeIcon from '../../static/assets/images/SetTeamSizeIcon';
 import { useCallback, useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
 import styles from '../selectWorkers/SelectTeamSize.module.scss';

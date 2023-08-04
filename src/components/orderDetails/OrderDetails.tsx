@@ -9,7 +9,7 @@ import {
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { useAppSelector } from '../../store/utils/hooks';
-import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
+import SelectTeamSizeIcon from '../../static/assets/images/SetTeamSizeIcon';
 import styles from './OrderDetails.module.scss';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
 import { useTranslations } from '../../store/slices/translation.slice';

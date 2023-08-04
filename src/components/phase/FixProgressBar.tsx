@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './Phase.module.scss';
+import styles from './PhaseOverview.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 
 const FixProgressBar: React.FC = () => {

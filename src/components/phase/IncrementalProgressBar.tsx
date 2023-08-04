@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import styles from '../phase/Phase.module.scss';
+import styles from './PhaseOverview.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { isDefined } from '../../utils/isDefined';
 import useTimeout from '../../hooks/useTimeout';

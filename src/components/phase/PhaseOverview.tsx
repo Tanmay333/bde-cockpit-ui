@@ -1,15 +1,15 @@
 import { IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from './Phase.module.scss';
+import styles from './PhaseOverview.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
-import './Phase.module.scss';
+import './PhaseOverview.module.scss';
 import { useTranslations } from '../../store/slices/translation.slice';
 import FixProgressBar from './FixProgressBar';
 import IncrementalProgressBar from './IncrementalProgressBar';
 
-const Phase: React.FC = () => {
+const PhaseOverview: React.FC = () => {
   const translation = useTranslations();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const toggleMock = useAppSelector((state) => state.mockData.data);
@@ -263,4 +263,4 @@ const Phase: React.FC = () => {
   );
 };
 
-export default Phase;
+export default PhaseOverview;

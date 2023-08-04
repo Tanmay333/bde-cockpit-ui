@@ -3,7 +3,7 @@ import React from 'react';
 interface Props {
   isSelected?: boolean;
 }
-const SelectTeamSizeIcon: React.FC<Props> = ({ isSelected }) => {
+const SetTeamSizeIcon: React.FC<Props> = ({ isSelected }) => {
   return (
     <svg
       width="26"
@@ -24,4 +24,4 @@ const SelectTeamSizeIcon: React.FC<Props> = ({ isSelected }) => {
   );
 };
 
-export default SelectTeamSizeIcon;
+export default SetTeamSizeIcon;
