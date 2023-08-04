@@ -11,7 +11,7 @@ import lohnpack from '../../static/assets/lohnpack.svg';
 import SetTeamSizeIcon from '../../static/assets/images/SetTeamSizeIcon';
 import { useCallback, useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
-import styles from '../setTeamSize/SelectTeamSize.module.scss';
+import styles from '../setTeamSize/SetTeamSize.module.scss';
 import { useHistory } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
