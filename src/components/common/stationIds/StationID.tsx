@@ -31,14 +31,11 @@ const StationIds: React.FC = () => {
   const onClickMock = useCallback(() => {
     dispatch(StationIdsData('1.203.4.245'));
     sessionStorage.setItem('stationId', '1.203.4.245');
-
     const message = {
       action: 'getCurrentProductionState',
       stationId: '1.203.4.245',
     };
-
     sendMessage(message);
-
     history.push('/');
   }, [isConnected, sendMessage, history]);
 
@@ -46,14 +43,11 @@ const StationIds: React.FC = () => {
   // const onClickTest = useCallback(() => {
   //   dispatch(StationIdsData('test_station'));
   //   sessionStorage.setItem('stationId', 'test_station');
-
   //   const message = {
   //     action: 'getCurrentProductionState',
   //     stationId: 'test_station',
   //   };
-
   //   sendMessage(message);
-
   //   history.push('/');
   // }, [isConnected, sendMessage, history]);
 
