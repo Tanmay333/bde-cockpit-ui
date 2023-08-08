@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import styles from './PhaseOverview.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { isDefined } from '../../utils/isDefined';
@@ -6,10 +6,12 @@ import useTimeout from '../../hooks/useTimeout';
 
 const IncrementalProgressBar: React.FC = () => {
   // Get process and assigned job details from Redux store
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { process, assignedJobDetails } = useAppSelector(
     (state) => state.machineDetailsSlice.data,
   );
   // Custom hook to handle timeouts
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const timeout = useTimeout();
   // Get the current time in milliseconds
   const currentTime = new Date().getTime();

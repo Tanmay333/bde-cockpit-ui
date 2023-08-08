@@ -3,7 +3,7 @@ import styles from '../confirmOrderDetails/ConfirmOrderDetails.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getquantityDetails } from '../../store/slices/orderQuantitySlice';
 import { MachineDetails } from '../../store/slices/machineDetailsSlice';
-import { ORDER_Number, getnumberDetails } from '../../store/slices/orderNumber';
+import { getnumberDetails } from '../../store/slices/orderNumber';
 import { useTranslations } from '../../store/slices/translation.slice';
 
 const EditOrderDetails: React.FC = () => {
