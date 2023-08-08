@@ -12,9 +12,9 @@ import IncrementalProgressBar from './IncrementalProgressBar';
 const PhaseOverview: React.FC = () => {
   const translation = useTranslations();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-  const toggleMock = useAppSelector((state) => state.mockData.data);
   const history = useHistory();
   const { sendMessage } = useWebSocket();
+  const stationid = state.station.stationId === '1.203.4.245';
 
   // States and useEffect to control the visibility and color of different phases
   const [showPhase1, setShowPhase1] = useState(true);
@@ -144,7 +144,7 @@ const PhaseOverview: React.FC = () => {
     }
   }, [state]);
 
-   // Additional useEffect to handle the start of a new order
+  // Additional useEffect to handle the start of a new order
   const startorder = useAppSelector((state) => state.startneworderslice);
 
   useEffect(() => {
@@ -205,7 +205,7 @@ const PhaseOverview: React.FC = () => {
     <IonGrid className={styles.container}>
       <IonCol>
         <IonGrid>
-          {toggleMock ? null : (
+          {stationid && (
             <>
               <IonButton onClick={startProduction}>
                 {translation.buttons.production}

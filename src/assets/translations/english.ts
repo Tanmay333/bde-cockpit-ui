@@ -11,7 +11,6 @@ export const englishTranslations: Translations = {
   },
 
   buttons: {
-    toggle: 'Toggle',
     scanBarCode: 'Scan bar-code',
     confirmDetails: 'Confirm details',
     scanAgain: 'Scan again',

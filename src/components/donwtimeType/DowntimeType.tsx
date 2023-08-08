@@ -17,12 +17,13 @@ import { formatDownTime } from '../../store/utils/formatDownTime';
 const DowntimeType: React.FC = () => {
   const translation = useTranslations();
   const [toggleDowntime, setToggleDowntime] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const modal = useRef<HTMLIonModalElement>(null);
-  const toggleMock = useAppSelector((state) => state.mockData.data);
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  const stationid = state.station.stationId === '1.203.4.245';
   const [li, setLi] = useState<
     { startTime: string | null; reason: string[] }[]
   >([]);
@@ -228,7 +229,7 @@ const DowntimeType: React.FC = () => {
               </IonRow>
             </div>
             <div className={styles.endBtn}>
-              {!toggleMock && (
+              {stationid && (
                 <IonButton onClick={startDowntime}>
                   {translation.buttons.downTime}
                 </IonButton>

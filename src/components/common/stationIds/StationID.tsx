@@ -4,7 +4,7 @@ import useWebSocket from '../../../store/hooks/useWebSocket';
 import { useHistory } from 'react-router';
 import { useAppDispatch } from '../../../store/utils/hooks';
 import Header from '../header/Header';
-import { StationIdsData } from '../../../store/slices/stationIdSlice';
+import { StationIdsData } from '../../../store/slices/stationId.slice';
 import styles from './StationID.module.scss';
 import { useTranslations } from '../../../store/slices/translation.slice';
 

@@ -3,7 +3,6 @@ import styles from './PhaseOverview.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 
 const FixProgressBar: React.FC = () => {
-  const toggleMock = useAppSelector((state) => state.mockData.data);
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   // State to hold the differences in progress and colors for the progress bar
   const [diff, setDiff] = useState<{ progress: number; value: string }[]>([]);
@@ -74,7 +73,7 @@ const FixProgressBar: React.FC = () => {
     }, 1000);
     // Clear the interval on component unmount
     return () => clearInterval(interval);
-  }, [state, toggleMock]);
+  }, [state]);
 
   useEffect(() => {
     //We can also use startneworder if we recive any bug related to progress bar getting empty.
