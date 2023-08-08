@@ -224,7 +224,7 @@ const DowntimeType: React.FC = () => {
                   isOpen={isLoading}
                   spinner="circles"
                   //message="Please wait..."
-                  cssClass={styles.ionloading}
+                  cssClass={`${styles.ionloading} transparent-loading`}
                 />
               </IonRow>
             </div>

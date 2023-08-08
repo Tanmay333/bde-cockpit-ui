@@ -55,12 +55,7 @@
   --inner-background: transparent;
 }
 
-/* Customize the loading spinner */
-.ionloading::part(spinner) {
-  font-size: 440px;
-  /* Adjust the size of the icon */
-  color: #007aff;
-  /* Change the color of the icon */
+.transparent-loading {
   --background: transparent;
   --background-rgb: transparent;
   --inner-border-color: transparent;
