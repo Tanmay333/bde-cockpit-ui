@@ -23,8 +23,8 @@ export const germanTranslations: Translations = {
     editOrderDetails: 'Auftragsdetails bearbeiten ',
     startNewOrder: 'Neuen Auftrag starten ',
     editMemberDetails: 'Anzahl Mitarbeiter bearbeiten ',
-    pocStation: 'Poc-Station',
-    mockStation: 'Scheinstation',
+    pocStation: 'Ovalläufer 3',
+    mockStation: 'Simulierte Maschine',
   },
 
   text: {
@@ -55,10 +55,10 @@ export const germanTranslations: Translations = {
     notStarted: 'Nicht gestartet',
     startedAt: 'Start um',
     plannedDowntime: 'Geplante Ausfallzeit',
-    forcedDowntime: 'Erzwungene Ausfallzeit',
+    incident: 'Störung',
     production: 'Produktion',
     downTime: 'Stillstand ',
-    stationId: 'Please select the Station ID',
+    stationId: 'Bitte eine Maschine auswählen',
   },
 
   reason: {

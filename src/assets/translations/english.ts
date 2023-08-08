@@ -55,7 +55,7 @@ export const englishTranslations: Translations = {
     notStarted: 'Not Started',
     startedAt: 'Started at',
     plannedDowntime: 'Planned Downtime',
-    forcedDowntime: 'Forced Downtime',
+    incident: 'Incident ',
     production: 'Production',
     downTime: 'DownTime',
     stationId: 'Please select the Station ID',

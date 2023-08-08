@@ -206,7 +206,7 @@ const DowntimeType: React.FC = () => {
                       </div>
                       <div className={styles.spacing}></div>
                       <div className={styles.title}>
-                        {translation.text.forcedDowntime} <br />
+                        {translation.text.incident} <br />
                         {data.reason.slice(3).map((value, i) => (
                           <IonButton
                             onClick={() => onClick(value, data.startTime)}

@@ -58,7 +58,7 @@ interface Text {
   notStarted: string;
   startedAt: string;
   plannedDowntime: string;
-  forcedDowntime: string;
+  incident: string;
   production: string;
   downTime: string;
   stationId: string;
