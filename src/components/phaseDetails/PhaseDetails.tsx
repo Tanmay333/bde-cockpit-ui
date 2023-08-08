@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CardContainer from '../common/cardContainer/CardContainer';
-import { IonCardContent, IonGrid, IonButton } from '@ionic/react';
+import { IonCardContent } from '@ionic/react';
 import styles from './PhaseDetails.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { Fragment, Key } from 'react';
