@@ -274,29 +274,31 @@ const OrderProcessSummary: React.FC = () => {
             {translation.text.machineSpeed}: {station} {translation.text.ppm}
           </IonCardSubtitle>
         </IonCardTitle>
-        {state.process.currentPhaseDetails.phaseName === 'production' && (
-          <ProductionVsDowntime />
-        )}
+        <div>
+          <IonCardTitle>
+            {getPhaseName()} - {translation.description[data.currentPhaseName]}
+          </IonCardTitle>
+          {!isPhasePreparing && (
+            <IonCardSubtitle className={styles.ionRightSection}>
+              {data.currentPhaseTime}
+            </IonCardSubtitle>
+          )}
+          {isPhasePreparing && (
+            <IonCardSubtitle className={styles.ionRightSection}>
+              00 {translation.text.hrs} 00 {translation.text.min}
+            </IonCardSubtitle>
+          )}
+        </div>
       </IonCardHeader>
       <IonCardContent>
         <div>
           <IonCardTitle>{data.startTimeOfCompleteProcess}</IonCardTitle>
           <IonCardSubtitle>{getStart()}</IonCardSubtitle>
         </div>
-        <div>
-          {!isPhasePreparing && (
-            <IonCardTitle className={styles.ionRightSection}>
-              {data.currentPhaseTime}
-            </IonCardTitle>
+        <div className={styles.right}>
+          {state.process.currentPhaseDetails.phaseName === 'production' && (
+            <ProductionVsDowntime />
           )}
-          {isPhasePreparing && (
-            <IonCardTitle className={styles.ionRightSection}>
-              00 {translation.text.hrs} 00 {translation.text.min}
-            </IonCardTitle>
-          )}
-          <IonCardSubtitle>
-            {getPhaseName()} - {translation.description[data.currentPhaseName]}
-          </IonCardSubtitle>
         </div>
       </IonCardContent>
     </IonCard>

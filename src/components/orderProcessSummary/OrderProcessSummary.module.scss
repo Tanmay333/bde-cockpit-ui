@@ -31,7 +31,7 @@
 
     .ionRightSection {
         text-align: right;
-    }
+       }
     .property {
         display: flex;
         justify-content: space-between;
@@ -42,5 +42,9 @@
     }  
    .ionRightTop{
     margin-top: 5px;
+    text-align: left;
+    }
+    .right{
+        text-align: right;
     }
 }
