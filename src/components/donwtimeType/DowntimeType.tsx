@@ -5,6 +5,7 @@ import {
   IonLoading,
   IonModal,
   IonRow,
+  IonSpinner,
 } from '@ionic/react';
 import { useHistory } from 'react-router';
 import useWebSocket from '../../store/hooks/useWebSocket';
@@ -220,12 +221,11 @@ const DowntimeType: React.FC = () => {
                     </div>
                   ))}
                 {/* Loading spinner */}
-                <IonLoading
-                  isOpen={isLoading}
-                  spinner="circles"
-                  //message="Please wait..."
-                  cssClass={`${styles.ionloading} transparent-loading`}
-                />
+                {isLoading && (
+                  <div className={styles.overlay}>
+                    <IonSpinner name="lines" />
+                  </div>
+                )}
               </IonRow>
             </div>
             <div className={styles.endBtn}>
