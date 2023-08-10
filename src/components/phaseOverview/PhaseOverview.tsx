@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -10,10 +11,14 @@ import FixProgressBar from './FixProgressBar';
 import IncrementalProgressBar from './IncrementalProgressBar';
 
 const PhaseOverview: React.FC = () => {
+  // For frontend testing purpose
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translation = useTranslations();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const history = useHistory();
   const { sendMessage } = useWebSocket();
+  // For frontend testing purpose
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const stationid = state.station.stationId === '1.203.4.245';
 
   // States and useEffect to control the visibility and color of different phases
@@ -180,6 +185,9 @@ const PhaseOverview: React.FC = () => {
   }
 
   const jobId = state && state.assignedJobDetails.jobId;
+
+  // For frontend testing purpose
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const startProduction = useCallback(() => {
     if (jobId === null) {
       return null;
@@ -191,6 +199,8 @@ const PhaseOverview: React.FC = () => {
     sendMessage(message);
   }, [jobId]);
 
+  // For frontend testing purpose
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const startDowntime = useCallback(() => {
     const message = {
       action: 'toggleDowntime',
@@ -205,7 +215,8 @@ const PhaseOverview: React.FC = () => {
     <IonGrid className={styles.container}>
       <IonCol>
         <IonGrid>
-          {stationid && (
+          {/* For frontend testing purpose */}
+          {/* {stationid && (
             <>
               <IonButton onClick={startProduction}>
                 {translation.buttons.production}
@@ -214,7 +225,7 @@ const PhaseOverview: React.FC = () => {
                 {translation.buttons.downTime}
               </IonButton>
             </>
-          )}
+          )} */}
           <IonRow>
             <div className={styles.idle}>{showPhase1 && <p>Phase 01</p>}</div>
             <div className={styles.idle}>{showPhase2 && <p>Phase 02</p>}</div>

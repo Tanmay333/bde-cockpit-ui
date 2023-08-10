@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   IonButton,
   IonContent,
-  IonLoading,
   IonModal,
   IonRow,
   IonSpinner,
@@ -24,6 +23,8 @@ const DowntimeType: React.FC = () => {
   const history = useHistory();
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
+  // For frontend testing purpose
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const stationid = state.station.stationId === '1.203.4.245';
   const [li, setLi] = useState<
     { startTime: string | null; reason: string[] }[]
@@ -111,7 +112,9 @@ const DowntimeType: React.FC = () => {
     setToggleDowntime(false);
   }, [jobId, sendMessage, history]);
 
+  // For frontend testing purpose
   // Function for starting downtime
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const startDowntime = useCallback(() => {
     const message = {
       action: 'toggleDowntime',
@@ -229,11 +232,12 @@ const DowntimeType: React.FC = () => {
               </IonRow>
             </div>
             <div className={styles.endBtn}>
-              {stationid && (
+              {/* For frontend testing purpose */}
+              {/* {stationid && (
                 <IonButton onClick={startDowntime}>
                   {translation.buttons.downTime}
                 </IonButton>
-              )}
+              )} */}
               <IonButton className={styles.end} onClick={onEndProduction}>
                 {translation.buttons.endProduction}
               </IonButton>
