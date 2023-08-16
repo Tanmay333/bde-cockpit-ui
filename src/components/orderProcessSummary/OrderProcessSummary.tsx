@@ -281,7 +281,7 @@ const OrderProcessSummary: React.FC = () => {
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader className={styles.property}>
         <IonCardTitle>
-          <img src={getImageSource()} alt={'status'} />
+          <img src={getImageSource()} alt={'status'} />{' '}
           {translation.text.station}: {data.stationId}
           <IonCardSubtitle className={styles.speed}>
             {translation.text.machineSpeed}: {station} {translation.text.ppm}
