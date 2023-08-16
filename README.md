@@ -26,8 +26,6 @@ This project was bootstraped with [@ionic/cli](https://www.npmjs.com/package/@io
 - aws-amplify
 - axios
 - axios-mock-adapter
-- joi
-- joi-password
 - react-hook-form
 - react-redux
 - underscore
