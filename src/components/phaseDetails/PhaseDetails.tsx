@@ -148,17 +148,17 @@ const PhaseDetails: React.FC = () => {
         ...pauseResumeItems,
       ];
     }
-    if (phaseName === 'unmounting') {
+    if (phaseName === 'cleaning') {
       return [{ label: translation.text.startTime, value: startTime() }];
     }
     if (
-      phaseName === 'cleaning' &&
+      phaseName === 'unmounting' &&
       state?.process.currentPhaseDetails.state === 'RUNNING'
     ) {
       return [{ label: translation.text.startTime, value: startTime() }];
     }
     if (
-      phaseName === 'cleaning' &&
+      phaseName === 'unmounting' &&
       state?.process.currentPhaseDetails.state === 'FINISHED'
     ) {
       return [
