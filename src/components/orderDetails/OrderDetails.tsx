@@ -175,7 +175,7 @@ const OrderDetails: React.FC = () => {
             </IonButton>
           )}
         </div>
-         {/* "Edit Member Details" button */}
+        {/* "Edit Member Details" button */}
         <div className={styles.BtnContainer}>
           {isPhasePreparation && (
             <IonButton
@@ -188,7 +188,7 @@ const OrderDetails: React.FC = () => {
                 borderRadius: '8px',
               }}
             >
-              {translation.buttons.editMemberDetails}
+              {translation.buttons.edit}
             </IonButton>
           )}
         </div>
