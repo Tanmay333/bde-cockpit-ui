@@ -28,7 +28,7 @@ export const germanTranslations: Translations = {
   },
 
   text: {
-    order: 'Auftrag',
+    station: 'Anlage',
     machineStatus: {
       on: 'An ',
       off: 'Aus ',

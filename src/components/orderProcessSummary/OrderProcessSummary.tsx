@@ -201,6 +201,7 @@ const OrderProcessSummary: React.FC = () => {
 
   const [data, setData] = useState(() => {
     return {
+      stationId: state.stationId || 'N/A',
       orderId: state?.assignedJobDetails?.orderId || 'N/A',
       machineStatus: state?.process?.currentPhaseDetails?.state || 'N/A',
       startTimeOfCompleteProcess: startTimeOfProcess,
@@ -212,6 +213,7 @@ const OrderProcessSummary: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setData({
+        stationId: state.stationId || 'N/A',
         orderId: state?.assignedJobDetails?.orderId || 'N/A',
         machineStatus: state?.process?.currentPhaseDetails?.state || 'N/A',
         startTimeOfCompleteProcess: startTimeOfProcess,
@@ -279,8 +281,8 @@ const OrderProcessSummary: React.FC = () => {
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader className={styles.property}>
         <IonCardTitle>
-          <img src={getImageSource()} alt={'status'} /> {translation.text.order}
-          : {data.orderId}
+          <img src={getImageSource()} alt={'status'} />
+          {translation.text.station}: {data.stationId}
           <IonCardSubtitle className={styles.speed}>
             {translation.text.machineSpeed}: {station} {translation.text.ppm}
           </IonCardSubtitle>

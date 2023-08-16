@@ -28,7 +28,7 @@ export const englishTranslations: Translations = {
   },
 
   text: {
-    order: 'Order',
+    station: 'Station',
     machineStatus: {
       on: 'on',
       off: 'off',

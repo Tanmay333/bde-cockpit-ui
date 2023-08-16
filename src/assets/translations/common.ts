@@ -34,7 +34,7 @@ interface Buttons {
 }
 
 interface Text {
-  order: string;
+  station: string;
   machineStatus: MachineStatus;
   today: string;
   orderNumber: string;
