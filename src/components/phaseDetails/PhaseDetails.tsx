@@ -73,18 +73,18 @@ const PhaseDetails: React.FC = () => {
       const resumeTime = formatTime(item.endTime);
 
       // Push JSX elements representing the downtime reasons to the renderedList array
-      renderedList.push(
+      renderedList.unshift(
         <Fragment key={index}>
-          <div className={styles.reason}>
-            <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
-            {translation.text.pauseAt} {pauseTime}: {item.reason}
-          </div>
           {state.process.currentPhaseDetails.downtimes !== null && (
             <div className={styles.reason}>
               <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
               {translation.text.resumeAt}: {resumeTime}
             </div>
           )}
+          <div className={styles.reason}>
+            <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
+            {translation.text.pauseAt} {pauseTime}: {item.reason}
+          </div>
         </Fragment>,
       );
     });
@@ -162,8 +162,8 @@ const PhaseDetails: React.FC = () => {
       state?.process.currentPhaseDetails.state === 'FINISHED'
     ) {
       return [
-        { label: translation.text.startTime, value: startTime() },
         { label: translation.text.endTime, value: endTime() },
+        { label: translation.text.startTime, value: startTime() },
       ];
     }
     return [];
@@ -213,6 +213,7 @@ const PhaseDetails: React.FC = () => {
             {state &&
             state.process.currentPhaseDetails.phaseName === 'production' ? (
               <>
+                {downtimeReasonsList()}
                 <div className={styles.reason} key={'stTime'}>
                   <img
                     src={bulletpoint}
@@ -222,7 +223,6 @@ const PhaseDetails: React.FC = () => {
                   {translation.text.startTime}:
                   {formatTime(state.process.currentPhaseDetails.startTime)}
                 </div>
-                {downtimeReasonsList()}
               </>
             ) : (
               // Render phase details based on other phase names
