@@ -22,7 +22,7 @@ export const germanTranslations: Translations = {
     endCleaning: 'Reinigen beenden ',
     editOrderDetails: 'Auftragsdetails bearbeiten ',
     startNewOrder: 'Neuen Auftrag starten ',
-    editMemberDetails: 'Anzahl Mitarbeiter bearbeiten ',
+    edit: ' Bearbeiten ',
     pocStation: 'Ovalläufer 3',
     mockStation: 'Simulierte Maschine',
   },

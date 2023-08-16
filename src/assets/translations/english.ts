@@ -22,7 +22,7 @@ export const englishTranslations: Translations = {
     endCleaning: 'End Cleaning',
     editOrderDetails: 'Edit order details',
     startNewOrder: 'Start new order ',
-    editMemberDetails: 'Edit Member details ',
+    edit: 'Edit',
     pocStation: 'Poc Station',
     mockStation: 'Mock Station',
   },

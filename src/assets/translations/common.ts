@@ -28,7 +28,7 @@ interface Buttons {
   endCleaning: string;
   editOrderDetails: string;
   startNewOrder: string;
-  editMemberDetails: string;
+  edit: string;
   pocStation: string;
   mockStation: string;
 }
