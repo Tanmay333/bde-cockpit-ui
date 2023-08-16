@@ -54,7 +54,7 @@ export const germanTranslations: Translations = {
     min: 'Min',
     notStarted: 'Nicht gestartet',
     startedAt: 'Start um',
-    plannedDowntime: 'Geplante Ausfallzeit',
+    plannedDowntime: 'Geplanter Stillstand',
     incident: 'Störung',
     production: 'Produktion',
     downTime: 'Stillstand ',
