@@ -102,10 +102,20 @@ const OrderProcessSummary: React.FC = () => {
     const totalTimeOfJobProcess = () => {
       const totalTimeOfPreviousPhase = previousPhaseTotalTime();
       const currentStartTime = currentPhaseStartTime();
+      const currentPhaseName = state?.process?.currentPhaseDetails?.phaseName;
+      const currentPhaseState = state?.process?.currentPhaseDetails?.state;
 
       if (totalTimeOfPreviousPhase === 'N/A' || currentStartTime === 'N/A') {
         return 'N/A';
       }
+
+      if (
+        currentPhaseName === 'unmounting' &&
+        currentPhaseState === 'FINISHED'
+      ) {
+        return startTimeOfProcess; // Don't update if unmounting and finished
+      }
+
       const [previousHours, previousMinutes] = totalTimeOfPreviousPhase
         .split(':')
         .map(Number);
@@ -237,9 +247,10 @@ const OrderProcessSummary: React.FC = () => {
 
   // Function to get the start time or "Not started" message
   const getStart = () => {
-    if (state && state.process.currentPhaseDetails.state === 'FINISHED') {
-      return translation.text.notStarted;
-    } else if (mountingPhase) {
+    // if (state && state.process.currentPhaseDetails.state === 'FINISHED') {
+    //   return translation.text.notStarted;
+    // } else
+    if (mountingPhase) {
       return `${translation.text.startedAt} ${formatDate(
         previousPhase[0].startTime,
       )}`;
