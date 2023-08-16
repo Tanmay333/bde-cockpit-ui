@@ -83,6 +83,21 @@ const FixProgressBar: React.FC = () => {
     }
   }, [state]);
 
+  const startorder = useAppSelector((state) => state.startneworderslice);
+
+  useEffect(() => {
+    if (startorder && startorder.data === true) {
+      setDiff([]);
+    }
+
+    if (
+      (state && state.process.currentPhaseDetails.phaseName === 'mounting') ||
+      (state && state.process.currentPhaseDetails.phaseName === 'preparing')
+    ) {
+      setDiff([]);
+    }
+  }, [startorder, state]);
+
   return (
     // Render the progress bar with colored segments representing downtimes and durations
     <div
