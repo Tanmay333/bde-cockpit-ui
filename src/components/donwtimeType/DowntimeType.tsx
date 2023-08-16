@@ -96,6 +96,18 @@ const DowntimeType: React.FC = () => {
     }
   }, [state]);
 
+  useEffect(() => {
+    if (
+      state &&
+      state.process &&
+      state.process.currentPhaseDetails &&
+      state.process.currentPhaseDetails.phaseName !== 'production'
+    ) {
+      setLi([]);
+      setToggleDowntime(false);
+    }
+  }, [state]);
+
   // Define phaseState and jobId variables
   const phaseState = state.process.currentPhaseDetails.state;
   const jobId = state.assignedJobDetails.jobId;
