@@ -90,7 +90,6 @@ const useWebSocket = (): WebSocketHookReturn => {
         console.log('WebSocket connection established.');
       }
     };
-    console.log('websocket');
     if (stationId !== null) {
       if (socket) {
         sendTimer = setInterval(sendPingMessage, PING_INTERVAL);
