@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAppDispatch } from '../utils/hooks';
+import { useAppDispatch, useAppSelector } from '../utils/hooks';
 import { updateMachineDetails } from '../slices/machineDetailsSlice';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -72,9 +72,37 @@ const useWebSocket = (): WebSocketHookReturn => {
         }
       };
     }
-  }, [socket]);
+  }, [socket, dispatch]);
 
-  // Function to send a message through the WebSocket
+  const PING_INTERVAL = 300000;
+  const stationId = useAppSelector((state) => state.StationIdsSlice.value);
+
+  let sendTimer: NodeJS.Timeout | null = null;
+
+  useEffect(() => {
+    const sendPingMessage = () => {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        const message = {
+          action: 'getCurrentProductionState',
+          stationId: stationId,
+        };
+        sendMessage(message);
+        console.log('WebSocket connection established.');
+      }
+    };
+    console.log('websocket');
+    if (stationId !== null) {
+      if (socket) {
+        sendTimer = setInterval(sendPingMessage, PING_INTERVAL);
+      }
+    }
+    return () => {
+      if (sendTimer) {
+        clearInterval(sendTimer);
+      }
+    };
+  }, []);
+
   const sendMessage = (message: WebSocketMessage) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify(message));
