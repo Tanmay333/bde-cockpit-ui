@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { IonPage, IonContent, IonToggle, IonText } from '@ionic/react';
-import { useAppDispatch, useAppSelector } from '../store/utils/hooks';
+import { IonPage, IonContent } from '@ionic/react';
+import { useAppSelector } from '../store/utils/hooks';
 import Header from '../components/common/header/Header';
-import OrderInfoCard from '../components/orderInfoCard/OrderInfoCard';
+import OrderInfoCard from '../components/orderProcessSummary/OrderProcessSummary';
 import WorkDetails from '../components/orderDetails/OrderDetails';
-import Phase from '../components/phase/Phase';
+import Phase from '../components/phaseOverview/PhaseOverview';
 import PhaseDetails from '../components/phaseDetails/PhaseDetails';
 import SplashScreen from '../components/splashScreen/SplashScreen';
 import styles from './Home.module.scss';
 import Buttons from '../components/common/buttons/Buttons';
-import { toggleMockData } from '../store/slices/mockData.slice';
-import { useTranslations } from '../store/slices/translation.slice';
 import DowntimeType from '../components/donwtimeType/DowntimeType';
 import StationIds from '../components/common/stationIds/StationID';
 
 const Home: React.FC = () => {
-  const translation = useTranslations();
-  const toggleMock = useAppSelector((state) => state.mockData.data);
-
+  // Get the stationId from the Redux store
   const stationId = useAppSelector((state) => state.StationIdsSlice.value);
-  const dispatch = useAppDispatch();
+  // Set up state to handle countdown timer
   const [timeLeft, setTimeLeft] = useState(5);
 
+  // useEffect to decrement the timeLeft every second
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
@@ -31,14 +28,12 @@ const Home: React.FC = () => {
     }
     return () => clearInterval(interval);
   }, [timeLeft]);
+  // If the countdown is not finished yet, show the SplashScreen
   if (timeLeft !== 0) {
     return <SplashScreen />;
   }
 
-  const handleToggleChange = (event: any) => {
-    dispatch(toggleMockData(event.detail.checked));
-  };
-
+  // If stationId is not set and countdown is finished, show the StationIds component
   if (stationId === null && timeLeft === 0) {
     return <StationIds />;
   }
@@ -46,15 +41,6 @@ const Home: React.FC = () => {
     <>
       <IonPage>
         <Header />
-        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 40 }}>
-          <IonText>{translation.buttons.toggle}</IonText>
-          <IonToggle
-            style={{ margin: 20 }}
-            checked={toggleMock}
-            onIonChange={handleToggleChange}
-            color="primary"
-          />
-        </div>
         <IonContent>
           <OrderInfoCard />
           <Phase />

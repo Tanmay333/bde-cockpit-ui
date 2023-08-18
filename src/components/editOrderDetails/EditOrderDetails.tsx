@@ -12,24 +12,22 @@ import CardContainer from '../common/cardContainer/CardContainer';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import styles from '../confirmOrderDetails/ConfirmOrderDetails.module.scss';
-import Btnstyles from '../orderDetails/OrderDetails.module.scss';
 import ConfirmOrderLogo from '../../static/assets/images/LohnpackLogo.svg';
 import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import EditNumberQuantity from './EditNumberQuantity';
-import Scanner from '../../static/assets/images/Scanner.svg';
 import { useTranslations } from '../../store/slices/translation.slice';
-import Scan from '../common/Scanner/Scan';
+import Scan from '../common/scanner/Scan';
 
 const EditOrderDetails: React.FC = () => {
   const translation = useTranslations();
-
   const [barcodeState, setBarcodeState] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
-
   const location = useLocation();
+  const { sendMessage } = useWebSocket();
 
+  // Detect location changes and toggle the barcode modal accordingly
   useEffect(() => {
     const handleLocationChange = () => {
       const isConfirmOrderDetails =
@@ -49,6 +47,7 @@ const EditOrderDetails: React.FC = () => {
     setBarcodeState(true);
   }, []);
 
+  // Event handler for barcode scan completion
   const onBarcodeScanComplete = useCallback(() => {
     if (location.pathname === '/editorderdetails') {
       setBarcodeState(false); // Close the modal before navigating
@@ -60,31 +59,34 @@ const EditOrderDetails: React.FC = () => {
     }
   }, [history, location.pathname]);
 
+  // Event handler for closing the barcode modal
   const closeModal = useCallback(() => {
     setBarcodeState(false);
   }, []);
 
-  const { sendMessage } = useWebSocket();
-
+  // Get order quantity and order number from the store
   const orderquantityvalue = useAppSelector(
     (state) => state.OrderQuantitySlice.data,
   );
   const ordernumbervalue = useAppSelector(
     (state) => state.OrderNumberSlice.data,
   );
-  const toggleMock = useAppSelector((state) => state.mockData.data);
+
+  const StationId = useAppSelector((state) => state.StationIdsSlice.value);
+
+  // Event handler for the "Confirm Details" button click
   const onClick = useCallback(() => {
+    // Prepare and send the WebSocket message with order details
     {
       const message = {
         action: 'assignNewJob',
         orderId: ordernumbervalue,
-        stationId: toggleMock ? 'poc_station' : '1.203.4.245',
+        stationId: StationId,
         orderQuantity: orderquantityvalue,
       };
-
       sendMessage(message);
     }
-
+    // Update the phaseone element background color and navigate back to the main page
     const phaseone = document.getElementById('phase-one');
     if (phaseone) {
       phaseone.style.backgroundColor = '#2799D1';
@@ -107,7 +109,12 @@ const EditOrderDetails: React.FC = () => {
               <EditNumberQuantity />
             </IonText>
             <IonGrid style={{ textAlign: 'center' }}>
-              <IonButton onClick={onClick} fill="solid" className={styles.btn}>
+              <IonButton
+                onClick={onClick}
+                fill="solid"
+                className={styles.btn}
+                disabled={!orderquantityvalue || !ordernumbervalue}
+              >
                 {translation.buttons.confirmDetails}
               </IonButton>
               <div className={styles.BtnContainer}>

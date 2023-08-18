@@ -1,21 +1,27 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IonGrid, IonRow, IonCol, IonButton } from '@ionic/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from './Phase.module.scss';
+import styles from './PhaseOverview.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import useWebSocket from '../../store/hooks/useWebSocket';
-import './Phase.module.scss';
+import './PhaseOverview.module.scss';
 import { useTranslations } from '../../store/slices/translation.slice';
 import FixProgressBar from './FixProgressBar';
 import IncrementalProgressBar from './IncrementalProgressBar';
 
-const Phase: React.FC = () => {
+const PhaseOverview: React.FC = () => {
+  // For frontend testing purpose
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translation = useTranslations();
-
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-  const toggleMock = useAppSelector((state) => state.mockData.data);
   const history = useHistory();
+  const { sendMessage } = useWebSocket();
+  // For frontend testing purpose
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const stationid = state.station.stationId === '1.203.4.245';
 
+  // States and useEffect to control the visibility and color of different phases
   const [showPhase1, setShowPhase1] = useState(true);
   const [showPhase2, setShowPhase2] = useState(false);
   const [showPhase3, setShowPhase3] = useState(false);
@@ -28,6 +34,7 @@ const Phase: React.FC = () => {
   const [phaseFour, setPhaseFour] = useState('#E0E0E0');
   const [phaseFive, setPhaseFive] = useState('#E0E0E0');
 
+  // useEffect to determine the current phase and set the visibility of phase name  and color accordingly
   useEffect(() => {
     if (state === null || state === undefined) {
       return setPhaseOne('#E0E0E0');
@@ -142,12 +149,14 @@ const Phase: React.FC = () => {
     }
   }, [state]);
 
+  // Additional useEffect to handle the start of a new order
   const startorder = useAppSelector((state) => state.startneworderslice);
 
   useEffect(() => {
     if (startorder === null || startorder === undefined) {
       return;
     }
+    // If a new order is started, reset the phase colors and visibility
     if (startorder && startorder.data === true) {
       {
         setPhaseOne('#E0E0E0');
@@ -171,13 +180,14 @@ const Phase: React.FC = () => {
     history.push('/');
   }, [history]);
 
-  const { sendMessage } = useWebSocket();
-
   if (state === null || state === undefined) {
     return null;
   }
 
   const jobId = state && state.assignedJobDetails.jobId;
+
+  // For frontend testing purpose
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const startProduction = useCallback(() => {
     if (jobId === null) {
       return null;
@@ -189,6 +199,8 @@ const Phase: React.FC = () => {
     sendMessage(message);
   }, [jobId]);
 
+  // For frontend testing purpose
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const startDowntime = useCallback(() => {
     const message = {
       action: 'toggleDowntime',
@@ -203,7 +215,8 @@ const Phase: React.FC = () => {
     <IonGrid className={styles.container}>
       <IonCol>
         <IonGrid>
-          {toggleMock ? null : (
+          {/* For frontend testing purpose */}
+          {/* {stationid && (
             <>
               <IonButton onClick={startProduction}>
                 {translation.buttons.production}
@@ -212,7 +225,7 @@ const Phase: React.FC = () => {
                 {translation.buttons.downTime}
               </IonButton>
             </>
-          )}
+          )} */}
           <IonRow>
             <div className={styles.idle}>{showPhase1 && <p>Phase 01</p>}</div>
             <div className={styles.idle}>{showPhase2 && <p>Phase 02</p>}</div>
@@ -265,4 +278,4 @@ const Phase: React.FC = () => {
   );
 };
 
-export default Phase;
+export default PhaseOverview;

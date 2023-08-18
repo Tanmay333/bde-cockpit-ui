@@ -1,20 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CardContainer from '../common/cardContainer/CardContainer';
-import { IonCardContent, IonGrid, IonButton } from '@ionic/react';
+import { IonCardContent } from '@ionic/react';
 import styles from './PhaseDetails.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { Fragment, Key } from 'react';
 import bulletPoint2 from '../../static/assets/images/BulletPoint2.svg';
-import bulletpoint from '../../static/assets/images/bulletpoint.svg';
+import bulletpoint from '../../static/assets/images/Bulletpoint.svg';
 import bulletpoint1 from '../../static/assets/images/BulletPoint1.svg';
 import { formatTime } from '../../store/utils/formatTime';
 import { useTranslations } from '../../store/slices/translation.slice';
 
+// PhaseDetails component
 const PhaseDetails: React.FC = () => {
   const translation = useTranslations();
-
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
+  // Helper function to format the start time
   const startTime = () => {
     if (
       state === null ||
@@ -23,6 +24,7 @@ const PhaseDetails: React.FC = () => {
     ) {
       return '--:--';
     }
+    // Get the start time from the currentPhaseDetails and format it as HH:mm
     const startTime =
       state.process.currentPhaseDetails.startTime === null
         ? new Date()
@@ -33,6 +35,7 @@ const PhaseDetails: React.FC = () => {
     return formattedTime;
   };
 
+  // Helper function to format the end time
   const endTime = () => {
     if (
       state === null ||
@@ -41,6 +44,7 @@ const PhaseDetails: React.FC = () => {
     ) {
       return '--:--';
     }
+    // Get the end time from the currentPhaseDetails and format it as HH:mm
     const endTime =
       state.process.currentPhaseDetails.endTime === null
         ? new Date()
@@ -51,6 +55,7 @@ const PhaseDetails: React.FC = () => {
     return formattedTime;
   };
 
+  // Helper function to render the list of downtime reasons
   const downtimeReasonsList = () => {
     const renderedList: JSX.Element[] = [];
     if (
@@ -63,21 +68,23 @@ const PhaseDetails: React.FC = () => {
     const downtimes = state.process.currentPhaseDetails.downtimes;
 
     downtimes.forEach((item, index) => {
+      // Format the pause and resume times
       const pauseTime = formatTime(item.startTime);
       const resumeTime = formatTime(item.endTime);
 
-      renderedList.push(
+      // Push JSX elements representing the downtime reasons to the renderedList array
+      renderedList.unshift(
         <Fragment key={index}>
-          <div className={styles.reason}>
-            <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
-            {translation.text.pauseAt} {pauseTime}: {item.reason}
-          </div>
           {state.process.currentPhaseDetails.downtimes !== null && (
             <div className={styles.reason}>
               <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
               {translation.text.resumeAt}: {resumeTime}
             </div>
           )}
+          <div className={styles.reason}>
+            <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
+            {translation.text.pauseAt} {pauseTime}: {item.reason}
+          </div>
         </Fragment>,
       );
     });
@@ -85,6 +92,7 @@ const PhaseDetails: React.FC = () => {
     return <div>{renderedList}</div>;
   };
 
+  // Helper function to format the downtime reasons as an array of objects
   const setUpDownTimes = () => {
     if (
       state === null ||
@@ -92,9 +100,9 @@ const PhaseDetails: React.FC = () => {
     ) {
       return [];
     }
-
     const downtimes = state.process.currentPhaseDetails.downtimes;
 
+    // Format each downtime reason as an object with 'label' and 'value' properties
     const formattedDowntimes = downtimes.map((downtime) => {
       return {
         label: downtime.reason,
@@ -103,10 +111,10 @@ const PhaseDetails: React.FC = () => {
         )}`,
       };
     });
-
     return formattedDowntimes;
   };
 
+  // Helper function to determine the phase description details
   const phaseDescription = () => {
     if (state === null) {
       return [];
@@ -116,11 +124,9 @@ const PhaseDetails: React.FC = () => {
     if (phaseName === 'mounting') {
       return [{ label: translation.text.startTime, value: startTime() }];
     }
-
     if (phaseName === 'preparing') {
       return [{ label: translation.text.startTime, value: startTime() }];
     }
-
     if (phaseName === 'production') {
       const downtimeReasons = setUpDownTimes();
       const pauseResumeItems = downtimeReasons.map((item) => {
@@ -142,24 +148,22 @@ const PhaseDetails: React.FC = () => {
         ...pauseResumeItems,
       ];
     }
-
-    if (phaseName === 'unmounting') {
+    if (phaseName === 'cleaning') {
       return [{ label: translation.text.startTime, value: startTime() }];
     }
-
     if (
-      phaseName === 'cleaning' &&
+      phaseName === 'unmounting' &&
       state?.process.currentPhaseDetails.state === 'RUNNING'
     ) {
       return [{ label: translation.text.startTime, value: startTime() }];
     }
     if (
-      phaseName === 'cleaning' &&
+      phaseName === 'unmounting' &&
       state?.process.currentPhaseDetails.state === 'FINISHED'
     ) {
       return [
-        { label: translation.text.startTime, value: startTime() },
         { label: translation.text.endTime, value: endTime() },
+        { label: translation.text.startTime, value: startTime() },
       ];
     }
     return [];
@@ -198,6 +202,7 @@ const PhaseDetails: React.FC = () => {
               overflow: 'scroll',
             }}
           >
+            {/* Hide the scroll bar */}
             <style>
               {`
                 ::-webkit-scrollbar {
@@ -208,6 +213,7 @@ const PhaseDetails: React.FC = () => {
             {state &&
             state.process.currentPhaseDetails.phaseName === 'production' ? (
               <>
+                {downtimeReasonsList()}
                 <div className={styles.reason} key={'stTime'}>
                   <img
                     src={bulletpoint}
@@ -217,9 +223,9 @@ const PhaseDetails: React.FC = () => {
                   {translation.text.startTime}:
                   {formatTime(state.process.currentPhaseDetails.startTime)}
                 </div>
-                {downtimeReasonsList()}
               </>
             ) : (
+              // Render phase details based on other phase names
               phaseDescription().map(
                 (
                   item: {

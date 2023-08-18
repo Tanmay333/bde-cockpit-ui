@@ -8,49 +8,37 @@ import {
   IonRow,
 } from '@ionic/react';
 import lohnpack from '../../static/assets/lohnpack.svg';
-import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
+import SetTeamSizeIcon from '../../static/assets/images/SetTeamSizeIcon';
 import { useCallback, useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
-import styles from '../selectWorkers/SelectTeamSize.module.scss';
+import styles from '../setTeamSize/SetTeamSize.module.scss';
 import { useHistory } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import { useTranslations } from '../../store/slices/translation.slice';
 
-const SelectTeamSize = () => {
+const SetTeamSize = () => {
+  // Get translations from the translation slice
   const translation = useTranslations();
 
+  //List of workers
   const Workers = [
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 4,
-    },
-    {
-      id: 5,
-    },
-    {
-      id: 6,
-    },
-    {
-      id: 7,
-    },
-    {
-      id: 8,
-    },
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
+    { id: 4 },
+    { id: 5 },
+    { id: 6 },
+    { id: 7 },
+    { id: 8 },
   ];
 
+  // State to keep track of the selected index
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const history = useHistory();
 
+  // Function to navigate to the home page
   const routeToHomePage = () => {
     return history.push('/');
   };
@@ -70,6 +58,7 @@ const SelectTeamSize = () => {
     sendMessage(message);
   }, []);
 
+  // Fetch worker details from Redux store when the selectedIndex changes
   useEffect(() => {
     dispatch(getworkersDetails(selectedIndex));
   }, [dispatch, selectedIndex]);
@@ -120,7 +109,7 @@ const SelectTeamSize = () => {
                   onClick={() => selectteamsize(index)}
                 >
                   <IonRow style={{ textAlign: 'center' }}>
-                    <SelectTeamSizeIcon
+                    <SetTeamSizeIcon
                       isSelected={selectedIndex >= index ? true : false}
                     />
                   </IonRow>
@@ -134,4 +123,4 @@ const SelectTeamSize = () => {
   );
 };
 
-export default SelectTeamSize;
+export default SetTeamSize;

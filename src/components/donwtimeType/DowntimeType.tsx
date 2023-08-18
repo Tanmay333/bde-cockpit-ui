@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   IonButton,
   IonContent,
-  IonLoading,
   IonModal,
   IonRow,
+  IonSpinner,
 } from '@ionic/react';
 import { useHistory } from 'react-router';
 import useWebSocket from '../../store/hooks/useWebSocket';
@@ -17,46 +17,42 @@ import { formatDownTime } from '../../store/utils/formatDownTime';
 const DowntimeType: React.FC = () => {
   const translation = useTranslations();
   const [toggleDowntime, setToggleDowntime] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const modal = useRef<HTMLIonModalElement>(null);
-  const toggleMock = useAppSelector((state) => state.mockData.data);
   const [isLoading, setIsLoading] = useState(false);
-
-  const openModal = () => {
-    setToggleDowntime(true);
-  };
-
-  const closeModal = () => {
-    setToggleDowntime(false);
-  };
-
   const history = useHistory();
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-
-  if (!state) {
-    return null;
-  }
-  const Downtimereason = [
-    translation.reason.changingBarrel,
-
-    translation.reason.changingLabels,
-
-    translation.reason.break,
-
-    translation.reason.mechanicalIncident,
-
-    translation.reason.electricalIncident,
-
-    translation.reason.misuse,
-
-    translation.reason.defectiveFillingMaterial,
-
-    translation.reason.otherIncident,
-  ];
+  // For frontend testing purpose
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const stationid = state.station.stationId === '1.203.4.245';
   const [li, setLi] = useState<
     { startTime: string | null; reason: string[] }[]
   >([]);
 
+  // Close the downtime modal
+  const closeModal = () => {
+    setToggleDowntime(false);
+  };
+
+  // If machine details are not available, return null
+  if (!state) {
+    return null;
+  }
+
+  // List of Downtime reasons to display in buttons
+  const Downtimereason = [
+    translation.reason.changingBarrel,
+    translation.reason.changingLabels,
+    translation.reason.break,
+    translation.reason.mechanicalIncident,
+    translation.reason.electricalIncident,
+    translation.reason.misuse,
+    translation.reason.defectiveFillingMaterial,
+    translation.reason.otherIncident,
+  ];
+
+  // useEffect to handle downtime toggling and displaying of downtime reasons
   useEffect(() => {
     if (
       state &&
@@ -68,7 +64,6 @@ const DowntimeType: React.FC = () => {
       const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
         (event) => event.reason === 'unknown',
       );
-
       if (
         state.process.currentPhaseDetails.phaseName === 'production' &&
         unknownEvent
@@ -84,7 +79,6 @@ const DowntimeType: React.FC = () => {
         setLi(dtRs);
         setToggleDowntime(true);
       }
-
       if (
         state.process.currentPhaseDetails.phaseName === 'production' &&
         state.process.currentPhaseDetails.state === 'RUNNING' &&
@@ -102,8 +96,23 @@ const DowntimeType: React.FC = () => {
     }
   }, [state]);
 
+  useEffect(() => {
+    if (
+      state &&
+      state.process &&
+      state.process.currentPhaseDetails &&
+      state.process.currentPhaseDetails.phaseName !== 'production'
+    ) {
+      setLi([]);
+      setToggleDowntime(false);
+    }
+  }, [state]);
+
+  // Define phaseState and jobId variables
   const phaseState = state.process.currentPhaseDetails.state;
   const jobId = state.assignedJobDetails.jobId;
+
+  // Function for ending production
   const onEndProduction = useCallback(() => {
     const message = {
       action: 'setEndOfProduction',
@@ -115,16 +124,19 @@ const DowntimeType: React.FC = () => {
     setToggleDowntime(false);
   }, [jobId, sendMessage, history]);
 
+  // For frontend testing purpose
+  // Function for starting downtime
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const startDowntime = useCallback(() => {
     const message = {
       action: 'toggleDowntime',
       jobId: jobId,
     };
     sendMessage(message);
-
     history.push('/');
   }, [jobId, sendMessage, history]);
 
+  // Onclick function when a downtime reason button is clicked
   const onClick = useCallback(
     (reason: string, startTime: string | null) => {
       if (!state.process.currentPhaseDetails.downtimes) {
@@ -145,6 +157,8 @@ const DowntimeType: React.FC = () => {
     },
     [state, phaseState, li],
   );
+
+  // useEffect to check if known downtime event exists and stop loading spinner
   useEffect(() => {
     if (
       state &&
@@ -186,47 +200,56 @@ const DowntimeType: React.FC = () => {
                 {li &&
                   li.map((data, index) => (
                     <div key={index}>
+                      {/*...Display downtime details and buttons...*/}
                       <div className={styles.title}>
                         <p>
                           {translation.text.downtimeAt}
                           {formatDownTime(data.startTime)}
                         </p>
                       </div>
-                      {data.reason.slice(0, 3).map((value, i) => (
-                        <IonButton
-                          onClick={() => onClick(value, data.startTime)}
-                          key={i}
-                          className={styles.button}
-                        >
-                          {value}
-                        </IonButton>
-                      ))}
+                      <div className={styles.title}>
+                        {translation.text.plannedDowntime}
+                        <br />
+                        {data.reason.slice(0, 3).map((value, i) => (
+                          <IonButton
+                            onClick={() => onClick(value, data.startTime)}
+                            key={i}
+                            className={styles.button}
+                          >
+                            {value}
+                          </IonButton>
+                        ))}
+                      </div>
                       <div className={styles.spacing}></div>
-                      {data.reason.slice(3).map((value, i) => (
-                        <IonButton
-                          onClick={() => onClick(value, data.startTime)}
-                          key={i}
-                          className={styles.button}
-                        >
-                          {value}
-                        </IonButton>
-                      ))}
+                      <div className={styles.title}>
+                        {translation.text.incident} <br />
+                        {data.reason.slice(3).map((value, i) => (
+                          <IonButton
+                            onClick={() => onClick(value, data.startTime)}
+                            key={i}
+                            className={styles.button}
+                          >
+                            {value}
+                          </IonButton>
+                        ))}
+                      </div>
                     </div>
                   ))}
-                <IonLoading
-                  isOpen={isLoading}
-                  spinner="circles"
-                  //message="Please wait..."
-                  cssClass={styles.ionloading}
-                />
+                {/* Loading spinner */}
+                {isLoading && (
+                  <div className={styles.overlay}>
+                    <IonSpinner name="lines" />
+                  </div>
+                )}
               </IonRow>
             </div>
             <div className={styles.endBtn}>
-              {!toggleMock && (
+              {/* For frontend testing purpose */}
+              {/* {stationid && (
                 <IonButton onClick={startDowntime}>
                   {translation.buttons.downTime}
                 </IonButton>
-              )}
+              )} */}
               <IonButton className={styles.end} onClick={onEndProduction}>
                 {translation.buttons.endProduction}
               </IonButton>

@@ -1,4 +1,4 @@
-import { TestData } from '../store/slices/OrderInfoSlice';
+import { TestData } from '../store/slices/orderInfoSlice';
 
 export const fetchTestData = async () => {
   const data: TestData = {

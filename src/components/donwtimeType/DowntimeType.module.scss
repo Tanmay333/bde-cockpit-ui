@@ -48,17 +48,20 @@
 }
 
 /* Hide the background and default text */
-.ionloading {
-  --background: transparent;
-  --background-rgb: transparent;
-  --inner-border-color: transparent;
-  --inner-background: transparent;
-}
-
-/* Customize the loading spinner */
-.ionloading::part(spinner) {
-  font-size: 440px;
-  /* Adjust the size of the icon */
-  color: #007aff;
-  /* Change the color of the icon */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.3
+  ); /* Adjust the overlay color and opacity */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Make sure the overlay is above other content */
 }

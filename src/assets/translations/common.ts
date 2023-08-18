@@ -17,7 +17,6 @@ interface MachineStatus {
 }
 
 interface Buttons {
-  toggle: string;
   scanBarCode: string;
   confirmDetails: string;
   scanAgain: string;
@@ -29,11 +28,13 @@ interface Buttons {
   endCleaning: string;
   editOrderDetails: string;
   startNewOrder: string;
-  editMemberDetails: string;
+  edit: string;
+  pocStation: string;
+  mockStation: string;
 }
 
 interface Text {
-  order: string;
+  station: string;
   machineStatus: MachineStatus;
   today: string;
   orderNumber: string;
@@ -56,6 +57,11 @@ interface Text {
   min: string;
   notStarted: string;
   startedAt: string;
+  plannedDowntime: string;
+  incident: string;
+  production: string;
+  downTime: string;
+  stationId: string;
 }
 
 interface Reasons {
@@ -67,7 +73,6 @@ interface Reasons {
   changingBarrel: string;
   changingLabels: string;
   break: string;
-
 }
 
 export interface Translations {

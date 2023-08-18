@@ -1,0 +1,50 @@
+.orderInfoCard {
+  --background: #2799d1;
+  border-radius: 14px;
+  margin: 34px;
+  text-transform: none;
+
+  ion-card-title {
+    --color: #fff;
+    font-size: 28px;
+    font-weight: 600;
+    text-transform: none;
+  }
+
+  ion-card-subtitle {
+    --color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    text-transform: none;
+  }
+
+  ion-card-header {
+    padding: 32px;
+  }
+
+  ion-card-content {
+    padding: 32px;
+    display: flex;
+    justify-content: space-between;
+    text-transform: none;
+  }
+
+  .ionRightSection {
+    text-align: right;
+  }
+  .property {
+    display: flex;
+    justify-content: space-between;
+  }
+  .speed {
+    padding-left: 10%;
+    width: auto;
+  }
+  .ionRightTop {
+    margin-top: 5px;
+    text-align: left;
+  }
+  .right {
+    text-align: right;
+  }
+}

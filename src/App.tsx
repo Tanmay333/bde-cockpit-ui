@@ -28,7 +28,7 @@ import './theme/variables.css';
 
 import './styles.scss';
 import Home from './pages/Home';
-import SelectTeamSize from './components/selectWorkers/SelectTeamSize';
+import SelectTeamSize from './components/setTeamSize/SetTeamSize';
 import OrderDetails from './components/orderDetails/OrderDetails';
 import ConfirmOrderdetails from './components/confirmOrderDetails/ConfirmOrderDetails';
 import useWebSocket from './store/hooks/useWebSocket';
@@ -36,25 +36,14 @@ import { useEffect, useState } from 'react';
 import EditOrderdetails from './components/editOrderDetails/EditOrderDetails';
 import EditTeamSize from './components/editOrderDetails/EditTeamSize';
 import { getCurrentDimension } from './store/utils/getCurrentDimension';
-import { useAppSelector } from './store/utils/hooks';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  const { sendMessage, isConnected } = useWebSocket();
-  const toggleMock = useAppSelector((state) => state.mockData.data);
+  // For initial connection
+  useWebSocket();
 
-  // const message = {
-  //   action: 'getCurrentProductionState',
-  //   stationId: toggleMock ? 'poc_station' : '1.203.4.245',
-  // };
-
-  // useEffect(() => {
-  //   if (isConnected === true || toggleMock) {
-  //     sendMessage(message);
-  //   }
-  // }, [isConnected, toggleMock]);
-
+  // Get the current screen size and update it on window resize
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
 
   useEffect(() => {
@@ -69,6 +58,7 @@ const App: React.FC = () => {
   }, [screenSize]);
 
   return (
+    // Set the app's style based on the screen width
     <IonApp
       style={{
         width: screenSize.width < 1400 ? 'auto' : 1400,

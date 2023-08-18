@@ -2,33 +2,39 @@ import { IonButton, IonGrid } from '@ionic/react';
 import useWebSocket from '../../../store/hooks/useWebSocket';
 import { useAppDispatch, useAppSelector } from '../../../store/utils/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import style from './buttos.module.scss';
+import style from './Buttos.module.scss';
 import { useHistory } from 'react-router';
 import { getData } from '../../../store/slices/startNewOrderSlice';
 import { StartNewOrder } from '../../../store/slices/machineDetailsSlice';
 import { useTranslations } from '../../../store/slices/translation.slice';
 
+// Defining the Buttons component
 const Buttons = () => {
   const translation = useTranslations();
-
   const history = useHistory();
   const [startNewOrder, setStartNewOrder] = useState(false);
+  const dispatch = useAppDispatch();
+  const { sendMessage } = useWebSocket();
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
+  // Function to handle the click event on the start preparation button
   const onClick = useCallback(() => {
     const updatedValue = !startNewOrder;
     setStartNewOrder(updatedValue);
     dispatch(StartNewOrder());
   }, [startNewOrder, history]);
 
-  const dispatch = useAppDispatch();
+  // Function to navigate to the select team size page
+  const StartPreparation = useCallback(() => {
+    history.push('/selectteamsize');
+  }, [history]);
 
+  // Effect hook to fetch data when the startNewOrder state changes
   useEffect(() => {
     dispatch(getData(startNewOrder));
   }, [startNewOrder, dispatch]);
 
-  const { sendMessage } = useWebSocket();
-  const state = useAppSelector((state) => state.machineDetailsSlice.data);
-
+  // Memoized job ID
   const jobId = useMemo(() => {
     if (
       state === null ||
@@ -41,6 +47,7 @@ const Buttons = () => {
     }
   }, [state]);
 
+  // Function to send the 'setEndOfUnmounting' message to the WebSocket
   const onEndUnmounting = () => {
     if (jobId === null) {
       return;
@@ -52,6 +59,7 @@ const Buttons = () => {
     sendMessage(message);
   };
 
+  // Function to send the 'setEndOfCleaning' message to the WebSocket
   const onEndCleaning = () => {
     if (jobId === null) {
       return;
@@ -63,6 +71,7 @@ const Buttons = () => {
     sendMessage(message);
   };
 
+  // Check various conditions to determine which buttons to display
   const isPhaseNull =
     state?.process &&
     state.process.currentPhaseDetails &&
@@ -87,10 +96,6 @@ const Buttons = () => {
     state?.process &&
     state.process.currentPhaseDetails &&
     state?.process?.currentPhaseDetails?.phaseName === 'cleaning';
-
-  const StartPreparation = useCallback(() => {
-    history.push('/selectteamsize');
-  }, [history]);
 
   return (
     <IonGrid>

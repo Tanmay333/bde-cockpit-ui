@@ -11,7 +11,6 @@ export const germanTranslations: Translations = {
   },
 
   buttons: {
-    toggle: 'Umschalten',
     scanBarCode: 'Barcode scannen ',
     confirmDetails: 'Details bestätigen ',
     scanAgain: 'Erneut scannen ',
@@ -23,11 +22,13 @@ export const germanTranslations: Translations = {
     endCleaning: 'Reinigen beenden ',
     editOrderDetails: 'Auftragsdetails bearbeiten ',
     startNewOrder: 'Neuen Auftrag starten ',
-    editMemberDetails: 'Anzahl Mitarbeiter bearbeiten ',
+    edit: ' Bearbeiten ',
+    pocStation: 'Ovalläufer 3',
+    mockStation: 'Simulierte Maschine',
   },
 
   text: {
-    order: 'Auftrag',
+    station: 'Anlage',
     machineStatus: {
       on: 'An ',
       off: 'Aus ',
@@ -53,6 +54,11 @@ export const germanTranslations: Translations = {
     min: 'Min',
     notStarted: 'Nicht gestartet',
     startedAt: 'Start um',
+    plannedDowntime: 'Geplanter Stillstand',
+    incident: 'Störung',
+    production: 'Produktion',
+    downTime: 'Stillstand ',
+    stationId: 'Bitte eine Maschine auswählen',
   },
 
   reason: {

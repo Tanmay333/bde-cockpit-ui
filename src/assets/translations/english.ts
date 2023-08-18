@@ -11,7 +11,6 @@ export const englishTranslations: Translations = {
   },
 
   buttons: {
-    toggle: 'Toggle',
     scanBarCode: 'Scan bar-code',
     confirmDetails: 'Confirm details',
     scanAgain: 'Scan again',
@@ -23,11 +22,13 @@ export const englishTranslations: Translations = {
     endCleaning: 'End Cleaning',
     editOrderDetails: 'Edit order details',
     startNewOrder: 'Start new order ',
-    editMemberDetails: 'Edit Member details ',
+    edit: 'Edit',
+    pocStation: 'Poc Station',
+    mockStation: 'Mock Station',
   },
 
   text: {
-    order: 'Order',
+    station: 'Station',
     machineStatus: {
       on: 'on',
       off: 'off',
@@ -53,6 +54,11 @@ export const englishTranslations: Translations = {
     min: 'min',
     notStarted: 'Not Started',
     startedAt: 'Started at',
+    plannedDowntime: 'Planned Downtime',
+    incident: 'Incident ',
+    production: 'Production',
+    downTime: 'DownTime',
+    stationId: 'Please select the Station ID',
   },
 
   reason: {

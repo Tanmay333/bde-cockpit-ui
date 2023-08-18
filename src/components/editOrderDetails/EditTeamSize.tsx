@@ -8,61 +8,48 @@ import {
   IonRow,
 } from '@ionic/react';
 import lohnpack from '../../static/assets/lohnpack.svg';
-import SelectTeamSizeIcon from '../../static/assets/images/SelectTeamSizeIcon';
+import SelectTeamSizeIcon from '../../static/assets/images/SetTeamSizeIcon';
 import { useCallback, useEffect, useState } from 'react';
 import CardContainer from '../common/cardContainer/CardContainer';
-import styles from '../selectWorkers/SelectTeamSize.module.scss';
+import styles from '../setTeamSize/SetTeamSize.module.scss';
 import { useHistory } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import { useTranslations } from '../../store/slices/translation.slice';
 
+// Defining the EditTeamSize component
 const EditTeamSize = () => {
   const translation = useTranslations();
-
-  const Workers = [
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 4,
-    },
-    {
-      id: 5,
-    },
-    {
-      id: 6,
-    },
-    {
-      id: 7,
-    },
-    {
-      id: 8,
-    },
-  ];
-
   const history = useHistory();
-
-  const routeToHomePage = () => {
-    return history.push('/');
-  };
-
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const dispatch = useAppDispatch();
   const { sendMessage } = useWebSocket();
 
+  // An array of worker objects
+  const Workers = [
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
+    { id: 4 },
+    { id: 5 },
+    { id: 6 },
+    { id: 7 },
+    { id: 8 },
+  ];
+
+  // Function to navigate to the home page
+  const routeToHomePage = () => {
+    return history.push('/');
+  };
+
+  // Data object containing team size information
   const data = {
     teamsize: state?.assignedJobDetails.productionTeamSize ?? '--:--',
   };
   const [selectedIndex, setSelectedIndex] = useState(+data.teamsize - 1);
 
+  // Callback function to handle team size selection
   const selectteamsize = useCallback((index: number) => {
     setSelectedIndex(index);
     setTimeout(routeToHomePage, 1000);
@@ -74,6 +61,7 @@ const EditTeamSize = () => {
     sendMessage(message);
   }, []);
 
+  // Effect hook to fetch worker details when the selected index changes
   useEffect(() => {
     dispatch(getworkersDetails(selectedIndex));
   }, [dispatch, selectedIndex]);

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { TEST_SLICE_KEY, testDataReducer } from './slices/OrderInfoSlice';
+import { TEST_SLICE_KEY, testDataReducer } from './slices/orderInfoSlice';
 import {
   MACHINE_DETAILS_KEY,
   machineDetailsReducer,
@@ -21,8 +21,7 @@ import {
   TRANSLATION_KEY,
   translationReducer,
 } from './slices/translation.slice';
-import { MOCK_DATA_KEY, mockReducer } from './slices/mockData.slice';
-import { STATION_IDS, stationIdsReducer } from './slices/stationIdSlice';
+import { STATION_IDS, stationIdsReducer } from './slices/stationId.slice';
 const reducers = {
   [TEST_SLICE_KEY]: testDataReducer,
   [MACHINE_DETAILS_KEY]: machineDetailsReducer,
@@ -31,7 +30,6 @@ const reducers = {
   [ORDER_Number]: orderNumberReducer,
   [START_NEW_ORDER_SLICE]: DataReducer,
   [TRANSLATION_KEY]: translationReducer,
-  [MOCK_DATA_KEY]: mockReducer,
   [STATION_IDS]: stationIdsReducer,
 };
 
