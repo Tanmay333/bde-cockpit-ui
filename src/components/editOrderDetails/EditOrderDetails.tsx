@@ -18,10 +18,12 @@ import useWebSocket from '../../store/hooks/useWebSocket';
 import EditNumberQuantity from './EditNumberQuantity';
 import { useTranslations } from '../../store/slices/translation.slice';
 import Scan from '../common/scanner/Scan';
+import LoadingIndicator from '../common/loadingIndicator/LoadingIndicator';
 
 const EditOrderDetails: React.FC = () => {
   const translation = useTranslations();
   const [barcodeState, setBarcodeState] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
   const history = useHistory();
   const location = useLocation();
@@ -91,12 +93,19 @@ const EditOrderDetails: React.FC = () => {
     if (phaseone) {
       phaseone.style.backgroundColor = '#2799D1';
     }
-    history.push('/');
+    // For time being add 3sec timeout,this logic will update later
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      history.push('/');
+    }, 3000);
   }, [history, ordernumbervalue, orderquantityvalue]);
 
   return (
     <IonPage>
       <IonContent>
+        {/* Loading spinner */}
+        {isLoading && <LoadingIndicator />}
         <IonHeader className={styles.logo}>
           <IonImg src={ConfirmOrderLogo} alt={'ConfirmOrderDetails Logo'} />
         </IonHeader>

@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import { useTranslations } from '../../store/slices/translation.slice';
+import LoadingIndicator from '../common/loadingIndicator/LoadingIndicator';
 
 // Defining the EditTeamSize component
 const EditTeamSize = () => {
@@ -25,6 +26,7 @@ const EditTeamSize = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const dispatch = useAppDispatch();
   const { sendMessage } = useWebSocket();
+  const [isLoading, setIsLoading] = useState(false);
 
   // An array of worker objects
   const Workers = [
@@ -38,11 +40,6 @@ const EditTeamSize = () => {
     { id: 8 },
   ];
 
-  // Function to navigate to the home page
-  const routeToHomePage = () => {
-    return history.push('/');
-  };
-
   // Data object containing team size information
   const data = {
     teamsize: state?.assignedJobDetails.productionTeamSize ?? '--:--',
@@ -52,7 +49,13 @@ const EditTeamSize = () => {
   // Callback function to handle team size selection
   const selectteamsize = useCallback((index: number) => {
     setSelectedIndex(index);
-    setTimeout(routeToHomePage, 1000);
+    // For time being add 3sec timeout,this logic will update later
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      history.push('/');
+    }, 3000);
+
     const message = {
       action: 'setTeamSize',
       jobId: state?.assignedJobDetails.jobId,
@@ -69,6 +72,8 @@ const EditTeamSize = () => {
   return (
     <IonPage>
       <IonContent>
+        {/* Loading spinner */}
+        {isLoading && <LoadingIndicator />}
         <div className={styles.img}>
           <IonImg src={lohnpack} />
         </div>

@@ -22,6 +22,7 @@ import { getnumberDetails } from '../../store/slices/orderNumber';
 import editIcon from '../../static/assets/images/Edit.svg';
 import { useTranslations } from '../../store/slices/translation.slice';
 import Scan from '../common/scanner/Scan';
+import LoadingIndicator from '../common/loadingIndicator/LoadingIndicator';
 
 // ConfirmOrderDetails component
 const ConfirmOrderDetails: React.FC = () => {
@@ -33,8 +34,9 @@ const ConfirmOrderDetails: React.FC = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [pressedKeys, setPressedKeys] = useState<string[]>([]);
   const [isFocused, setIsFocused] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const modal = useRef<HTMLIonModalElement>(null);
+
   // Access machine details from Redux store using useSelector hook
   const state = useAppSelector<MachineDetails | null>(
     (state) => state.machineDetailsSlice.data,
@@ -122,8 +124,18 @@ const ConfirmOrderDetails: React.FC = () => {
     if (phaseone) {
       phaseone.style.backgroundColor = '#2799D1';
     }
-    history.push('/');
+    // history.push('/');
+    setIsLoading(true);
   }, [history, orderquantityvalue, ordernumbervalue]);
+
+  const State = useAppSelector((state) => state.machineDetailsSlice.data);
+
+  useEffect(() => {
+    if (State.process.currentPhaseDetails.phaseName === 'mounting') {
+      setIsLoading(false);
+      history.push('/');
+    }
+  }, [history, State]);
 
   // JSX for right-aligned edit icon button
   const right = (
@@ -192,6 +204,8 @@ const ConfirmOrderDetails: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
+        {/* Loading spinner */}
+        {isLoading && <LoadingIndicator />}
         <IonHeader className={styles.logo}>
           <IonImg src={ConfirmOrderLogo} alt={'ConfirmOrderDetails Logo'} />
         </IonHeader>

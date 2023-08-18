@@ -17,10 +17,12 @@ import { useAppDispatch, useAppSelector } from '../../store/utils/hooks';
 import { getworkersDetails } from '../../store/slices/selectTeamSizeSlice';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import { useTranslations } from '../../store/slices/translation.slice';
+import LoadingIndicator from '../common/loadingIndicator/LoadingIndicator';
 
 const SetTeamSize = () => {
   // Get translations from the translation slice
   const translation = useTranslations();
+  const [isLoading, setIsLoading] = useState(false);
 
   //List of workers
   const Workers = [
@@ -38,18 +40,14 @@ const SetTeamSize = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const history = useHistory();
 
-  // Function to navigate to the home page
-  const routeToHomePage = () => {
-    return history.push('/');
-  };
-
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const dispatch = useAppDispatch();
   const { sendMessage } = useWebSocket();
 
   const selectteamsize = useCallback((index: number) => {
     setSelectedIndex(index);
-    setTimeout(routeToHomePage, 1000);
+    setIsLoading(true);
+
     const message = {
       action: 'setTeamSize',
       jobId: state?.assignedJobDetails.jobId,
@@ -57,6 +55,13 @@ const SetTeamSize = () => {
     };
     sendMessage(message);
   }, []);
+
+  useEffect(() => {
+    if (state.process.currentPhaseDetails.phaseName === 'preparing') {
+      setIsLoading(false);
+      history.push('/');
+    }
+  }, [history, state]);
 
   // Fetch worker details from Redux store when the selectedIndex changes
   useEffect(() => {
@@ -66,6 +71,8 @@ const SetTeamSize = () => {
   return (
     <IonPage>
       <IonContent>
+        {/* Loading spinner */}
+        {isLoading && <LoadingIndicator />}
         <div className={styles.img}>
           <IonImg src={lohnpack} />
         </div>

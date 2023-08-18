@@ -1,12 +1,13 @@
 import { IonButton, IonContent, IonPage, IonRow } from '@ionic/react';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useWebSocket from '../../../store/hooks/useWebSocket';
 import { useHistory } from 'react-router';
-import { useAppDispatch } from '../../../store/utils/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/utils/hooks';
 import Header from '../header/Header';
 import { StationIdsData } from '../../../store/slices/stationId.slice';
 import styles from './StationID.module.scss';
 import { useTranslations } from '../../../store/slices/translation.slice';
+import LoadingIndicator from '../loadingIndicator/LoadingIndicator';
 
 // StationIds component
 const StationIds: React.FC = () => {
@@ -14,6 +15,7 @@ const StationIds: React.FC = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const translation = useTranslations();
+  const [isLoading, setIsLoading] = useState(false);
 
   // Function to handle click event for POC Station button
   const onClickPoc = useCallback(() => {
@@ -24,7 +26,8 @@ const StationIds: React.FC = () => {
       stationId: 'poc_station',
     };
     sendMessage(message);
-    history.push('/');
+    setIsLoading(true);
+    //history.push('/');
   }, [isConnected, sendMessage, history]);
 
   // Function to handle click event for Mock Station button
@@ -36,7 +39,8 @@ const StationIds: React.FC = () => {
       stationId: '1.203.4.245',
     };
     sendMessage(message);
-    history.push('/');
+    setIsLoading(true);
+    //history.push('/');
   }, [isConnected, sendMessage, history]);
 
   // Function to handle click event for test Station button
@@ -51,12 +55,23 @@ const StationIds: React.FC = () => {
   //   history.push('/');
   // }, [isConnected, sendMessage, history]);
 
+  const state = useAppSelector((state) => state.machineDetailsSlice.data);
+
+  useEffect(() => {
+    if (state.station.stationId !== null) {
+      setIsLoading(false);
+      history.push('/');
+    }
+  }, [history, state]);
+
   return (
     <>
       <IonPage>
         <IonContent>
           {/* Render the Header component */}
           <Header />
+          {/* Loading spinner */}
+          {isLoading && <LoadingIndicator />}
           <div className={styles.para}>{translation.text.stationId}</div>
           <br />
           <IonRow className={styles.container}>

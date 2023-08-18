@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { IonPage, IonContent } from '@ionic/react';
 import { useAppSelector } from '../store/utils/hooks';
@@ -17,6 +18,9 @@ const Home: React.FC = () => {
   const stationId = useAppSelector((state) => state.StationIdsSlice.value);
   // Set up state to handle countdown timer
   const [timeLeft, setTimeLeft] = useState(5);
+
+  const [isEndCleaning, setIsEndCleaning] = useState(false); // New state for Buttons loading
+  const [isEndUnmounting, setIsEndUnmounting] = useState(false); // New state for Buttons loading
 
   // useEffect to decrement the timeLeft every second
   useEffect(() => {
@@ -48,7 +52,10 @@ const Home: React.FC = () => {
             <WorkDetails />
             <PhaseDetails />
           </div>
-          <Buttons />
+          <Buttons
+            setIsEndCleaning={setIsEndCleaning}
+            setIsEndUnmounting={setIsEndUnmounting}
+          />
           <DowntimeType />
         </IonContent>
       </IonPage>
