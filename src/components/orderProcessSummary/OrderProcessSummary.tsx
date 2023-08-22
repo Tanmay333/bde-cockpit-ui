@@ -128,11 +128,9 @@ const OrderProcessSummary: React.FC = () => {
       const finalHours = totalHours + Math.floor(totalMinutes / 60);
       const finalMinutes = totalMinutes % 60;
 
-      return `${finalHours.toString().padStart(2, '0')} ${' '} ${
-        translation.text.hrs
-      } ${finalMinutes.toString().padStart(2, '0')} ${' '} ${
-        translation.text.min
-      }`;
+      return `${finalHours.toString().padStart(2, '0')} ${' '} ${translation.text.hrs
+        } ${finalMinutes.toString().padStart(2, '0')} ${' '} ${translation.text.min
+        }`;
     };
 
     const interval = setInterval(() => {
@@ -165,9 +163,8 @@ const OrderProcessSummary: React.FC = () => {
       const diffInMinutes = Math.floor(timeDiff / 60000);
       const hours = Math.floor(diffInMinutes / 60);
       const minutes = diffInMinutes % 60;
-      return `${hours.toString().padStart(2, '0')} ${
-        translation.text.hrs
-      } ${minutes.toString().padStart(2, '0')} ${translation.text.min}`;
+      return `${hours.toString().padStart(2, '0')} ${translation.text.hrs
+        } ${minutes.toString().padStart(2, '0')} ${translation.text.min}`;
     };
     const interval = setInterval(() => {
       setCurrentPhaseTime(currentPhaseTime());
@@ -278,9 +275,9 @@ const OrderProcessSummary: React.FC = () => {
   };
 
   return (
-    <IonCard className={styles.orderInfoCard}>
+    <IonCard className={styles.orderInfoCard} data-testid='bottom'>
       <IonCardHeader className={styles.property}>
-        <IonCardTitle>
+        <IonCardTitle  >
           <img src={getImageSource()} alt={'status'} />{' '}
           {translation.text.station}: {data.stationId}
           <IonCardSubtitle className={styles.speed}>
@@ -288,7 +285,7 @@ const OrderProcessSummary: React.FC = () => {
           </IonCardSubtitle>
         </IonCardTitle>
         <div>
-          <IonCardTitle>
+          <IonCardTitle >
             {getPhaseName()} - {translation.description[data.currentPhaseName]}
           </IonCardTitle>
           {!isPhasePreparing && (
