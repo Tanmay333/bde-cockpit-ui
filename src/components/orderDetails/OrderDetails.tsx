@@ -111,7 +111,7 @@ const OrderDetails: React.FC = () => {
   return (
     <CardContainer title={translation.text.orderDetails} position="start">
       <IonCardContent>
-        <div className={styles.order}>
+        <div className={styles.order} data-testid="test-order-details">
           <span>
             {translation.text.orderNumber}: {data.orderId} <br />
           </span>
