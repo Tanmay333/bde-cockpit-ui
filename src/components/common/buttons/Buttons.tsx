@@ -7,12 +7,23 @@ import { useHistory } from 'react-router';
 import { getData } from '../../../store/slices/startNewOrderSlice';
 import { StartNewOrder } from '../../../store/slices/machineDetailsSlice';
 import { useTranslations } from '../../../store/slices/translation.slice';
+import PropTypes from 'prop-types';
+import LoadingIndicator from '../loadingIndicator/LoadingIndicator';
 
-// Defining the Buttons component
-const Buttons = () => {
+interface ButtonsProps {
+  setIsEndCleaning: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsEndUnmounting: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Buttons: React.FC<ButtonsProps> = ({
+  setIsEndCleaning,
+  setIsEndUnmounting,
+}) => {
   const translation = useTranslations();
   const history = useHistory();
   const [startNewOrder, setStartNewOrder] = useState(false);
+  const [isLoadingEndCleaning, setIsLoadingEndCleaning] = useState(false);
+  const [isLoadingEndUnmounting, setIsLoadingEndUnmounting] = useState(false);
   const dispatch = useAppDispatch();
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
@@ -57,6 +68,8 @@ const Buttons = () => {
       jobId: jobId,
     };
     sendMessage(message);
+    setIsLoadingEndUnmounting(true);
+    setIsEndUnmounting(true);
   };
 
   // Function to send the 'setEndOfCleaning' message to the WebSocket
@@ -69,6 +82,8 @@ const Buttons = () => {
       jobId: jobId,
     };
     sendMessage(message);
+    setIsLoadingEndCleaning(true);
+    setIsEndCleaning(true);
   };
 
   // Check various conditions to determine which buttons to display
@@ -97,8 +112,21 @@ const Buttons = () => {
     state.process.currentPhaseDetails &&
     state?.process?.currentPhaseDetails?.phaseName === 'cleaning';
 
+  useEffect(() => {
+    if (isPhaseUnmounting) {
+      setIsLoadingEndCleaning(false);
+      setIsEndCleaning(false);
+    }
+    if (isPhaseUnmounting && isStateFinished) {
+      setIsLoadingEndUnmounting(false);
+      setIsEndUnmounting(false);
+    }
+  });
   return (
     <IonGrid>
+      {/* Loading spinner */}
+      {isLoadingEndCleaning && <LoadingIndicator />}
+      {isLoadingEndUnmounting && <LoadingIndicator />}
       <div className={style.endBtn}>
         {(isPhaseNull || isPhaseMounting) && (
           <IonButton
@@ -155,6 +183,11 @@ const Buttons = () => {
       </div>
     </IonGrid>
   );
+};
+
+Buttons.propTypes = {
+  setIsEndCleaning: PropTypes.func.isRequired, // Validate that setIsCleaning is a function and required
+  setIsEndUnmounting: PropTypes.func.isRequired, // Validate that setIsUnmounting is a function and required
 };
 
 export default Buttons;

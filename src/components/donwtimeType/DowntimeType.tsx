@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  IonButton,
-  IonContent,
-  IonModal,
-  IonRow,
-  IonSpinner,
-} from '@ionic/react';
+import { IonButton, IonContent, IonModal, IonRow } from '@ionic/react';
 import { useHistory } from 'react-router';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import styles from './DowntimeType.module.scss';
@@ -13,19 +7,18 @@ import Header from '../common/header/Header';
 import { useAppSelector } from '../../store/utils/hooks';
 import { useTranslations } from '../../store/slices/translation.slice';
 import { formatDownTime } from '../../store/utils/formatDownTime';
+import LoadingIndicator from '../common/loadingIndicator/LoadingIndicator';
 
 const DowntimeType: React.FC = () => {
   const translation = useTranslations();
   const [toggleDowntime, setToggleDowntime] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const modal = useRef<HTMLIonModalElement>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDowntime, setIsLoadingDowntime] = useState(false);
+  const [isLoadingEndProduction, setIsLoadingEndProduction] = useState(false);
   const history = useHistory();
   const { sendMessage } = useWebSocket();
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
-  // For frontend testing purpose
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const stationid = state.station.stationId === '1.203.4.245';
   const [li, setLi] = useState<
     { startTime: string | null; reason: string[] }[]
   >([]);
@@ -119,11 +112,17 @@ const DowntimeType: React.FC = () => {
       jobId: jobId,
     };
     sendMessage(message);
-    history.push('/');
-    setLi([]);
-    setToggleDowntime(false);
+    setIsLoadingEndProduction(true);
   }, [jobId, sendMessage, history]);
 
+  useEffect(() => {
+    if (state.process.currentPhaseDetails.phaseName === 'cleaning') {
+      setIsLoadingEndProduction(false);
+      history.push('/');
+      setToggleDowntime(false);
+      setLi([]);
+    }
+  }, [history, state]);
   // For frontend testing purpose
   // Function for starting downtime
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -153,7 +152,7 @@ const DowntimeType: React.FC = () => {
         history.push('/');
       }
       history.push('/');
-      setIsLoading(true);
+      setIsLoadingDowntime(true);
     },
     [state, phaseState, li],
   );
@@ -175,7 +174,7 @@ const DowntimeType: React.FC = () => {
         state.process.currentPhaseDetails.phaseName === 'production' &&
         knownEvent
       ) {
-        setIsLoading(false);
+        setIsLoadingDowntime(false);
       }
     }
   }, [state]);
@@ -236,11 +235,8 @@ const DowntimeType: React.FC = () => {
                     </div>
                   ))}
                 {/* Loading spinner */}
-                {isLoading && (
-                  <div className={styles.overlay}>
-                    <IonSpinner name="lines" />
-                  </div>
-                )}
+                {isLoadingDowntime && <LoadingIndicator />}
+                {isLoadingEndProduction && <LoadingIndicator />}
               </IonRow>
             </div>
             <div className={styles.endBtn}>
