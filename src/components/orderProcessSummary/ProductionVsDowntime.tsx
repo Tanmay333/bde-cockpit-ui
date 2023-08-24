@@ -8,8 +8,10 @@ import { useTranslations } from '../../store/slices/translation.slice';
 const ProductionVsDowntime: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const translation = useTranslations();
-  const Productionsincetime = state.process.currentPhaseDetails.runningSince;
-  const downtimesincetime = state.process.currentPhaseDetails.downtimeSince;
+  const Productionsincetime =
+    state.data.process.currentPhaseDetails.runningSince;
+  const downtimesincetime =
+    state.data.process.currentPhaseDetails.downtimeSince;
 
   const currentTime = new Date().getTime();
   const Currentproductiontime = Productionsincetime
@@ -19,8 +21,8 @@ const ProductionVsDowntime: React.FC = () => {
     ? (currentTime - new Date(downtimesincetime).getTime()) / 1000
     : 0;
 
-  const Totalproduction = state.process.currentPhaseDetails.totalUptime;
-  const Totaldowntime = state.process.currentPhaseDetails.totalDowntime;
+  const Totalproduction = state.data.process.currentPhaseDetails.totalUptime;
+  const Totaldowntime = state.data.process.currentPhaseDetails.totalDowntime;
 
   const formattotalTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);

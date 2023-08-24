@@ -49,12 +49,12 @@ const Buttons: React.FC<ButtonsProps> = ({
   const jobId = useMemo(() => {
     if (
       state === null ||
-      !state.assignedJobDetails ||
-      state.assignedJobDetails.jobId === null
+      !state.data.assignedJobDetails ||
+      state.data.assignedJobDetails.jobId === null
     ) {
       return null;
     } else {
-      return state.assignedJobDetails.jobId;
+      return state.data.assignedJobDetails.jobId;
     }
   }, [state]);
 
@@ -88,29 +88,29 @@ const Buttons: React.FC<ButtonsProps> = ({
 
   // Check various conditions to determine which buttons to display
   const isPhaseNull =
-    state?.process &&
-    state.process.currentPhaseDetails &&
-    state?.process.currentPhaseDetails.phaseName === null;
+    state?.data.process &&
+    state.data.process.currentPhaseDetails &&
+    state?.data.process.currentPhaseDetails.phaseName === null;
 
   const isStateFinished =
-    state?.process &&
-    state.process.currentPhaseDetails &&
-    state?.process.currentPhaseDetails.state === 'FINISHED';
+    state?.data.process &&
+    state.data.process.currentPhaseDetails &&
+    state?.data.process.currentPhaseDetails.state === 'FINISHED';
 
   const isPhaseMounting =
-    state?.process &&
-    state.process.currentPhaseDetails &&
-    state?.process.currentPhaseDetails.phaseName === 'mounting';
+    state?.data.process &&
+    state.data.process.currentPhaseDetails &&
+    state?.data.process.currentPhaseDetails.phaseName === 'mounting';
 
   const isPhaseUnmounting =
-    state?.process &&
-    state.process.currentPhaseDetails &&
-    state?.process?.currentPhaseDetails?.phaseName === 'unmounting';
+    state?.data.process &&
+    state.data.process.currentPhaseDetails &&
+    state?.data.process?.currentPhaseDetails?.phaseName === 'unmounting';
 
   const isPhasecleaning =
-    state?.process &&
-    state.process.currentPhaseDetails &&
-    state?.process?.currentPhaseDetails?.phaseName === 'cleaning';
+    state?.data.process &&
+    state.data.process.currentPhaseDetails &&
+    state?.data.process?.currentPhaseDetails?.phaseName === 'cleaning';
 
   useEffect(() => {
     if (isPhaseUnmounting) {

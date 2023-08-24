@@ -13,22 +13,22 @@ const FixProgressBar: React.FC = () => {
         return;
       }
       // Find the 'production' phase from previous phases
-      const dts = state.process.previousPhases.find(
+      const dts = state.data.process.previousPhases.find(
         (phase) => phase.phaseName === 'production',
       );
 
       // Check if there are at least 3 previous phases and downtime data is available
       if (
-        state.process.previousPhases.length >= 3 &&
+        state.data.process.previousPhases.length >= 3 &&
         dts !== undefined &&
         dts.downtimes !== null &&
         dts.downtimes.length !== 0
       ) {
         // Get the start time of 'production' phase
         const startTimeOfProd =
-          state.process.currentPhaseDetails.phaseName === 'production'
-            ? state.process.currentPhaseDetails.startTime
-            : state.process.previousPhases.find(
+          state.data.process.currentPhaseDetails.phaseName === 'production'
+            ? state.data.process.currentPhaseDetails.startTime
+            : state.data.process.previousPhases.find(
                 (phase) => phase.phaseName === 'production',
               )?.startTime;
         // Calculate the progress value for the first downtime
@@ -78,7 +78,7 @@ const FixProgressBar: React.FC = () => {
   useEffect(() => {
     //We can also use startneworder if we recive any bug related to progress bar getting empty.
     // Clear the progress bar if the stationId is null
-    if (state.stationId === null) {
+    if (state.data.stationId === null) {
       setDiff([]);
     }
   }, [state]);
@@ -91,8 +91,10 @@ const FixProgressBar: React.FC = () => {
     }
 
     if (
-      (state && state.process.currentPhaseDetails.phaseName === 'mounting') ||
-      (state && state.process.currentPhaseDetails.phaseName === 'preparing')
+      (state &&
+        state.data.process.currentPhaseDetails.phaseName === 'mounting') ||
+      (state &&
+        state.data.process.currentPhaseDetails.phaseName === 'preparing')
     ) {
       setDiff([]);
     }

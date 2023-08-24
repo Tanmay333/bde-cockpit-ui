@@ -19,16 +19,16 @@ const PhaseDetails: React.FC = () => {
   const startTime = () => {
     if (
       state === null ||
-      !state.process ||
-      !state.process.currentPhaseDetails
+      !state.data.process ||
+      !state.data.process.currentPhaseDetails
     ) {
       return '--:--';
     }
     // Get the start time from the currentPhaseDetails and format it as HH:mm
     const startTime =
-      state.process.currentPhaseDetails.startTime === null
+      state.data.process.currentPhaseDetails.startTime === null
         ? new Date()
-        : new Date(state.process.currentPhaseDetails.startTime);
+        : new Date(state.data.process.currentPhaseDetails.startTime);
     const hours = startTime.getHours().toString().padStart(2, '0');
     const minutes = startTime.getMinutes().toString().padStart(2, '0');
     const formattedTime = `${hours}:${minutes}`;
@@ -39,16 +39,16 @@ const PhaseDetails: React.FC = () => {
   const endTime = () => {
     if (
       state === null ||
-      !state.process ||
-      !state.process.currentPhaseDetails
+      !state.data.process ||
+      !state.data.process.currentPhaseDetails
     ) {
       return '--:--';
     }
     // Get the end time from the currentPhaseDetails and format it as HH:mm
     const endTime =
-      state.process.currentPhaseDetails.endTime === null
+      state.data.process.currentPhaseDetails.endTime === null
         ? new Date()
-        : new Date(state.process.currentPhaseDetails.endTime);
+        : new Date(state.data.process.currentPhaseDetails.endTime);
     const hours = endTime.getHours().toString().padStart(2, '0');
     const minutes = endTime.getMinutes().toString().padStart(2, '0');
     const formattedTime = `${hours}:${minutes}`;
@@ -60,12 +60,12 @@ const PhaseDetails: React.FC = () => {
     const renderedList: JSX.Element[] = [];
     if (
       state === null ||
-      state.process.currentPhaseDetails.downtimes === null
+      state.data.process.currentPhaseDetails.downtimes === null
     ) {
       return [];
     }
 
-    const downtimes = state.process.currentPhaseDetails.downtimes;
+    const downtimes = state.data.process.currentPhaseDetails.downtimes;
 
     downtimes.forEach((item, index) => {
       // Format the pause and resume times
@@ -75,7 +75,7 @@ const PhaseDetails: React.FC = () => {
       // Push JSX elements representing the downtime reasons to the renderedList array
       renderedList.unshift(
         <Fragment key={index}>
-          {state.process.currentPhaseDetails.downtimes !== null && (
+          {state.data.process.currentPhaseDetails.downtimes !== null && (
             <div className={styles.reason}>
               <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
               {translation.text.resumeAt}: {resumeTime}
@@ -96,11 +96,11 @@ const PhaseDetails: React.FC = () => {
   const setUpDownTimes = () => {
     if (
       state === null ||
-      state.process.currentPhaseDetails.downtimes === null
+      state.data.process.currentPhaseDetails.downtimes === null
     ) {
       return [];
     }
-    const downtimes = state.process.currentPhaseDetails.downtimes;
+    const downtimes = state.data.process.currentPhaseDetails.downtimes;
 
     // Format each downtime reason as an object with 'label' and 'value' properties
     const formattedDowntimes = downtimes.map((downtime) => {
@@ -119,7 +119,7 @@ const PhaseDetails: React.FC = () => {
     if (state === null) {
       return [];
     }
-    const phaseName = state.process.currentPhaseDetails.phaseName;
+    const phaseName = state.data.process.currentPhaseDetails.phaseName;
 
     if (phaseName === 'mounting') {
       return [{ label: translation.text.startTime, value: startTime() }];
@@ -153,13 +153,13 @@ const PhaseDetails: React.FC = () => {
     }
     if (
       phaseName === 'unmounting' &&
-      state?.process.currentPhaseDetails.state === 'RUNNING'
+      state?.data.process.currentPhaseDetails.state === 'RUNNING'
     ) {
       return [{ label: translation.text.startTime, value: startTime() }];
     }
     if (
       phaseName === 'unmounting' &&
-      state?.process.currentPhaseDetails.state === 'FINISHED'
+      state?.data.process.currentPhaseDetails.state === 'FINISHED'
     ) {
       return [
         { label: translation.text.endTime, value: endTime() },
@@ -173,7 +173,8 @@ const PhaseDetails: React.FC = () => {
     <>
       <CardContainer title={translation.text.phaseDetails} position={'start'}>
         <IonCardContent>
-          {state && state.process.currentPhaseDetails.phaseName === null ? (
+          {state &&
+          state.data.process.currentPhaseDetails.phaseName === null ? (
             <>
               <div className={styles.reason} key={'stTime'}>
                 <img
@@ -211,7 +212,8 @@ const PhaseDetails: React.FC = () => {
               `}
             </style>
             {state &&
-            state.process.currentPhaseDetails.phaseName === 'production' ? (
+            state.data.process.currentPhaseDetails.phaseName ===
+              'production' ? (
               <>
                 {downtimeReasonsList()}
                 <div className={styles.reason} key={'stTime'}>
@@ -221,7 +223,7 @@ const PhaseDetails: React.FC = () => {
                     className={styles.bullet}
                   />
                   {translation.text.startTime}:
-                  {formatTime(state.process.currentPhaseDetails.startTime)}
+                  {formatTime(state.data.process.currentPhaseDetails.startTime)}
                 </div>
               </>
             ) : (

@@ -18,8 +18,8 @@ const EditOrderDetails: React.FC = () => {
 
   // Extract orderId and quantity from machine details or use default values
   const data = {
-    orderId: state?.assignedJobDetails?.orderId ?? '--:--',
-    quantity: state?.assignedJobDetails?.quantity ?? '--:--',
+    orderId: state?.data.assignedJobDetails?.orderId ?? '--:--',
+    quantity: state?.data.assignedJobDetails?.quantity ?? '--:--',
   };
 
   // State variables for orderNumber and orderQuantity

@@ -42,8 +42,8 @@ const ConfirmOrderDetails: React.FC = () => {
     (state) => state.machineDetailsSlice.data,
   );
   const data = {
-    orderId: state?.assignedJobDetails?.orderId ?? '--:--',
-    quantity: state?.assignedJobDetails?.quantity ?? '--:--',
+    orderId: state?.data.assignedJobDetails?.orderId ?? '--:--',
+    quantity: state?.data.assignedJobDetails?.quantity ?? '--:--',
   };
 
   const [orderNumber, setOrderNumber] = useState(data.orderId);
@@ -131,7 +131,7 @@ const ConfirmOrderDetails: React.FC = () => {
   const State = useAppSelector((state) => state.machineDetailsSlice.data);
 
   useEffect(() => {
-    if (State.process.currentPhaseDetails.phaseName === 'mounting') {
+    if (State.data.process.currentPhaseDetails.phaseName === 'mounting') {
       setIsLoading(false);
       history.push('/');
     }

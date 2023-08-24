@@ -48,10 +48,13 @@ const OrderDetails: React.FC = () => {
   // Function to render the selected team size icons
   const renderSelectedIcons = () => {
     const icons = [];
-    if (state == null || state.assignedJobDetails.productionTeamSize === null) {
+    if (
+      state == null ||
+      state.data.assignedJobDetails.productionTeamSize === null
+    ) {
       return null;
     }
-    for (let i = 0; i < state.assignedJobDetails.productionTeamSize; i++) {
+    for (let i = 0; i < state.data.assignedJobDetails.productionTeamSize; i++) {
       icons.push(
         <IonRow
           key={i}
@@ -71,38 +74,40 @@ const OrderDetails: React.FC = () => {
 
   // Function to check if the current phase is null
   const isPhaseNull =
-    state?.process &&
-    state.process.currentPhaseDetails &&
-    state?.process.currentPhaseDetails.phaseName === null;
+    state?.data.process &&
+    state.data.process.currentPhaseDetails &&
+    state?.data.process.currentPhaseDetails.phaseName === null;
 
   // Function to check if the current phase is 'mounting'
   const isPhaseMounting =
-    state?.process &&
-    state.process.currentPhaseDetails &&
-    state?.process.currentPhaseDetails.phaseName === 'mounting';
+    state?.data.process &&
+    state.data.process.currentPhaseDetails &&
+    state?.data.process.currentPhaseDetails.phaseName === 'mounting';
 
   // Function to check if the current phase is 'preparing'
   const isPhasePreparation =
-    state?.process &&
-    state.process.currentPhaseDetails &&
-    state?.process.currentPhaseDetails.phaseName === 'preparing';
+    state?.data.process &&
+    state.data.process.currentPhaseDetails &&
+    state?.data.process.currentPhaseDetails.phaseName === 'preparing';
 
   // Data for order number and quantity
   const data = {
-    orderId: state?.assignedJobDetails?.orderId ?? '--:--',
-    quantity: state?.assignedJobDetails?.quantity ?? '--:--',
+    orderId: state?.data.assignedJobDetails?.orderId ?? '--:--',
+    quantity: state?.data.assignedJobDetails?.quantity ?? '--:--',
   };
 
   // Function to check if the phase is preparing
   const isPhasePreparing = () => {
     if (
       state == null ||
-      state.process == null ||
-      state.process.currentPhaseDetails == null ||
-      state.process.currentPhaseDetails.state === null
+      state.data.process == null ||
+      state.data.process.currentPhaseDetails == null ||
+      state.data.process.currentPhaseDetails.state === null
     ) {
       return false;
-    } else if (state.process.currentPhaseDetails.phaseName !== 'mounting') {
+    } else if (
+      state.data.process.currentPhaseDetails.phaseName !== 'mounting'
+    ) {
       return true;
     }
     return false;

@@ -19,7 +19,7 @@ const PhaseOverview: React.FC = () => {
   const { sendMessage } = useWebSocket();
   // For frontend testing purpose
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const stationid = state.station.stationId === '1.203.4.245';
+  const stationid = state.data.station.stationId === '1.203.4.245';
 
   // States and useEffect to control the visibility and color of different phases
   const [showPhase1, setShowPhase1] = useState(true);
@@ -40,16 +40,16 @@ const PhaseOverview: React.FC = () => {
       return setPhaseOne('#E0E0E0');
     }
     const hasMountingPhase =
-      state.process &&
-      state.process.previousPhases &&
-      state.process.previousPhases.some(
+      state.data.process &&
+      state.data.process.previousPhases &&
+      state.data.process.previousPhases.some(
         (phase) => phase.phaseName === 'mounting',
       );
 
     if (
-      state.process &&
-      state.process.currentPhaseDetails &&
-      (state.process.currentPhaseDetails.phaseName === 'mounting' ||
+      state.data.process &&
+      state.data.process.currentPhaseDetails &&
+      (state.data.process.currentPhaseDetails.phaseName === 'mounting' ||
         hasMountingPhase)
     ) {
       setPhaseOne('#2799D1');
@@ -64,16 +64,16 @@ const PhaseOverview: React.FC = () => {
     }
 
     const hasPreparationPhase =
-      state.process &&
-      state.process.previousPhases &&
-      state.process.previousPhases.some(
+      state.data.process &&
+      state.data.process.previousPhases &&
+      state.data.process.previousPhases.some(
         (phase) => phase.phaseName === 'preparing',
       );
 
     if (
-      (state.process &&
-        state.process.currentPhaseDetails &&
-        state.process.currentPhaseDetails.phaseName === 'preparing') ||
+      (state.data.process &&
+        state.data.process.currentPhaseDetails &&
+        state.data.process.currentPhaseDetails.phaseName === 'preparing') ||
       hasPreparationPhase
     ) {
       setShowPhase1(false);
@@ -86,16 +86,16 @@ const PhaseOverview: React.FC = () => {
       setPhaseFive('#E0E0E0');
     }
     const hasProductionPhase =
-      state.process &&
-      state.process.previousPhases &&
-      state.process.previousPhases.some(
+      state.data.process &&
+      state.data.process.previousPhases &&
+      state.data.process.previousPhases.some(
         (phase) => phase.phaseName === 'production',
       );
 
     if (
-      (state.process &&
-        state.process.currentPhaseDetails &&
-        state.process.currentPhaseDetails.phaseName === 'production') ||
+      (state.data.process &&
+        state.data.process.currentPhaseDetails &&
+        state.data.process.currentPhaseDetails.phaseName === 'production') ||
       hasProductionPhase
     ) {
       setShowPhase3(true);
@@ -107,16 +107,16 @@ const PhaseOverview: React.FC = () => {
       setPhaseFive('#E0E0E0');
     }
     const hasCleaningPhase =
-      state.process &&
-      state.process.previousPhases &&
-      state.process.previousPhases.some(
+      state.data.process &&
+      state.data.process.previousPhases &&
+      state.data.process.previousPhases.some(
         (phase) => phase.phaseName === 'cleaning',
       );
 
     if (
-      (state.process &&
-        state.process.currentPhaseDetails &&
-        state.process.currentPhaseDetails.phaseName === 'cleaning') ||
+      (state.data.process &&
+        state.data.process.currentPhaseDetails &&
+        state.data.process.currentPhaseDetails.phaseName === 'cleaning') ||
       hasCleaningPhase
     ) {
       setShowPhase5(false);
@@ -128,15 +128,15 @@ const PhaseOverview: React.FC = () => {
       setPhaseFour('#2799D1');
     }
     const hasUnMountingPhase =
-      state.process &&
-      state.process.previousPhases &&
-      state.process.previousPhases.some(
+      state.data.process &&
+      state.data.process.previousPhases &&
+      state.data.process.previousPhases.some(
         (phase) => phase.phaseName === 'unmounting',
       );
     if (
-      (state.process &&
-        state.process.currentPhaseDetails &&
-        state.process.currentPhaseDetails.phaseName === 'unmounting') ||
+      (state.data.process &&
+        state.data.process.currentPhaseDetails &&
+        state.data.process.currentPhaseDetails.phaseName === 'unmounting') ||
       hasUnMountingPhase
     ) {
       setShowPhase3(false);
@@ -184,7 +184,7 @@ const PhaseOverview: React.FC = () => {
     return null;
   }
 
-  const jobId = state && state.assignedJobDetails.jobId;
+  const jobId = state && state.data.assignedJobDetails.jobId;
 
   // For frontend testing purpose
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -251,12 +251,10 @@ const PhaseOverview: React.FC = () => {
                 backgroundColor: phaseTwo,
               }}
             ></div>
-            {state.process.currentPhaseDetails.phaseName === 'production' && (
-              <IncrementalProgressBar />
-            )}
-            {state.process.currentPhaseDetails.phaseName !== 'production' && (
-              <FixProgressBar />
-            )}
+            {state.data.process.currentPhaseDetails.phaseName ===
+              'production' && <IncrementalProgressBar />}
+            {state.data.process.currentPhaseDetails.phaseName !==
+              'production' && <FixProgressBar />}
             <div
               className={styles.boxidle}
               onClick={onClickPhase4}

@@ -58,7 +58,7 @@ const StationIds: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
   useEffect(() => {
-    if (state.station.stationId !== null) {
+    if (state.data.station.stationId !== null) {
       setIsLoading(false);
       history.push('/');
     }

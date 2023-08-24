@@ -49,19 +49,20 @@ const DowntimeType: React.FC = () => {
   useEffect(() => {
     if (
       state &&
-      state.process &&
-      state.process.currentPhaseDetails &&
-      state.process.currentPhaseDetails.downtimes &&
-      state.process.currentPhaseDetails.downtimes.length > 0
+      state.data.process &&
+      state.data.process.currentPhaseDetails &&
+      state.data.process.currentPhaseDetails.downtimes &&
+      state.data.process.currentPhaseDetails.downtimes.length > 0
     ) {
-      const unknownEvent = state.process.currentPhaseDetails.downtimes.find(
-        (event) => event.reason === 'unknown',
-      );
+      const unknownEvent =
+        state.data.process.currentPhaseDetails.downtimes.find(
+          (event) => event.reason === 'unknown',
+        );
       if (
-        state.process.currentPhaseDetails.phaseName === 'production' &&
+        state.data.process.currentPhaseDetails.phaseName === 'production' &&
         unknownEvent
       ) {
-        const dt = state.process.currentPhaseDetails.downtimes;
+        const dt = state.data.process.currentPhaseDetails.downtimes;
         const filteredData = dt.filter((obj) => obj.reason === 'unknown');
         const dtRs = filteredData.map((data) => {
           return {
@@ -73,14 +74,14 @@ const DowntimeType: React.FC = () => {
         setToggleDowntime(true);
       }
       if (
-        state.process.currentPhaseDetails.phaseName === 'production' &&
-        state.process.currentPhaseDetails.state === 'RUNNING' &&
+        state.data.process.currentPhaseDetails.phaseName === 'production' &&
+        state.data.process.currentPhaseDetails.state === 'RUNNING' &&
         unknownEvent
       ) {
         setToggleDowntime(true);
       }
       if (
-        state.process.currentPhaseDetails.phaseName === 'production' &&
+        state.data.process.currentPhaseDetails.phaseName === 'production' &&
         !unknownEvent
       ) {
         setLi([]);
@@ -92,9 +93,9 @@ const DowntimeType: React.FC = () => {
   useEffect(() => {
     if (
       state &&
-      state.process &&
-      state.process.currentPhaseDetails &&
-      state.process.currentPhaseDetails.phaseName !== 'production'
+      state.data.process &&
+      state.data.process.currentPhaseDetails &&
+      state.data.process.currentPhaseDetails.phaseName !== 'production'
     ) {
       setLi([]);
       setToggleDowntime(false);
@@ -102,8 +103,8 @@ const DowntimeType: React.FC = () => {
   }, [state]);
 
   // Define phaseState and jobId variables
-  const phaseState = state.process.currentPhaseDetails.state;
-  const jobId = state.assignedJobDetails.jobId;
+  const phaseState = state.data.process.currentPhaseDetails.state;
+  const jobId = state.data.assignedJobDetails.jobId;
 
   // Function for ending production
   const onEndProduction = useCallback(() => {
@@ -116,7 +117,7 @@ const DowntimeType: React.FC = () => {
   }, [jobId, sendMessage, history]);
 
   useEffect(() => {
-    if (state.process.currentPhaseDetails.phaseName === 'cleaning') {
+    if (state.data.process.currentPhaseDetails.phaseName === 'cleaning') {
       setIsLoadingEndProduction(false);
       history.push('/');
       setToggleDowntime(false);
@@ -138,7 +139,7 @@ const DowntimeType: React.FC = () => {
   // Onclick function when a downtime reason button is clicked
   const onClick = useCallback(
     (reason: string, startTime: string | null) => {
-      if (!state.process.currentPhaseDetails.downtimes) {
+      if (!state.data.process.currentPhaseDetails.downtimes) {
         return null;
       }
       if (phaseState === 'DOWNTIME' || phaseState === 'RUNNING') {
@@ -161,17 +162,17 @@ const DowntimeType: React.FC = () => {
   useEffect(() => {
     if (
       state &&
-      state.process &&
-      state.process.currentPhaseDetails &&
-      state.process.currentPhaseDetails.downtimes &&
-      state.process.currentPhaseDetails.downtimes.length > 0
+      state.data.process &&
+      state.data.process.currentPhaseDetails &&
+      state.data.process.currentPhaseDetails.downtimes &&
+      state.data.process.currentPhaseDetails.downtimes.length > 0
     ) {
-      const knownEvent = state.process.currentPhaseDetails.downtimes.find(
+      const knownEvent = state.data.process.currentPhaseDetails.downtimes.find(
         (event) => event.reason !== 'unknown',
       );
 
       if (
-        state.process.currentPhaseDetails.phaseName === 'production' &&
+        state.data.process.currentPhaseDetails.phaseName === 'production' &&
         knownEvent
       ) {
         setIsLoadingDowntime(false);
