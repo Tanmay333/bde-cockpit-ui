@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CardContainer from '../common/cardContainer/CardContainer';
-import { IonCardContent } from '@ionic/react';
+import { IonCardContent, IonIcon } from '@ionic/react';
 import styles from './PhaseDetails.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { Fragment, Key } from 'react';
-import bulletPoint2 from '../../static/assets/images/BulletPoint2.svg';
 import bulletpoint from '../../static/assets/images/Bulletpoint.svg';
 import bulletpoint1 from '../../static/assets/images/BulletPoint1.svg';
 import { formatTime } from '../../store/utils/formatTime';
 import { useTranslations } from '../../store/slices/translation.slice';
+import { ellipse } from 'ionicons/icons';
 
 // PhaseDetails component
 const PhaseDetails: React.FC = () => {
@@ -72,6 +72,16 @@ const PhaseDetails: React.FC = () => {
       const pauseTime = formatTime(item.startTime);
       const resumeTime = formatTime(item.endTime);
 
+      // Check if the reason is not null and is one of the specified reasons (p001, p002, p003, p004)
+      const isPlannedDownTime =
+        item.reason !== null &&
+        ['p001', 'p002', 'p003', 'p004'].includes(item.reason);
+
+      // Conditionally add the yellowBackground class to the tag
+      const bulletClass = isPlannedDownTime
+        ? `${styles.incidentdowntime} ${styles.planneddowntime}`
+        : styles.incidentdowntime;
+
       const mapReasonToText = (reason: string | null) => {
         // Create a mapping of item.reason values to display text
         const reasonMap: { [key: string]: string } = {
@@ -102,7 +112,7 @@ const PhaseDetails: React.FC = () => {
             </div>
           )}
           <div className={styles.reason}>
-            <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
+            <IonIcon icon={ellipse} className={bulletClass} />
             {translation.text.pauseAt} {pauseTime}:{' '}
             {mapReasonToText(item.reason)}
           </div>
