@@ -8,19 +8,21 @@ import { useTranslations } from '../../store/slices/translation.slice';
 const ProductionVsDowntime: React.FC = () => {
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const translation = useTranslations();
-  const Productionsincetime = state.process.currentPhaseDetails.runningSince;
-  const downtimesincetime = state.process.currentPhaseDetails.downtimeSince;
+  const productionSinceTime =
+    state.data.process.currentPhaseDetails.runningSince;
+  const downtimesincetime =
+    state.data.process.currentPhaseDetails.downtimeSince;
 
   const currentTime = new Date().getTime();
-  const Currentproductiontime = Productionsincetime
-    ? (currentTime - new Date(Productionsincetime).getTime()) / 1000
+  const currentProductionTime = productionSinceTime
+    ? (currentTime - new Date(productionSinceTime).getTime()) / 1000
     : 0;
-  const Currentdowntime = downtimesincetime
+  const currentDowntime = downtimesincetime
     ? (currentTime - new Date(downtimesincetime).getTime()) / 1000
     : 0;
 
-  const Totalproduction = state.process.currentPhaseDetails.totalUptime;
-  const Totaldowntime = state.process.currentPhaseDetails.totalDowntime;
+  const totalProduction = state.data.process.currentPhaseDetails.totalUptime;
+  const totalDowntime = state.data.process.currentPhaseDetails.totalDowntime;
 
   const formattotalTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -30,22 +32,22 @@ const ProductionVsDowntime: React.FC = () => {
       .padStart(2, '0')}`;
   };
 
-  const totalProductionMinutes = Totalproduction ? Number(Totalproduction) : 0;
-  const totalDowntimeMinutes = Totaldowntime ? Number(Totaldowntime) : 0;
+  const totalProductionMinutes = totalProduction ? Number(totalProduction) : 0;
+  const totalDowntimeMinutes = totalDowntime ? Number(totalDowntime) : 0;
 
-  const sumofProdTime = Currentproductiontime + totalProductionMinutes;
-  const sumofDowntime = Currentdowntime + totalDowntimeMinutes;
+  const sumofProdTime = currentProductionTime + totalProductionMinutes;
+  const sumofDowntime = currentDowntime + totalDowntimeMinutes;
 
-  const TotalProdTime = formattotalTime(sumofProdTime);
-  const TotalDowntime = formattotalTime(sumofDowntime);
+  const totalProdTime = formattotalTime(sumofProdTime);
+  const totalDownTime = formattotalTime(sumofDowntime);
 
   return (
     <IonCardSubtitle className={styles.ionRightTop}>
       <div>
         {' '}
-        <img src={Green1} alt={'status'} /> {TotalProdTime}{' '}
+        <img src={Green1} alt={'status'} /> {totalProdTime}{' '}
         {translation.text.production} <br />
-        <img src={Red1} alt={'status'} /> {TotalDowntime}{' '}
+        <img src={Red1} alt={'status'} /> {totalDownTime}{' '}
         {translation.text.downTime}
       </div>
     </IonCardSubtitle>

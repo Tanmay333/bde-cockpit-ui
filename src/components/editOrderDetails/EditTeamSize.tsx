@@ -42,7 +42,7 @@ const EditTeamSize = () => {
 
   // Data object containing team size information
   const data = {
-    teamsize: state?.assignedJobDetails.productionTeamSize ?? '--:--',
+    teamsize: state?.data.assignedJobDetails.productionTeamSize ?? '--:--',
   };
   const [selectedIndex, setSelectedIndex] = useState(+data.teamsize - 1);
 
@@ -58,7 +58,7 @@ const EditTeamSize = () => {
 
     const message = {
       action: 'setTeamSize',
-      jobId: state?.assignedJobDetails.jobId,
+      jobId: state?.data.assignedJobDetails.jobId,
       productionTeamSize: index + 1,
     };
     sendMessage(message);

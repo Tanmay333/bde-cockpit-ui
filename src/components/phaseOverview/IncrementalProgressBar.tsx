@@ -8,7 +8,7 @@ const IncrementalProgressBar: React.FC = () => {
   // Get process and assigned job details from Redux store
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { process, assignedJobDetails } = useAppSelector(
-    (state) => state.machineDetailsSlice.data,
+    (state) => state.machineDetailsSlice.data.data,
   );
   // Custom hook to handle timeouts
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -3,43 +3,45 @@ import { FetchingStatus } from '../../types/common';
 
 export const MACHINE_DETAILS_KEY = 'machineDetailsSlice';
 const initialData: MachineDetails = {
-  stationId: null,
-  assignedJobDetails: {
-    jobId: null,
-    orderId: null,
-    customer: null,
-    itemId: null,
-    quantity: null,
-    description: null,
-    productionTeamSize: null,
-  },
-  process: {
-    currentPhaseDetails: {
-      phaseName: null,
-      startTime: null,
-      endTime: null,
-      downtimes: [],
-      state: null,
-      downtimeSince: null,
-      runningSince: null,
-      totalDowntime: null,
-      totalUptime: null,
+  eventType: null,
+  data: {
+    stationId: null,
+    assignedJobDetails: {
+      jobId: null,
+      orderId: null,
+      customer: null,
+      itemId: null,
+      quantity: null,
+      description: null,
+      productionTeamSize: null,
     },
-    previousPhases: [],
-    producedItems: [
-      {
+    process: {
+      currentPhaseDetails: {
+        phaseName: null,
         startTime: null,
         endTime: null,
-        quantity: null,
-        result: null,
+        downtimes: [],
+        state: null,
+        downtimeSince: null,
+        runningSince: null,
+        totalDowntime: null,
+        totalUptime: null,
       },
-    ],
+      previousPhases: [],
+      producedItems: [
+        {
+          startTime: null,
+          endTime: null,
+          quantity: null,
+          result: null,
+        },
+      ],
+    },
+    station: {
+      stationId: null,
+      mainSpeed: null,
+    },
   },
-  station: {
-    stationId: null,
-    mainSpeed: null,
-  },
-  data: undefined,
 };
 
 interface AssignedOrderDetails {
@@ -89,11 +91,13 @@ interface Station {
   stationId: string | null;
 }
 export interface MachineDetails {
-  data: any;
-  stationId: string | null;
-  station: Station;
-  assignedJobDetails: AssignedOrderDetails;
-  process: Process;
+  eventType: string | null;
+  data: {
+    stationId: string | null;
+    station: Station;
+    assignedJobDetails: AssignedOrderDetails;
+    process: Process;
+  };
 }
 
 export interface MachineDetailsState {
@@ -114,7 +118,9 @@ const machineDetailsSlice = createSlice({
   reducers: {
     updateMachineDetails: (state, action: PayloadAction<MachineDetails>) => {
       state.status = FetchingStatus.SUCCESS;
-      if (sessionStorage.getItem('stationId') === action.payload.stationId) {
+      if (
+        sessionStorage.getItem('stationId') === action.payload.data.stationId
+      ) {
         state.data = action.payload;
       }
     },

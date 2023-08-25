@@ -21,24 +21,24 @@ const OrderProcessSummary: React.FC = () => {
   const [currentPhaseName, setCurrentPhaseName] = useState('N/A');
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const previousPhase = useAppSelector(
-    (state) => state.machineDetailsSlice.data.process.previousPhases,
+    (state) => state.machineDetailsSlice.data.data.process.previousPhases,
   );
 
   const isPhaseProduction = useMemo(() => {
-    if (state?.process?.currentPhaseDetails) {
+    if (state?.data.process?.currentPhaseDetails) {
       return (
-        state.process.currentPhaseDetails.phaseName === 'production' &&
-        state.process.currentPhaseDetails.state === 'RUNNING'
+        state.data.process.currentPhaseDetails.phaseName === 'production' &&
+        state.data.process.currentPhaseDetails.state === 'RUNNING'
       );
     }
     return false;
   }, [state]);
 
   const isStateDowntime = useMemo(() => {
-    if (state?.process?.currentPhaseDetails) {
+    if (state?.data.process?.currentPhaseDetails) {
       return (
-        state.process.currentPhaseDetails.phaseName === 'production' &&
-        state.process.currentPhaseDetails.state === 'DOWNTIME'
+        state.data.process.currentPhaseDetails.phaseName === 'production' &&
+        state.data.process.currentPhaseDetails.state === 'DOWNTIME'
       );
     }
     return false;
@@ -47,13 +47,13 @@ const OrderProcessSummary: React.FC = () => {
   // useEffect for calculating total time of previous phases and current phase start time
   useEffect(() => {
     const previousPhaseTotalTime = () => {
-      if (!state?.process?.previousPhases?.length) {
+      if (!state?.data.process?.previousPhases?.length) {
         return '00:00';
       }
 
       let totalMinutes = 0;
 
-      for (const phase of state.process.previousPhases) {
+      for (const phase of state.data.process.previousPhases) {
         const startTime = new Date(phase.startTime);
         const endTime = new Date(phase.endTime);
         const diffInMs = endTime.getTime() - startTime.getTime();
@@ -70,22 +70,22 @@ const OrderProcessSummary: React.FC = () => {
     };
 
     const currentPhaseStartTime = () => {
-      if (!state?.process?.currentPhaseDetails?.startTime) {
+      if (!state?.data.process?.currentPhaseDetails?.startTime) {
         return '00:00';
       }
       const currentTime = () => {
         if (
-          state?.process.currentPhaseDetails.endTime !== null &&
-          state?.process.currentPhaseDetails.phaseName === 'cleaning'
+          state?.data.process.currentPhaseDetails.endTime !== null &&
+          state?.data.process.currentPhaseDetails.phaseName === 'cleaning'
         ) {
-          const endTime = state.process.currentPhaseDetails.endTime
-            ? new Date(state.process.currentPhaseDetails.endTime)
+          const endTime = state.data.process.currentPhaseDetails.endTime
+            ? new Date(state.data.process.currentPhaseDetails.endTime)
             : new Date();
           return endTime;
         } else return new Date();
       };
-      const receivedTime = state.process.currentPhaseDetails.startTime
-        ? new Date(state.process.currentPhaseDetails.startTime)
+      const receivedTime = state.data.process.currentPhaseDetails.startTime
+        ? new Date(state.data.process.currentPhaseDetails.startTime)
         : new Date();
 
       const timeDifference = currentTime().getTime() - receivedTime.getTime();
@@ -102,8 +102,9 @@ const OrderProcessSummary: React.FC = () => {
     const totalTimeOfJobProcess = () => {
       const totalTimeOfPreviousPhase = previousPhaseTotalTime();
       const currentStartTime = currentPhaseStartTime();
-      const currentPhaseName = state?.process?.currentPhaseDetails?.phaseName;
-      const currentPhaseState = state?.process?.currentPhaseDetails?.state;
+      const currentPhaseName =
+        state?.data.process?.currentPhaseDetails?.phaseName;
+      const currentPhaseState = state?.data.process?.currentPhaseDetails?.state;
 
       if (totalTimeOfPreviousPhase === 'N/A' || currentStartTime === 'N/A') {
         return 'N/A';
@@ -148,17 +149,19 @@ const OrderProcessSummary: React.FC = () => {
   // useEffect for calculating the time depending on current phase name
   useEffect(() => {
     const currentPhaseName = () => {
-      if (!state?.process?.currentPhaseDetails?.phaseName) {
+      if (!state?.data.process?.currentPhaseDetails?.phaseName) {
         return 'NA';
       }
-      return state.process.currentPhaseDetails.phaseName;
+      return state.data.process.currentPhaseDetails.phaseName;
     };
 
     const currentPhaseTime = () => {
-      if (!state?.process?.currentPhaseDetails?.startTime) {
+      if (!state?.data.process?.currentPhaseDetails?.startTime) {
         return `00 ${translation.text.hrs} 00 ${translation.text.min}`;
       }
-      const startTime = new Date(state.process.currentPhaseDetails.startTime);
+      const startTime = new Date(
+        state.data.process.currentPhaseDetails.startTime,
+      );
       const currentTime = new Date();
 
       const timeDiff = currentTime.getTime() - startTime.getTime();
@@ -181,7 +184,7 @@ const OrderProcessSummary: React.FC = () => {
 
   // Function to get the corresponding phase name for display
   const getPhaseName = () => {
-    const phaseName = state?.process?.currentPhaseDetails?.phaseName;
+    const phaseName = state?.data.process?.currentPhaseDetails?.phaseName;
 
     switch (phaseName) {
       case 'mounting':
@@ -201,9 +204,9 @@ const OrderProcessSummary: React.FC = () => {
 
   const [data, setData] = useState(() => {
     return {
-      stationId: state.stationId || 'N/A',
-      orderId: state?.assignedJobDetails?.orderId || 'N/A',
-      machineStatus: state?.process?.currentPhaseDetails?.state || 'N/A',
+      stationId: state.data.stationId || 'N/A',
+      orderId: state?.data.assignedJobDetails?.orderId || 'N/A',
+      machineStatus: state?.data.process?.currentPhaseDetails?.state || 'N/A',
       startTimeOfCompleteProcess: startTimeOfProcess,
       currentPhaseName: currentPhaseName || 'N/A',
       currentPhaseTime: currentPhaseTime || '00:00',
@@ -213,9 +216,9 @@ const OrderProcessSummary: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setData({
-        stationId: state.stationId || 'N/A',
-        orderId: state?.assignedJobDetails?.orderId || 'N/A',
-        machineStatus: state?.process?.currentPhaseDetails?.state || 'N/A',
+        stationId: state.data.stationId || 'N/A',
+        orderId: state?.data.assignedJobDetails?.orderId || 'N/A',
+        machineStatus: state?.data.process?.currentPhaseDetails?.state || 'N/A',
         startTimeOfCompleteProcess: startTimeOfProcess,
         currentPhaseName: currentPhaseName || 'N/A',
         currentPhaseTime: currentPhaseTime || '00:00',
@@ -224,8 +227,8 @@ const OrderProcessSummary: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [
-    state?.assignedJobDetails?.orderId,
-    state?.process?.currentPhaseDetails?.state,
+    state?.data.assignedJobDetails?.orderId,
+    state?.data.process?.currentPhaseDetails?.state,
     startTimeOfProcess,
     currentPhaseName,
     currentPhaseTime,
@@ -233,23 +236,23 @@ const OrderProcessSummary: React.FC = () => {
 
   const isPhasePreparing =
     state &&
-    state.process &&
-    state.process.currentPhaseDetails &&
-    state.process.currentPhaseDetails.state === 'FINISHED';
+    state.data.process &&
+    state.data.process.currentPhaseDetails &&
+    state.data.process.currentPhaseDetails.state === 'FINISHED';
 
   const station = useMemo(() => {
-    return state === null ? 'N/A' : state.station.mainSpeed;
+    return state === null ? 'N/A' : state.data.station.mainSpeed;
   }, [state]);
 
   const mountingPhase =
     state &&
-    state.process.previousPhases.find(
+    state.data.process.previousPhases.find(
       (phase) => phase.phaseName === 'mounting',
     );
 
   // Function to get the start time or "Not started" message
   const getStart = () => {
-    // if (state && state.process.currentPhaseDetails.state === 'FINISHED') {
+    // if (state && state.data.process.currentPhaseDetails.state === 'FINISHED') {
     //   return translation.text.notStarted;
     // } else
     if (mountingPhase) {
@@ -258,10 +261,10 @@ const OrderProcessSummary: React.FC = () => {
       )}`;
     } else if (
       state &&
-      state.process.currentPhaseDetails.phaseName === 'mounting'
+      state.data.process.currentPhaseDetails.phaseName === 'mounting'
     )
       return `${translation.text.startedAt} ${formatDate(
-        state.process.currentPhaseDetails.startTime,
+        state.data.process.currentPhaseDetails.startTime,
       )}`;
     return translation.text.notStarted;
   };
@@ -309,9 +312,8 @@ const OrderProcessSummary: React.FC = () => {
           <IonCardSubtitle>{getStart()}</IonCardSubtitle>
         </div>
         <div className={styles.right}>
-          {state.process.currentPhaseDetails.phaseName === 'production' && (
-            <ProductionVsDowntime />
-          )}
+          {state.data.process.currentPhaseDetails.phaseName ===
+            'production' && <ProductionVsDowntime />}
         </div>
       </IonCardContent>
     </IonCard>

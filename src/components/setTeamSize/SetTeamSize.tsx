@@ -50,14 +50,14 @@ const SetTeamSize = () => {
 
     const message = {
       action: 'setTeamSize',
-      jobId: state?.assignedJobDetails.jobId,
+      jobId: state?.data.assignedJobDetails.jobId,
       productionTeamSize: index + 1,
     };
     sendMessage(message);
   }, []);
 
   useEffect(() => {
-    if (state.process.currentPhaseDetails.phaseName === 'preparing') {
+    if (state.data.process.currentPhaseDetails.phaseName === 'preparing') {
       setIsLoading(false);
       history.push('/');
     }
