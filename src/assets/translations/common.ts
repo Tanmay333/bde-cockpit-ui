@@ -70,9 +70,11 @@ interface Reasons {
   misuse: string;
   defectiveFillingMaterial: string;
   otherIncident: string;
+  incidentLabelMachine: string;
   changingBarrel: string;
   changingLabels: string;
   break: string;
+  rework: string;
 }
 
 export interface Translations {

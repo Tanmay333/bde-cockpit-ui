@@ -29,6 +29,13 @@
     text-transform: none;
   }
 
+  .phasedetails {
+    --color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: none;
+  }
+
   .ionRightSection {
     text-align: right;
   }
@@ -43,8 +50,39 @@
   .ionRightTop {
     margin-top: 5px;
     text-align: left;
+    font-size: 18px;
+    font-weight: 400;
   }
   .right {
-    text-align: right;
+    text-align: initial;
   }
+}
+.production {
+  font-size: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+  color: #2ad127;
+  background-color: #fff;
+}
+.incident {
+  font-size: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+  margin-left: 20px;
+  color: #e20031;
+  background-color: #fff;
+}
+.planned {
+  font-size: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+  margin-left: 20px;
+  color: #ffa901;
+  background-color: #fff;
 }

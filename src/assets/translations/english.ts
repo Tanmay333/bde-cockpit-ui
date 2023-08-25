@@ -67,9 +67,11 @@ export const englishTranslations: Translations = {
     misuse: 'Misuse',
     defectiveFillingMaterial: 'Defective Filling Material',
     otherIncident: 'Other Incident',
+    incidentLabelMachine: 'Incident Label Machine',
     changingBarrel: 'Changing Barrel',
     changingLabels: 'Changing Labels',
     break: 'Break',
+    rework: 'Rework',
   },
 };
 

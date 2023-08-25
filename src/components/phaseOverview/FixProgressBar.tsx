@@ -63,7 +63,19 @@ const FixProgressBar: React.FC = () => {
             differences.push(timeGapObj);
           }
 
-          const durationObj = { progress: duration, value: '#E20031' };
+          let color;
+          if (
+            downtime.reason === 'p001' ||
+            downtime.reason === 'p002' ||
+            downtime.reason === 'p003' ||
+            downtime.reason === 'p004'
+          ) {
+            color = '#FFA901'; // PlannedDownTime
+          } else {
+            color = '#E20031'; // IncidentDownTime (default)
+          }
+
+          const durationObj = { progress: duration, value: color };
           differences.push(durationObj);
         }
         differences.unshift(firstObjectOfArray);

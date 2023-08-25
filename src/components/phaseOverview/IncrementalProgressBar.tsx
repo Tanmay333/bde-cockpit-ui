@@ -40,13 +40,26 @@ const IncrementalProgressBar: React.FC = () => {
             : new Date(downtime.endTime).getTime();
         const duration = (et - st) / 1000;
 
+        // Determine the color based on downtimeReason
+        let color;
+        if (
+          downtime.reason === 'p001' ||
+          downtime.reason === 'p002' ||
+          downtime.reason === 'p003' ||
+          downtime.reason === 'p004'
+        ) {
+          color = '#FFA901'; // PlannedDownTime
+        } else {
+          color = '#E20031'; // IncidentDownTime (default)
+        }
+
         // Calculate progress for the period between the last downtime and the current downtime (or production start)
         const progress2AD127 = (st - lastEndTime) / 1000;
         differences.push({ progress: progress2AD127, value: '#2AD127' });
 
         // Calculate progress for the duration of the downtime
         const progressE20031 = duration;
-        differences.push({ progress: progressE20031, value: '#E20031' });
+        differences.push({ progress: progressE20031, value: color });
 
         // Update the lastEndTime for the next iteration
         lastEndTime = et;

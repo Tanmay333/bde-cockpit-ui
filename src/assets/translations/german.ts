@@ -67,9 +67,11 @@ export const germanTranslations: Translations = {
     misuse: 'Fehlbedienung',
     defectiveFillingMaterial: 'Fehlerhaftes Füllgut',
     otherIncident: 'Sonstige Störung',
+    incidentLabelMachine: 'Störung Etiketten-Maschine',
     changingBarrel: 'Fasswechsel',
     changingLabels: 'Etikettenwechsel',
     break: 'Pause',
+    rework: 'Nacharbeit',
   },
 };
 

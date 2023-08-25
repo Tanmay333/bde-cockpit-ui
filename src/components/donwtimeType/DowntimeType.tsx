@@ -35,14 +35,16 @@ const DowntimeType: React.FC = () => {
 
   // List of Downtime reasons to display in buttons
   const Downtimereason = [
-    translation.reason.changingBarrel,
-    translation.reason.changingLabels,
-    translation.reason.break,
-    translation.reason.mechanicalIncident,
-    translation.reason.electricalIncident,
-    translation.reason.misuse,
-    translation.reason.defectiveFillingMaterial,
-    translation.reason.otherIncident,
+    { id: 'p001', reason: translation.reason.changingBarrel },
+    { id: 'p002', reason: translation.reason.changingLabels },
+    { id: 'p003', reason: translation.reason.break },
+    { id: 'p004', reason: translation.reason.rework },
+    { id: 'i001', reason: translation.reason.mechanicalIncident },
+    { id: 'i002', reason: translation.reason.electricalIncident },
+    { id: 'i003', reason: translation.reason.misuse },
+    { id: 'i004', reason: translation.reason.defectiveFillingMaterial },
+    { id: 'i005', reason: translation.reason.otherIncident },
+    { id: 'i006', reason: translation.reason.incidentLabelMachine },
   ];
 
   // useEffect to handle downtime toggling and displaying of downtime reasons
@@ -67,7 +69,7 @@ const DowntimeType: React.FC = () => {
         const dtRs = filteredData.map((data) => {
           return {
             startTime: data.startTime,
-            reason: Downtimereason,
+            reason: Downtimereason.map((reasonItem) => reasonItem.id), // Extract reasons from Downtimereason
           };
         });
         setLi(dtRs);
@@ -138,7 +140,7 @@ const DowntimeType: React.FC = () => {
 
   // Onclick function when a downtime reason button is clicked
   const onClick = useCallback(
-    (reason: string, startTime: string | null) => {
+    (id: string, startTime: string | null) => {
       if (!state.data.process.currentPhaseDetails.downtimes) {
         return null;
       }
@@ -147,7 +149,7 @@ const DowntimeType: React.FC = () => {
           action: 'saveDowntimeReason',
           downtimeStartTime: startTime,
           jobId: jobId,
-          downtimeReason: reason,
+          downtimeReason: id, // Send only the id
         };
         sendMessage(message);
         history.push('/');
@@ -210,26 +212,34 @@ const DowntimeType: React.FC = () => {
                       <div className={styles.title}>
                         {translation.text.plannedDowntime}
                         <br />
-                        {data.reason.slice(0, 3).map((value, i) => (
+                        {data.reason.slice(0, 4).map((id, i) => (
                           <IonButton
-                            onClick={() => onClick(value, data.startTime)}
+                            onClick={() => onClick(id, data.startTime)}
                             key={i}
                             className={styles.button}
                           >
-                            {value}
+                            {
+                              Downtimereason.find(
+                                (reasonItem) => reasonItem.id === id,
+                              )?.reason
+                            }
                           </IonButton>
                         ))}
                       </div>
                       <div className={styles.spacing}></div>
                       <div className={styles.title}>
                         {translation.text.incident} <br />
-                        {data.reason.slice(3).map((value, i) => (
+                        {data.reason.slice(4).map((id, i) => (
                           <IonButton
-                            onClick={() => onClick(value, data.startTime)}
+                            onClick={() => onClick(id, data.startTime)}
                             key={i}
                             className={styles.button}
                           >
-                            {value}
+                            {
+                              Downtimereason.find(
+                                (reasonItem) => reasonItem.id === id,
+                              )?.reason
+                            }
                           </IonButton>
                         ))}
                       </div>

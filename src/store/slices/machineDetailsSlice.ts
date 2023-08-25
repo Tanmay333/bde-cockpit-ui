@@ -25,6 +25,8 @@ const initialData: MachineDetails = {
         downtimeSince: null,
         runningSince: null,
         totalDowntime: null,
+        totalPlannedDowntime: null,
+        totalIncidentDowntime: null,
         totalUptime: null,
       },
       previousPhases: [],
@@ -54,6 +56,7 @@ interface AssignedOrderDetails {
   productionTeamSize: number | null;
 }
 interface Downtimes {
+  duration: number;
   startTime: string | null;
   endTime: string | null;
   reason: string | null;
@@ -67,6 +70,8 @@ interface CurrentPhaseDetails {
   downtimeSince: string | null;
   runningSince: string | null;
   totalDowntime: number | string | null;
+  totalPlannedDowntime: number | string | null;
+  totalIncidentDowntime: number | string | null;
   totalUptime: number | string | null;
 }
 interface PreviousPhases {
