@@ -72,6 +72,26 @@ const PhaseDetails: React.FC = () => {
       const pauseTime = formatTime(item.startTime);
       const resumeTime = formatTime(item.endTime);
 
+      const mapReasonToText = (reason: string | null) => {
+        // Create a mapping of item.reason values to display text
+        const reasonMap: { [key: string]: string } = {
+          p001: translation.reason.changingBarrel,
+          p002: translation.reason.changingLabels,
+          p003: translation.reason.break,
+          p004: translation.reason.rework,
+          i001: translation.reason.mechanicalIncident,
+          i002: translation.reason.electricalIncident,
+          i003: translation.reason.misuse,
+          i004: translation.reason.defectiveFillingMaterial,
+          i005: translation.reason.otherIncident,
+          i006: translation.reason.incidentLabelMachine,
+          // Add more mappings as needed
+        };
+        // Check if the reason is in the mapping, and return the corresponding text,
+        // or return the reason itself if there's no mapping.
+        return reason ? reasonMap[reason] || reason : 'Unknown';
+      };
+
       // Push JSX elements representing the downtime reasons to the renderedList array
       renderedList.unshift(
         <Fragment key={index}>
@@ -83,7 +103,8 @@ const PhaseDetails: React.FC = () => {
           )}
           <div className={styles.reason}>
             <img src={bulletPoint2} alt="bullet" className={styles.bullet} />
-            {translation.text.pauseAt} {pauseTime}: {item.reason}
+            {translation.text.pauseAt} {pauseTime}:{' '}
+            {mapReasonToText(item.reason)}
           </div>
         </Fragment>,
       );
