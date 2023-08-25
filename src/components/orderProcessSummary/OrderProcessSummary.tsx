@@ -182,26 +182,6 @@ const OrderProcessSummary: React.FC = () => {
     };
   }, [state]);
 
-  // Function to get the corresponding phase name for display
-  const getPhaseName = () => {
-    const phaseName = state?.data.process?.currentPhaseDetails?.phaseName;
-
-    switch (phaseName) {
-      case 'mounting':
-        return 'Phase 1';
-      case 'preparing':
-        return 'Phase 2';
-      case 'production':
-        return 'Phase 3';
-      case 'cleaning':
-        return 'Phase 4';
-      case 'unmounting':
-        return 'Phase 5';
-      default:
-        return 'Phase';
-    }
-  };
-
   const [data, setData] = useState(() => {
     return {
       stationId: state.data.stationId || 'N/A',
@@ -291,29 +271,18 @@ const OrderProcessSummary: React.FC = () => {
           </IonCardSubtitle>
         </IonCardTitle>
         <div>
-          <IonCardTitle>
-            {getPhaseName()} - {translation.description[data.currentPhaseName]}
-          </IonCardTitle>
-          {!isPhasePreparing && (
-            <IonCardSubtitle className={styles.ionRightSection}>
-              {data.currentPhaseTime}
-            </IonCardSubtitle>
-          )}
-          {isPhasePreparing && (
-            <IonCardSubtitle className={styles.ionRightSection}>
-              00 {translation.text.hrs} 00 {translation.text.min}
-            </IonCardSubtitle>
-          )}
-        </div>
-      </IonCardHeader>
-      <IonCardContent>
-        <div>
           <IonCardTitle>{data.startTimeOfCompleteProcess}</IonCardTitle>
           <IonCardSubtitle>{getStart()}</IonCardSubtitle>
         </div>
+      </IonCardHeader>
+      <IonCardContent>
         <div className={styles.right}>
-          {state.data.process.currentPhaseDetails.phaseName ===
-            'production' && <ProductionVsDowntime />}
+          <IonCardTitle className={styles.phasedetails}>
+            {translation.description[data.currentPhaseName]} -{' '}
+            <> {data.currentPhaseTime}</>
+            {state.data.process.currentPhaseDetails.phaseName ===
+              'production' && <ProductionVsDowntime />}
+          </IonCardTitle>
         </div>
       </IonCardContent>
     </IonCard>
