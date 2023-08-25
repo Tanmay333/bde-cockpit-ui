@@ -128,14 +128,18 @@ const ConfirmOrderDetails: React.FC = () => {
     setIsLoading(true);
   }, [history, orderquantityvalue, ordernumbervalue]);
 
-  const State = useAppSelector((state) => state.machineDetailsSlice.data);
+  const stateLoading = useAppSelector(
+    (state) => state.machineDetailsSlice.data,
+  );
 
   useEffect(() => {
-    if (State.data.process.currentPhaseDetails.phaseName === 'mounting') {
+    if (
+      stateLoading.data.process.currentPhaseDetails.phaseName === 'mounting'
+    ) {
       setIsLoading(false);
       history.push('/');
     }
-  }, [history, State]);
+  }, [history, stateLoading]);
 
   // JSX for right-aligned edit icon button
   const right = (
