@@ -11,18 +11,17 @@ import PropTypes from 'prop-types';
 import LoadingIndicator from '../loadingIndicator/LoadingIndicator';
 
 interface ButtonsProps {
-  setIsEndCleaning: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsEndUnmounting: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoadingIndicator: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Buttons: React.FC<ButtonsProps> = ({
-  setIsEndCleaning,
-  setIsEndUnmounting,
-}) => {
+const Buttons: React.FC<ButtonsProps> = ({ setIsLoadingIndicator }) => {
   const translation = useTranslations();
   const history = useHistory();
   const [startNewOrder, setStartNewOrder] = useState(false);
+  const [isLoadingEndMounting, setIsLoadingEndMounting] = useState(false);
   const [isLoadingEndCleaning, setIsLoadingEndCleaning] = useState(false);
+  const [isLoadingStartUnmounting, setIsLoadingStartUnmounting] =
+    useState(false);
   const [isLoadingEndUnmounting, setIsLoadingEndUnmounting] = useState(false);
   const dispatch = useAppDispatch();
   const { sendMessage } = useWebSocket();
@@ -58,6 +57,34 @@ const Buttons: React.FC<ButtonsProps> = ({
     }
   }, [state]);
 
+  // Function to send the 'setEndOfMounting' message to the WebSocket
+  const onEndMounting = () => {
+    if (jobId === null) {
+      return;
+    }
+    const message = {
+      action: 'setEndOfMounting',
+      jobId: jobId,
+    };
+    sendMessage(message);
+    setIsLoadingEndMounting(true);
+    setIsLoadingIndicator(true);
+  };
+
+  // Function to send the 'setStartOfUnmounting' message to the WebSocket
+  const onStartUnmounting = () => {
+    if (jobId === null) {
+      return;
+    }
+    const message = {
+      action: 'setStartOfUnmounting',
+      jobId: jobId,
+    };
+    sendMessage(message);
+    setIsLoadingStartUnmounting(true);
+    setIsLoadingIndicator(true);
+  };
+
   // Function to send the 'setEndOfUnmounting' message to the WebSocket
   const onEndUnmounting = () => {
     if (jobId === null) {
@@ -69,7 +96,7 @@ const Buttons: React.FC<ButtonsProps> = ({
     };
     sendMessage(message);
     setIsLoadingEndUnmounting(true);
-    setIsEndUnmounting(true);
+    setIsLoadingIndicator(true);
   };
 
   // Function to send the 'setEndOfCleaning' message to the WebSocket
@@ -83,7 +110,7 @@ const Buttons: React.FC<ButtonsProps> = ({
     };
     sendMessage(message);
     setIsLoadingEndCleaning(true);
-    setIsEndCleaning(true);
+    setIsLoadingIndicator(true);
   };
 
   // Check various conditions to determine which buttons to display
@@ -96,6 +123,11 @@ const Buttons: React.FC<ButtonsProps> = ({
     state?.data.process &&
     state.data.process.currentPhaseDetails &&
     state?.data.process.currentPhaseDetails.state === 'FINISHED';
+
+  const isStateRunning =
+    state?.data.process &&
+    state.data.process.currentPhaseDetails &&
+    state?.data.process.currentPhaseDetails.state === 'RUNNING';
 
   const isPhaseMounting =
     state?.data.process &&
@@ -113,22 +145,44 @@ const Buttons: React.FC<ButtonsProps> = ({
     state?.data.process?.currentPhaseDetails?.phaseName === 'cleaning';
 
   useEffect(() => {
-    if (isPhaseUnmounting) {
+    if (isPhasecleaning && isStateFinished) {
       setIsLoadingEndCleaning(false);
-      setIsEndCleaning(false);
+      setIsLoadingIndicator(false);
     }
     if (isPhaseUnmounting && isStateFinished) {
       setIsLoadingEndUnmounting(false);
-      setIsEndUnmounting(false);
+      setIsLoadingIndicator(false);
+    }
+    if (isPhaseUnmounting && isStateRunning) {
+      setIsLoadingStartUnmounting(false);
+      setIsLoadingIndicator(false);
+    }
+    if (isPhaseMounting && isStateFinished) {
+      setIsLoadingEndMounting(false);
+      setIsLoadingIndicator(false);
     }
   });
   return (
     <IonGrid>
       {/* Loading spinner */}
+      {isLoadingEndMounting && <LoadingIndicator />}
       {isLoadingEndCleaning && <LoadingIndicator />}
+      {isLoadingStartUnmounting && <LoadingIndicator />}
       {isLoadingEndUnmounting && <LoadingIndicator />}
       <div className={style.endBtn}>
-        {(isPhaseNull || isPhaseMounting) && (
+        {isPhaseMounting && isStateRunning && (
+          <IonButton
+            className={style.end}
+            fill="solid"
+            type="submit"
+            color={!isPhaseNull ? 'success' : 'light'}
+            disabled={isPhaseNull}
+            onClick={onEndMounting}
+          >
+            End Mounting
+          </IonButton>
+        )}
+        {isPhaseMounting && isStateFinished && (
           <IonButton
             className={style.end}
             fill="solid"
@@ -140,7 +194,21 @@ const Buttons: React.FC<ButtonsProps> = ({
             {translation.buttons.startPreparation}
           </IonButton>
         )}
-        {isPhaseUnmounting && !isStateFinished && (
+        {isPhasecleaning && isStateFinished && (
+          <IonButton
+            onClick={onStartUnmounting}
+            type="submit"
+            fill="solid"
+            style={{
+              width: '210px',
+              height: '50px',
+            }}
+            color={!isPhaseNull ? 'success' : 'light'}
+          >
+            Start Unmounting
+          </IonButton>
+        )}
+        {isPhaseUnmounting && isStateRunning && (
           <IonButton
             onClick={onEndUnmounting}
             type="submit"
@@ -154,7 +222,7 @@ const Buttons: React.FC<ButtonsProps> = ({
             {translation.buttons.endUnmounting}
           </IonButton>
         )}
-        {isPhasecleaning && (
+        {isPhasecleaning && isStateRunning && (
           <IonButton
             onClick={onEndCleaning}
             type="submit"
@@ -168,7 +236,7 @@ const Buttons: React.FC<ButtonsProps> = ({
             {translation.buttons.endCleaning}
           </IonButton>
         )}
-        {isStateFinished && (
+        {isPhaseUnmounting && isStateFinished && (
           <IonButton
             id="phase-one"
             className={style.end}
@@ -186,8 +254,7 @@ const Buttons: React.FC<ButtonsProps> = ({
 };
 
 Buttons.propTypes = {
-  setIsEndCleaning: PropTypes.func.isRequired, // Validate that setIsCleaning is a function and required
-  setIsEndUnmounting: PropTypes.func.isRequired, // Validate that setIsUnmounting is a function and required
+  setIsLoadingIndicator: PropTypes.func.isRequired, // Validate that setIsLoadingIndicator is a function and required
 };
 
 export default Buttons;
