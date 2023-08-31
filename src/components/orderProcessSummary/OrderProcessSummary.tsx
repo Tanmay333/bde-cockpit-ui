@@ -262,7 +262,7 @@ const OrderProcessSummary: React.FC = () => {
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader className={styles.property}>
         <IonCardTitle>
-          <IonIcon icon="ellipse" size="small" className={getImageSource} />{' '}
+          <IonIcon icon={ellipse} size="small" className={getImageSource} />{' '}
           {translation.text.station}: {data.stationId}
           <IonCardSubtitle className={styles.speed}>
             {translation.text.machineSpeed}: {station} {translation.text.ppm}
@@ -278,10 +278,21 @@ const OrderProcessSummary: React.FC = () => {
       <IonCardContent>
         <div className={styles.right}>
           <IonCardTitle className={styles.phasedetails}>
-            {translation.description[data.currentPhaseName]}{' '}
-            {translation.text.time}: <> {data.currentPhaseTime}</>
+            {state.data.process.currentPhaseDetails.phaseName !==
+              'production' && (
+              <>
+                {translation.description[data.currentPhaseName]}{' '}
+                {translation.text.time}:<div> {data.currentPhaseTime}</div>
+              </>
+            )}
             {state.data.process.currentPhaseDetails.phaseName ===
-              'production' && <ProductionVsDowntime />}
+              'production' && (
+              <>
+                {translation.description[data.currentPhaseName]}{' '}
+                {translation.text.time}: {data.currentPhaseTime}
+                <ProductionVsDowntime />{' '}
+              </>
+            )}
           </IonCardTitle>
         </div>
       </IonCardContent>
