@@ -5,12 +5,12 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonIcon,
 } from '@ionic/react';
 import styles from './OrderProcessSummary.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { useTranslations } from '../../store/slices/translation.slice';
-import Green from '../../static/assets/images/Green.svg';
-import Red from '../../static/assets/images/Red.svg';
+import { ellipse } from 'ionicons/icons';
 import { formatDate } from '../../store/utils/formatTime';
 import ProductionVsDowntime from './ProductionVsDowntime';
 
@@ -211,7 +211,6 @@ const OrderProcessSummary: React.FC = () => {
     currentPhaseName,
     currentPhaseTime,
   ]);
-
   const isPhasePreparing =
     state &&
     state.data.process &&
@@ -248,21 +247,17 @@ const OrderProcessSummary: React.FC = () => {
   };
 
   // Function to get the image source based on the current phase state
-  const getImageSource = () => {
-    if (isPhaseProduction) {
-      return Green;
-    } else if (isStateDowntime) {
-      return Red;
-    } else {
-      return Red;
-    }
-  };
+  const getImageSource = isPhaseProduction
+    ? `${styles.startIcon}`
+    : isStateDowntime
+    ? `${styles.stopIcon}`
+    : styles.stopIcon;
 
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader className={styles.property}>
         <IonCardTitle>
-          <img src={getImageSource()} alt={'status'} />{' '}
+          <IonIcon icon="ellipse" size="small" className={getImageSource} />{' '}
           {translation.text.station}: {data.stationId}
           <IonCardSubtitle className={styles.speed}>
             {translation.text.machineSpeed}: {station} {translation.text.ppm}

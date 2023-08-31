@@ -6,18 +6,19 @@
   display: flex;
   align-items: center;
 }
-
 .reason p {
   padding: 4px 0px;
   top: 0;
 }
-
-.bullet {
+.phaseTime {
   font-size: 16px;
   width: 12px;
   height: 12px;
   border-radius: 50%;
   margin-right: 12px;
+  color: rgb(39, 153, 209);
+  background-color: rgb(39, 153, 209);
+  outline: none;
 }
 .incidentdowntime {
   font-size: 16px;
@@ -32,4 +33,8 @@
 .planneddowntime {
   color: #ffa901;
   background-color: #ffa901;
+}
+.endTime {
+  color: rgb(224, 224, 224);
+  background-color: rgb(224, 224, 224);
 }
