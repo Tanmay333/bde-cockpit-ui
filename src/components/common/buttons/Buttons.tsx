@@ -175,7 +175,7 @@ const Buttons: React.FC<ButtonsProps> = ({ setIsLoadingIndicator }) => {
             className={style.end}
             fill="solid"
             type="submit"
-            color={!isPhaseNull ? 'success' : 'light'}
+            color={'danger'}
             disabled={isPhaseNull}
             onClick={onEndMounting}
           >
