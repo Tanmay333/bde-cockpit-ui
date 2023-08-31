@@ -157,6 +157,11 @@ const OrderProcessSummary: React.FC = () => {
       if (!state?.data.process?.currentPhaseDetails?.startTime) {
         return `00:00 ${translation.text.hrs}`;
       }
+
+      if (state?.data.process?.currentPhaseDetails?.state === 'FINISHED') {
+        // Phase is finished, show the end time
+        return `${data.currentPhaseTime}`;
+      }
       const startTime = new Date(
         state.data.process.currentPhaseDetails.startTime,
       );
