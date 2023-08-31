@@ -25,6 +25,8 @@ export const germanTranslations: Translations = {
     edit: ' Bearbeiten ',
     pocStation: 'Ovalläufer 3',
     mockStation: 'Simulierte Maschine',
+    endMounting: 'Rüsten beenden',
+    startUnmounting: 'Abrüsten starten',
   },
 
   text: {

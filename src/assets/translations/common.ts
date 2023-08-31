@@ -31,6 +31,8 @@ interface Buttons {
   edit: string;
   pocStation: string;
   mockStation: string;
+  endMounting: string;
+  startUnmounting: string;
 }
 
 interface Text {

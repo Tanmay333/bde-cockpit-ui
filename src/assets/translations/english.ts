@@ -25,6 +25,8 @@ export const englishTranslations: Translations = {
     edit: 'Edit',
     pocStation: 'Poc Station',
     mockStation: 'Mock Station',
+    endMounting: 'End Mounting',
+    startUnmounting: 'Start Unmounting',
   },
 
   text: {
