@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  IonButton,
-  IonContent,
-  IonItemDivider,
-  IonModal,
-  IonRow,
-} from '@ionic/react';
+import { IonButton, IonContent, IonModal, IonRow } from '@ionic/react';
 import { useHistory } from 'react-router';
 import useWebSocket from '../../store/hooks/useWebSocket';
 import styles from './DowntimeType.module.scss';
@@ -248,7 +242,12 @@ const DowntimeType: React.FC = () => {
                             }
                           </IonButton>
                         ))}
-                        <IonItemDivider></IonItemDivider>
+                      </div>
+                      <div>
+                        {/* Add a thin line separator */}
+                        {index < li.length - 1 && (
+                          <hr className={styles.separator} />
+                        )}
                       </div>
                     </div>
                   ))}
