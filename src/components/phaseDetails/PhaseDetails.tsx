@@ -279,7 +279,7 @@ const PhaseDetails: React.FC = () => {
                 ) => (
                   <div key={index} className={styles.reason}>
                     <IonIcon icon={ellipse} className={styles.phaseTime} />
-                    {`${item.label} : ${item.value}`}
+                    {`${item.label}: ${item.value}`}
                   </div>
                 ),
               )
