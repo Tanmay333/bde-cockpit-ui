@@ -203,7 +203,7 @@ const Buttons: React.FC<ButtonsProps> = ({ setIsLoadingIndicator }) => {
               width: '210px',
               height: '50px',
             }}
-            color={'danger'}
+            color={'success'}
           >
             {translation.buttons.startUnmounting}
           </IonButton>
