@@ -22,11 +22,11 @@ const PhaseOverview: React.FC = () => {
   const stationid = state.data.station.stationId === '1.203.4.245';
 
   // States and useEffect to control the visibility and color of different phases
-  const [showPhase1, setShowPhase1] = useState(true);
-  const [showPhase2, setShowPhase2] = useState(false);
-  const [showPhase3, setShowPhase3] = useState(false);
-  const [showPhase4, setShowPhase4] = useState(false);
-  const [showPhase5, setShowPhase5] = useState(false);
+  const [showPhase1, setShowPhase1] = useState('#333333');
+  const [showPhase2, setShowPhase2] = useState('#E0E0E0');
+  const [showPhase3, setShowPhase3] = useState('#E0E0E0');
+  const [showPhase4, setShowPhase4] = useState('#E0E0E0');
+  const [showPhase5, setShowPhase5] = useState('#E0E0E0');
 
   const [phaseOne, setPhaseOne] = useState('#E0E0E0');
   const [phaseTwo, setPhaseTwo] = useState('#E0E0E0');
@@ -53,11 +53,11 @@ const PhaseOverview: React.FC = () => {
         hasMountingPhase)
     ) {
       setPhaseOne('#2799D1');
-      setShowPhase1(true);
-      setShowPhase2(false);
-      setShowPhase3(false);
-      setShowPhase4(false);
-      setShowPhase5(false);
+      setShowPhase1('#333333');
+      setShowPhase2('#E0E0E0');
+      setShowPhase3('#E0E0E0');
+      setShowPhase4('#E0E0E0');
+      setShowPhase5('#E0E0E0');
       setPhaseTwo('#E0E0E0');
       setPhaseFour('#E0E0E0');
       setPhaseFive('#E0E0E0');
@@ -76,11 +76,11 @@ const PhaseOverview: React.FC = () => {
         state.data.process.currentPhaseDetails.phaseName === 'preparing') ||
       hasPreparationPhase
     ) {
-      setShowPhase1(false);
-      setShowPhase2(true);
-      setShowPhase3(false);
-      setShowPhase4(false);
-      setShowPhase5(false);
+      setShowPhase1('#E0E0E0');
+      setShowPhase2('#333333');
+      setShowPhase3('#E0E0E0');
+      setShowPhase4('#E0E0E0');
+      setShowPhase5('#E0E0E0');
       setPhaseTwo('#2799D1');
       setPhaseFour('#E0E0E0');
       setPhaseFive('#E0E0E0');
@@ -98,11 +98,11 @@ const PhaseOverview: React.FC = () => {
         state.data.process.currentPhaseDetails.phaseName === 'production') ||
       hasProductionPhase
     ) {
-      setShowPhase3(true);
-      setShowPhase4(false);
-      setShowPhase5(false);
-      setShowPhase2(false);
-      setShowPhase1(false);
+      setShowPhase3('#333333');
+      setShowPhase4('#E0E0E0');
+      setShowPhase5('#E0E0E0');
+      setShowPhase2('#E0E0E0');
+      setShowPhase1('#E0E0E0');
       setPhaseFour('#E0E0E0');
       setPhaseFive('#E0E0E0');
     }
@@ -119,11 +119,11 @@ const PhaseOverview: React.FC = () => {
         state.data.process.currentPhaseDetails.phaseName === 'cleaning') ||
       hasCleaningPhase
     ) {
-      setShowPhase5(false);
-      setShowPhase4(true);
-      setShowPhase3(false);
-      setShowPhase1(false);
-      setShowPhase2(false);
+      setShowPhase5('#E0E0E0');
+      setShowPhase4('#333333');
+      setShowPhase3('#E0E0E0');
+      setShowPhase1('#E0E0E0');
+      setShowPhase2('#E0E0E0');
       setPhaseFive('#E0E0E0');
       setPhaseFour('#2799D1');
     }
@@ -139,12 +139,12 @@ const PhaseOverview: React.FC = () => {
         state.data.process.currentPhaseDetails.phaseName === 'unmounting') ||
       hasUnMountingPhase
     ) {
-      setShowPhase3(false);
-      setShowPhase5(true);
-      setShowPhase1(false);
-      setShowPhase2(false);
+      setShowPhase3('#E0E0E0');
+      setShowPhase5('#333333');
+      setShowPhase1('#E0E0E0');
+      setShowPhase2('#E0E0E0');
 
-      setShowPhase4(false);
+      setShowPhase4('#E0E0E0');
       setPhaseFive('#2799D1');
     }
   }, [state]);
@@ -163,11 +163,11 @@ const PhaseOverview: React.FC = () => {
         setPhaseTwo('#E0E0E0');
         setPhaseFour('#E0E0E0');
         setPhaseFive('#E0E0E0');
-        setShowPhase1(true);
-        setShowPhase2(false);
-        setShowPhase3(false);
-        setShowPhase4(false);
-        setShowPhase5(false);
+        setShowPhase1('#333333');
+        setShowPhase2('#E0E0E0');
+        setShowPhase3('#E0E0E0');
+        setShowPhase4('#E0E0E0');
+        setShowPhase5('#E0E0E0');
       }
     }
   }, [startorder]);
@@ -227,13 +227,46 @@ const PhaseOverview: React.FC = () => {
             </>
           )} */}
           <IonRow>
-            <div className={styles.idle}>{showPhase1 && <p>Phase 01</p>}</div>
-            <div className={styles.idle}>{showPhase2 && <p>Phase 02</p>}</div>
-            <div className={styles.working}>
-              {showPhase3 && <p>Phase 03</p>}
+            <div
+              className={styles.idle}
+              style={{
+                color: showPhase1,
+              }}
+            >
+              <p>{translation.description.mounting}</p>
             </div>
-            <div className={styles.idle}>{showPhase4 && <p>Phase 04</p>}</div>
-            <div className={styles.idle}>{showPhase5 && <p> Phase 05</p>}</div>
+            <div
+              className={styles.idle}
+              style={{
+                color: showPhase2,
+              }}
+            >
+              <p>{translation.description.preparing}</p>
+            </div>
+            <div
+              className={styles.working}
+              style={{
+                color: showPhase3,
+              }}
+            >
+              <p>{translation.description.production}</p>
+            </div>
+            <div
+              className={styles.idle}
+              style={{
+                color: showPhase4,
+              }}
+            >
+              <p>{translation.description.cleaning}</p>
+            </div>
+            <div
+              className={styles.idle}
+              style={{
+                color: showPhase5,
+              }}
+            >
+              <p>{translation.description.unmounting}</p>
+            </div>
           </IonRow>
           <IonRow style={{ flexWrap: 'nowrap' }}>
             <div

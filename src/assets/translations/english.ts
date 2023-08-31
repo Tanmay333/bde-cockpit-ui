@@ -60,6 +60,7 @@ export const englishTranslations: Translations = {
     production: 'Production',
     downTime: 'DownTime',
     stationId: 'Please select the Station ID',
+    time: 'time',
   },
 
   reason: {

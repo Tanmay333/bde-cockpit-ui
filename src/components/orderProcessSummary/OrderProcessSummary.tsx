@@ -278,8 +278,8 @@ const OrderProcessSummary: React.FC = () => {
       <IonCardContent>
         <div className={styles.right}>
           <IonCardTitle className={styles.phasedetails}>
-            {translation.description[data.currentPhaseName]}:{' '}
-            <> {data.currentPhaseTime}</>
+            {translation.description[data.currentPhaseName]}{' '}
+            {translation.text.time}: <> {data.currentPhaseTime}</>
             {state.data.process.currentPhaseDetails.phaseName ===
               'production' && <ProductionVsDowntime />}
           </IonCardTitle>

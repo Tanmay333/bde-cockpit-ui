@@ -60,6 +60,7 @@ export const germanTranslations: Translations = {
     production: 'Produktion',
     downTime: 'Stillstand ',
     stationId: 'Bitte eine Maschine auswählen',
+    time: 'Zeit',
   },
 
   reason: {

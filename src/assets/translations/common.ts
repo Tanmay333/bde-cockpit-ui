@@ -63,6 +63,7 @@ interface Text {
   production: string;
   downTime: string;
   stationId: string;
+  time: string;
 }
 
 interface Reasons {
