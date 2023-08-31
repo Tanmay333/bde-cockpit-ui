@@ -4,8 +4,6 @@ import { IonCardContent, IonIcon } from '@ionic/react';
 import styles from './PhaseDetails.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { Fragment, Key } from 'react';
-import bulletpoint from '../../static/assets/images/Bulletpoint.svg';
-import bulletpoint1 from '../../static/assets/images/BulletPoint1.svg';
 import { formatTime } from '../../store/utils/formatTime';
 import { useTranslations } from '../../store/slices/translation.slice';
 import { ellipse } from 'ionicons/icons';
@@ -107,7 +105,7 @@ const PhaseDetails: React.FC = () => {
         <Fragment key={index}>
           {state.data.process.currentPhaseDetails.downtimes !== null && (
             <div className={styles.reason}>
-              <img src={bulletpoint} alt={'bullet'} className={styles.bullet} />
+              <IonIcon icon={ellipse} className={styles.phaseTime} />
               {translation.text.resumeAt}: {resumeTime}
             </div>
           )}
@@ -208,19 +206,11 @@ const PhaseDetails: React.FC = () => {
           state.data.process.currentPhaseDetails.phaseName === null ? (
             <>
               <div className={styles.reason} key={'stTime'}>
-                <img
-                  src={bulletpoint1}
-                  alt={'bullet'}
-                  className={styles.bullet}
-                />
+                <IonIcon icon={ellipse} className={styles.endTime} />
                 {translation.text.startTime}: --:--
               </div>
               <div className={styles.reason} key={'endTime'}>
-                <img
-                  src={bulletpoint1}
-                  alt={'bullet'}
-                  className={styles.bullet}
-                />
+                <IonIcon icon={ellipse} className={styles.endTime} />
                 <span className={styles.reason}>
                   {translation.text.endTime}: --:--
                 </span>{' '}
@@ -248,11 +238,7 @@ const PhaseDetails: React.FC = () => {
               <>
                 {downtimeReasonsList()}
                 <div className={styles.reason} key={'stTime'}>
-                  <img
-                    src={bulletpoint}
-                    alt={'bullet'}
-                    className={styles.bullet}
-                  />
+                  <IonIcon icon={ellipse} className={styles.phaseTime} />
                   {translation.text.startTime}:
                   {formatTime(state.data.process.currentPhaseDetails.startTime)}
                 </div>
@@ -268,11 +254,7 @@ const PhaseDetails: React.FC = () => {
                   index: Key | null | undefined,
                 ) => (
                   <div key={index} className={styles.reason}>
-                    <img
-                      src={bulletpoint}
-                      alt={'bullet'}
-                      className={styles.bullet}
-                    />
+                    <IonIcon icon={ellipse} className={styles.phaseTime} />
                     {`${item.label} : ${item.value}`}
                   </div>
                 ),

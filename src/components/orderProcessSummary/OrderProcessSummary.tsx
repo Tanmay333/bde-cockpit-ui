@@ -5,12 +5,12 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonIcon,
 } from '@ionic/react';
 import styles from './OrderProcessSummary.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { useTranslations } from '../../store/slices/translation.slice';
-import Green from '../../static/assets/images/Green.svg';
-import Red from '../../static/assets/images/Red.svg';
+import { ellipse } from 'ionicons/icons';
 import { formatDate } from '../../store/utils/formatTime';
 import ProductionVsDowntime from './ProductionVsDowntime';
 
@@ -129,11 +129,9 @@ const OrderProcessSummary: React.FC = () => {
       const finalHours = totalHours + Math.floor(totalMinutes / 60);
       const finalMinutes = totalMinutes % 60;
 
-      return `${finalHours.toString().padStart(2, '0')} ${' '} ${
-        translation.text.hrs
-      } ${finalMinutes.toString().padStart(2, '0')} ${' '} ${
-        translation.text.min
-      }`;
+      return `${finalHours.toString().padStart(2, '0')}:${finalMinutes
+        .toString()
+        .padStart(2, '0')}${' '}${translation.text.hrs}`;
     };
 
     const interval = setInterval(() => {
@@ -157,7 +155,7 @@ const OrderProcessSummary: React.FC = () => {
 
     const currentPhaseTime = () => {
       if (!state?.data.process?.currentPhaseDetails?.startTime) {
-        return `00 ${translation.text.hrs} 00 ${translation.text.min}`;
+        return `00:00 ${translation.text.hrs}`;
       }
       const startTime = new Date(
         state.data.process.currentPhaseDetails.startTime,
@@ -168,9 +166,9 @@ const OrderProcessSummary: React.FC = () => {
       const diffInMinutes = Math.floor(timeDiff / 60000);
       const hours = Math.floor(diffInMinutes / 60);
       const minutes = diffInMinutes % 60;
-      return `${hours.toString().padStart(2, '0')} ${
-        translation.text.hrs
-      } ${minutes.toString().padStart(2, '0')} ${translation.text.min}`;
+      return `${hours.toString().padStart(2, '0')}:${minutes
+        .toString()
+        .padStart(2, '0')} ${translation.text.hrs}`;
     };
     const interval = setInterval(() => {
       setCurrentPhaseTime(currentPhaseTime());
@@ -213,7 +211,6 @@ const OrderProcessSummary: React.FC = () => {
     currentPhaseName,
     currentPhaseTime,
   ]);
-
   const isPhasePreparing =
     state &&
     state.data.process &&
@@ -250,35 +247,33 @@ const OrderProcessSummary: React.FC = () => {
   };
 
   // Function to get the image source based on the current phase state
-  const getImageSource = () => {
-    if (isPhaseProduction) {
-      return Green;
-    } else if (isStateDowntime) {
-      return Red;
-    } else {
-      return Red;
-    }
-  };
+  const getImageSource = isPhaseProduction
+    ? `${styles.startIcon}`
+    : isStateDowntime
+    ? `${styles.stopIcon}`
+    : styles.stopIcon;
 
   return (
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader className={styles.property}>
         <IonCardTitle>
-          <img src={getImageSource()} alt={'status'} />{' '}
+          <IonIcon icon="ellipse" size="small" className={getImageSource} />{' '}
           {translation.text.station}: {data.stationId}
           <IonCardSubtitle className={styles.speed}>
             {translation.text.machineSpeed}: {station} {translation.text.ppm}
           </IonCardSubtitle>
         </IonCardTitle>
         <div>
-          <IonCardTitle>{data.startTimeOfCompleteProcess}</IonCardTitle>
+          <IonCardTitle className={styles.processTime}>
+            {data.startTimeOfCompleteProcess}
+          </IonCardTitle>
           <IonCardSubtitle>{getStart()}</IonCardSubtitle>
         </div>
       </IonCardHeader>
       <IonCardContent>
         <div className={styles.right}>
           <IonCardTitle className={styles.phasedetails}>
-            {translation.description[data.currentPhaseName]} -{' '}
+            {translation.description[data.currentPhaseName]}:{' '}
             <> {data.currentPhaseTime}</>
             {state.data.process.currentPhaseDetails.phaseName ===
               'production' && <ProductionVsDowntime />}

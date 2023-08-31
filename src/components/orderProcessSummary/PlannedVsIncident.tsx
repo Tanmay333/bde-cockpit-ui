@@ -3,8 +3,10 @@ import styles from './OrderProcessSummary.module.scss';
 import { useAppSelector } from '../../store/utils/hooks';
 import { isDefined } from '../../utils/isDefined';
 import { IonIcon } from '@ionic/react';
+import { useTranslations } from '../../store/slices/translation.slice';
 
 const PlannedVsIncident: React.FC = () => {
+  const translation = useTranslations();
   // Retrieve the machine details from the Redux store
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
 
@@ -109,10 +111,10 @@ const PlannedVsIncident: React.FC = () => {
     <>
       <IonIcon icon={ellipse} className={styles.planned} />
       {/* Display the total planned downtime and its count */}
-      {totalPlanned} Planned ({plannedDowntime.count}){' '}
+      {totalPlanned} h {translation.text.planned} ({plannedDowntime.count}){' '}
       <IonIcon icon={ellipse} className={styles.incident} />
       {/* Display the total incident downtime and its count */}
-      {totalIncident} Incident ({incidentDowntime.count})
+      {totalIncident} h {translation.text.incident} ({incidentDowntime.count})
     </>
   );
 };

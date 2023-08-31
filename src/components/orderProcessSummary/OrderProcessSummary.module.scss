@@ -44,7 +44,7 @@
     justify-content: space-between;
   }
   .speed {
-    padding-left: 10%;
+    padding-left: 12%;
     width: auto;
   }
   .ionRightTop {
@@ -55,6 +55,38 @@
   }
   .right {
     text-align: initial;
+  }
+  .startIcon {
+    color: transparent;
+    background-color: rgb(42, 209, 39);
+    border-radius: 50%;
+    border: 4px solid white;
+  }
+  .stopIcon {
+    color: transparent;
+    background-color: rgb(226, 0, 4);
+    border-radius: 50%;
+    border: 4px solid white;
+  }
+  .startProd {
+    color: transparent;
+    background-color: rgb(42, 209, 39);
+    border-radius: 50%;
+    border: 2px solid white;
+    height: 9px;
+    width: 9px;
+  }
+  .startDownTime {
+    color: transparent;
+    background-color: rgb(226, 0, 4);
+    border-radius: 50%;
+    border: 2px solid white;
+    height: 9px;
+    width: 9px;
+  }
+  .processTime {
+    display: flex;
+    justify-content: end;
   }
 }
 .production {

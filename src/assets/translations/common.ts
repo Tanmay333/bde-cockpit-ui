@@ -59,6 +59,7 @@ interface Text {
   startedAt: string;
   plannedDowntime: string;
   incident: string;
+  planned: string;
   production: string;
   downTime: string;
   stationId: string;
