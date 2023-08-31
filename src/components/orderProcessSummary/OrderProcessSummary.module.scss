@@ -44,7 +44,7 @@
     justify-content: space-between;
   }
   .speed {
-    padding-left: 10%;
+    padding-left: 12%;
     width: auto;
   }
   .ionRightTop {
@@ -55,6 +55,10 @@
   }
   .right {
     text-align: initial;
+  }
+  .processTime {
+    display: flex;
+    justify-content: end;
   }
 }
 .production {

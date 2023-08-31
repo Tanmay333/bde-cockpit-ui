@@ -129,11 +129,9 @@ const OrderProcessSummary: React.FC = () => {
       const finalHours = totalHours + Math.floor(totalMinutes / 60);
       const finalMinutes = totalMinutes % 60;
 
-      return `${finalHours.toString().padStart(2, '0')} ${' '} ${
-        translation.text.hrs
-      } ${finalMinutes.toString().padStart(2, '0')} ${' '} ${
-        translation.text.min
-      }`;
+      return `${finalHours.toString().padStart(2, '0')}:${finalMinutes
+        .toString()
+        .padStart(2, '0')}${' '}${translation.text.hrs}`;
     };
 
     const interval = setInterval(() => {
@@ -157,7 +155,7 @@ const OrderProcessSummary: React.FC = () => {
 
     const currentPhaseTime = () => {
       if (!state?.data.process?.currentPhaseDetails?.startTime) {
-        return `00 ${translation.text.hrs} 00 ${translation.text.min}`;
+        return `00:00 ${translation.text.hrs}`;
       }
       const startTime = new Date(
         state.data.process.currentPhaseDetails.startTime,
@@ -168,9 +166,9 @@ const OrderProcessSummary: React.FC = () => {
       const diffInMinutes = Math.floor(timeDiff / 60000);
       const hours = Math.floor(diffInMinutes / 60);
       const minutes = diffInMinutes % 60;
-      return `${hours.toString().padStart(2, '0')} ${
-        translation.text.hrs
-      } ${minutes.toString().padStart(2, '0')} ${translation.text.min}`;
+      return `${hours.toString().padStart(2, '0')}:${minutes
+        .toString()
+        .padStart(2, '0')} ${translation.text.hrs}`;
     };
     const interval = setInterval(() => {
       setCurrentPhaseTime(currentPhaseTime());
@@ -271,14 +269,16 @@ const OrderProcessSummary: React.FC = () => {
           </IonCardSubtitle>
         </IonCardTitle>
         <div>
-          <IonCardTitle>{data.startTimeOfCompleteProcess}</IonCardTitle>
+          <IonCardTitle className={styles.processTime}>
+            {data.startTimeOfCompleteProcess}
+          </IonCardTitle>
           <IonCardSubtitle>{getStart()}</IonCardSubtitle>
         </div>
       </IonCardHeader>
       <IonCardContent>
         <div className={styles.right}>
           <IonCardTitle className={styles.phasedetails}>
-            {translation.description[data.currentPhaseName]} -{' '}
+            {translation.description[data.currentPhaseName]}:{' '}
             <> {data.currentPhaseTime}</>
             {state.data.process.currentPhaseDetails.phaseName ===
               'production' && <ProductionVsDowntime />}
