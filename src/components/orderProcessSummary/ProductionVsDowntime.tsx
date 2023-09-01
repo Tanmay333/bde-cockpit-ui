@@ -36,7 +36,7 @@ const ProductionVsDownTimes: React.FC = () => {
     <IonCardSubtitle className={styles.ionRightTop}>
       <div>
         <IonIcon icon={ellipse} className={styles.production} />
-        {totalProductionTime} h {translation.text.production} {'  '}
+        {totalProductionTime} {translation.text.production} {'  '}
         <PlannedVsIncident />
       </div>
     </IonCardSubtitle>
