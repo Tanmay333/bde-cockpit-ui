@@ -175,11 +175,11 @@ const Buttons: React.FC<ButtonsProps> = ({ setIsLoadingIndicator }) => {
             className={style.end}
             fill="solid"
             type="submit"
-            color={!isPhaseNull ? 'success' : 'light'}
+            color={'danger'}
             disabled={isPhaseNull}
             onClick={onEndMounting}
           >
-            End Mounting
+            {translation.buttons.endMounting}
           </IonButton>
         )}
         {isPhaseMounting && isStateFinished && (
@@ -203,9 +203,9 @@ const Buttons: React.FC<ButtonsProps> = ({ setIsLoadingIndicator }) => {
               width: '210px',
               height: '50px',
             }}
-            color={!isPhaseNull ? 'success' : 'light'}
+            color={'success'}
           >
-            Start Unmounting
+            {translation.buttons.startUnmounting}
           </IonButton>
         )}
         {isPhaseUnmounting && isStateRunning && (

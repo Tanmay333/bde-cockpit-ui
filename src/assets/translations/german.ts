@@ -19,12 +19,14 @@ export const germanTranslations: Translations = {
     downTime: 'Stillstand ',
     endProduction: 'Produktion beenden ',
     endUnmounting: 'Abrüsten beenden ',
-    endCleaning: 'Reinigen beenden ',
+    endCleaning: 'Reinigen beenden',
     editOrderDetails: 'Auftragsdetails bearbeiten ',
     startNewOrder: 'Neuen Auftrag starten ',
     edit: ' Bearbeiten ',
     pocStation: 'Ovalläufer 3',
     mockStation: 'Simulierte Maschine',
+    endMounting: 'Rüsten beenden',
+    startUnmounting: 'Abrüsten starten',
   },
 
   text: {
@@ -60,6 +62,7 @@ export const germanTranslations: Translations = {
     production: 'Produktion',
     downTime: 'Stillstand ',
     stationId: 'Bitte eine Maschine auswählen',
+    time: 'Zeit',
   },
 
   reason: {

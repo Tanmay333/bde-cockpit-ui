@@ -17,7 +17,8 @@ import ProductionVsDowntime from './ProductionVsDowntime';
 const OrderProcessSummary: React.FC = () => {
   const translation = useTranslations();
   const [startTimeOfProcess, setStartTimeOfProcess] = useState('N/A');
-  const [currentPhaseTime, setCurrentPhaseTime] = useState('00:00');
+  const [currentPhaseTime, setCurrentPhaseTime] = useState('00:00 h');
+  const [orderSummary, setOrderSummary] = useState('00:00 h');
   const [currentPhaseName, setCurrentPhaseName] = useState('N/A');
   const state = useAppSelector((state) => state.machineDetailsSlice.data);
   const previousPhase = useAppSelector(
@@ -144,6 +145,42 @@ const OrderProcessSummary: React.FC = () => {
     };
   }, [state]);
 
+  useEffect(() => {
+    const totalStartTimeOfMounting = () => {
+      const currentPhaseName =
+        state?.data.process?.currentPhaseDetails?.phaseName;
+      const currentPhaseState = state?.data.process?.currentPhaseDetails?.state;
+
+      if (
+        currentPhaseName === 'unmounting' &&
+        currentPhaseState === 'FINISHED'
+      ) {
+        return orderSummary; // Don't update if unmounting and finished
+      }
+      if (mountingPhase) {
+        const startTime = new Date(mountingPhase.startTime);
+        const currentTime = new Date();
+        const timeDifference = currentTime.getTime() - startTime.getTime();
+        const diffInMinutes = Math.floor(timeDifference / 60000);
+        const hours = Math.floor(diffInMinutes / 60);
+        const minutes = diffInMinutes % 60;
+        return `${hours.toString().padStart(2, '0')}:${minutes
+          .toString()
+          .padStart(2, '0')} h`;
+      }
+
+      return '00:00 h';
+    };
+    const interval = setInterval(() => {
+      const result = totalStartTimeOfMounting();
+      setOrderSummary(result);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [state]); // Include mountingPhase in the dependency array
+
   // useEffect for calculating the time depending on current phase name
   useEffect(() => {
     const currentPhaseName = () => {
@@ -156,6 +193,11 @@ const OrderProcessSummary: React.FC = () => {
     const currentPhaseTime = () => {
       if (!state?.data.process?.currentPhaseDetails?.startTime) {
         return `00:00 ${translation.text.hrs}`;
+      }
+
+      if (state?.data.process?.currentPhaseDetails?.state === 'FINISHED') {
+        // Phase is finished, show the end time
+        return `${data.currentPhaseTime}`;
       }
       const startTime = new Date(
         state.data.process.currentPhaseDetails.startTime,
@@ -188,6 +230,7 @@ const OrderProcessSummary: React.FC = () => {
       startTimeOfCompleteProcess: startTimeOfProcess,
       currentPhaseName: currentPhaseName || 'N/A',
       currentPhaseTime: currentPhaseTime || '00:00',
+      orderSummary: orderSummary || '00:00 h',
     };
   });
 
@@ -200,6 +243,7 @@ const OrderProcessSummary: React.FC = () => {
         startTimeOfCompleteProcess: startTimeOfProcess,
         currentPhaseName: currentPhaseName || 'N/A',
         currentPhaseTime: currentPhaseTime || '00:00',
+        orderSummary: orderSummary || '00:00 h',
       });
     }, 1000);
 
@@ -210,6 +254,7 @@ const OrderProcessSummary: React.FC = () => {
     startTimeOfProcess,
     currentPhaseName,
     currentPhaseTime,
+    orderSummary,
   ]);
   const isPhasePreparing =
     state &&
@@ -257,26 +302,44 @@ const OrderProcessSummary: React.FC = () => {
     <IonCard className={styles.orderInfoCard}>
       <IonCardHeader className={styles.property}>
         <IonCardTitle>
-          <IonIcon icon="ellipse" size="small" className={getImageSource} />{' '}
+          <IonIcon icon={ellipse} size="small" className={getImageSource} />{' '}
           {translation.text.station}: {data.stationId}
           <IonCardSubtitle className={styles.speed}>
             {translation.text.machineSpeed}: {station} {translation.text.ppm}
           </IonCardSubtitle>
         </IonCardTitle>
         <div>
-          <IonCardTitle className={styles.processTime}>
-            {data.startTimeOfCompleteProcess}
-          </IonCardTitle>
+          {state.data.process.currentPhaseDetails.phaseName === 'mounting' && (
+            <IonCardTitle className={styles.processTime}>
+              {data.startTimeOfCompleteProcess}
+            </IonCardTitle>
+          )}
+          {state.data.process.currentPhaseDetails.phaseName !== 'mounting' && (
+            <IonCardTitle className={styles.processTime}>
+              {data.orderSummary}
+            </IonCardTitle>
+          )}
           <IonCardSubtitle>{getStart()}</IonCardSubtitle>
         </div>
       </IonCardHeader>
       <IonCardContent>
         <div className={styles.right}>
           <IonCardTitle className={styles.phasedetails}>
-            {translation.description[data.currentPhaseName]}:{' '}
-            <> {data.currentPhaseTime}</>
+            {state.data.process.currentPhaseDetails.phaseName !==
+              'production' && (
+              <>
+                {translation.description[data.currentPhaseName]}{' '}
+                {translation.text.time}:<div> {data.currentPhaseTime}</div>
+              </>
+            )}
             {state.data.process.currentPhaseDetails.phaseName ===
-              'production' && <ProductionVsDowntime />}
+              'production' && (
+              <>
+                {translation.description[data.currentPhaseName]}{' '}
+                {translation.text.time}: {data.currentPhaseTime}
+                <ProductionVsDowntime />{' '}
+              </>
+            )}
           </IonCardTitle>
         </div>
       </IonCardContent>

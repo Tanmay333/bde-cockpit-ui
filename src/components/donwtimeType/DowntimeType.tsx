@@ -243,6 +243,12 @@ const DowntimeType: React.FC = () => {
                           </IonButton>
                         ))}
                       </div>
+                      <div>
+                        {/* Add a thin line separator */}
+                        {index < li.length - 1 && (
+                          <hr className={styles.separator} />
+                        )}
+                      </div>
                     </div>
                   ))}
                 {/* Loading spinner */}

@@ -1,104 +1,94 @@
-import { ellipse } from 'ionicons/icons';
-import styles from './OrderProcessSummary.module.scss';
+import React from 'react';
 import { useAppSelector } from '../../store/utils/hooks';
 import { isDefined } from '../../utils/isDefined';
+import useTimeout from '../../hooks/useTimeout';
 import { IonIcon } from '@ionic/react';
+import styles from './OrderProcessSummary.module.scss';
+import { ellipse } from 'ionicons/icons';
 import { useTranslations } from '../../store/slices/translation.slice';
 
 const PlannedVsIncident: React.FC = () => {
   const translation = useTranslations();
   // Retrieve the machine details from the Redux store
-  const state = useAppSelector((state) => state.machineDetailsSlice.data);
-
-  // Extract process details from the machine details
   const { process } = useAppSelector(
     (state) => state.machineDetailsSlice.data.data,
   );
+  useTimeout();
 
   // Extract the start time of production and downtime details from the current phase
+  const currentTime = new Date().getTime();
   const startTimeOfProduction = process.currentPhaseDetails.startTime;
   const downTimes = process.currentPhaseDetails.downtimes;
 
-  // Calculate the time since downtime started and the current time
-  const downTimeSinceTime =
-    state.data.process.currentPhaseDetails.downtimeSince;
-  const currentTime = new Date().getTime();
-  const currentDownTime = downTimeSinceTime
-    ? (currentTime - new Date(downTimeSinceTime).getTime()) / 1000
-    : 0;
-
-  // Extract planned and incident downtime durations from process details
-  const plannedDownTime =
-    state.data.process.currentPhaseDetails.totalPlannedDowntime;
-  const incidentDownTime =
-    state.data.process.currentPhaseDetails.totalIncidentDowntime;
-
-  // Define a function to format time in hours and minutes
-  const formattotalTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    return `${hours.toString().padStart(2, '0')}:${minutes
-      .toString()
-      .padStart(2, '0')}`;
-  };
-
-  // Convert downtime values to numbers, defaulting to 0 if not defined
-  const totalPlannedDowntime = plannedDownTime ? Number(plannedDownTime) : 0;
-  const totalIncidentDowntime = incidentDownTime ? Number(incidentDownTime) : 0;
-
-  // Calculate the sum of current downtime and planned/incident downtime
-  const sumofPlannedDownTime = currentDownTime + totalPlannedDowntime;
-  const sumofIncidentDownTime = currentDownTime + totalIncidentDowntime;
-
-  // Format the total planned and incident downtime durations
-  const totalPlanned = formattotalTime(sumofPlannedDownTime);
-  const totalIncident = formattotalTime(sumofIncidentDownTime);
-
-  // Define a function to calculate the counts of planned and incident downtime events
   const calculateDowntime = () => {
     if (!isDefined(startTimeOfProduction) || !isDefined(downTimes)) {
-      // Return default counts if start time or downtime data is not defined
       return {
         plannedDowntime: {
+          duration: '00:00',
           count: 0,
         },
         incidentDowntime: {
+          duration: '00:00',
           count: 0,
         },
       };
     }
 
-    // Initialize counts for planned and incident downtime
     const plannedDowntime = {
+      durationInSeconds: 0,
       count: 0,
     };
     const incidentDowntime = {
+      durationInSeconds: 0,
       count: 0,
     };
 
-    // Loop through downtime events and categorize them as planned or incident
     for (let i = 0; i < downTimes.length; i++) {
       const downtime = downTimes[i];
+      const st =
+        downtime.startTime === null
+          ? 0
+          : new Date(downtime.startTime).getTime();
+      const et =
+        downtime.endTime === null
+          ? currentTime
+          : new Date(downtime.endTime).getTime();
+      const durationInSeconds = (et - st) / 1000;
+
+      Math.floor(durationInSeconds / 3600);
+      Math.floor((durationInSeconds % 3600) / 60);
+
       if (
         downtime.reason === 'p001' ||
         downtime.reason === 'p002' ||
         downtime.reason === 'p003' ||
         downtime.reason === 'p004'
       ) {
-        // Increment planned downtime count
+        plannedDowntime.durationInSeconds += durationInSeconds;
         plannedDowntime.count += 1;
       } else {
-        // Increment incident downtime count
+        incidentDowntime.durationInSeconds += durationInSeconds;
         incidentDowntime.count += 1;
       }
     }
 
-    // Return the counts of planned and incident downtime
+    const formatTime = (timeInSeconds: number) => {
+      const hours = Math.floor(timeInSeconds / 3600);
+      const minutes = Math.floor((timeInSeconds % 3600) / 60);
+
+      const hrsFormat = hours < 10 ? `0${hours}` : hours;
+      const minFormat = minutes < 10 ? `0${minutes}` : minutes;
+
+      return `${hrsFormat}:${minFormat}`;
+    };
+
     return {
       plannedDowntime: {
+        duration: formatTime(plannedDowntime.durationInSeconds),
         count: plannedDowntime.count,
       },
       incidentDowntime: {
+        duration: formatTime(incidentDowntime.durationInSeconds),
         count: incidentDowntime.count,
       },
     };
@@ -110,11 +100,11 @@ const PlannedVsIncident: React.FC = () => {
   return (
     <>
       <IonIcon icon={ellipse} className={styles.planned} />
-      {/* Display the total planned downtime and its count */}
-      {totalPlanned} h {translation.text.planned} ({plannedDowntime.count}){' '}
+      {plannedDowntime.duration} h {translation.text.planned} (
+      {plannedDowntime.count}){'    '}{' '}
       <IonIcon icon={ellipse} className={styles.incident} />
-      {/* Display the total incident downtime and its count */}
-      {totalIncident} h {translation.text.incident} ({incidentDowntime.count})
+      {incidentDowntime.duration} h {translation.text.incident} (
+      {incidentDowntime.count})
     </>
   );
 };

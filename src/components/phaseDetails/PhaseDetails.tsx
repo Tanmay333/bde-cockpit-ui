@@ -150,8 +150,20 @@ const PhaseDetails: React.FC = () => {
     }
     const phaseName = state.data.process.currentPhaseDetails.phaseName;
 
-    if (phaseName === 'mounting') {
+    if (
+      phaseName === 'mounting' &&
+      state?.data.process.currentPhaseDetails.state === 'RUNNING'
+    ) {
       return [{ label: translation.text.startTime, value: startTime() }];
+    }
+    if (
+      phaseName === 'mounting' &&
+      state?.data.process.currentPhaseDetails.state === 'FINISHED'
+    ) {
+      return [
+        { label: translation.text.endTime, value: endTime() },
+        { label: translation.text.startTime, value: startTime() },
+      ];
     }
     if (phaseName === 'preparing') {
       return [{ label: translation.text.startTime, value: startTime() }];
@@ -177,8 +189,20 @@ const PhaseDetails: React.FC = () => {
         ...pauseResumeItems,
       ];
     }
-    if (phaseName === 'cleaning') {
+    if (
+      phaseName === 'cleaning' &&
+      state?.data.process.currentPhaseDetails.state === 'RUNNING'
+    ) {
       return [{ label: translation.text.startTime, value: startTime() }];
+    }
+    if (
+      phaseName === 'cleaning' &&
+      state?.data.process.currentPhaseDetails.state === 'FINISHED'
+    ) {
+      return [
+        { label: translation.text.endTime, value: endTime() },
+        { label: translation.text.startTime, value: startTime() },
+      ];
     }
     if (
       phaseName === 'unmounting' &&
@@ -255,7 +279,7 @@ const PhaseDetails: React.FC = () => {
                 ) => (
                   <div key={index} className={styles.reason}>
                     <IonIcon icon={ellipse} className={styles.phaseTime} />
-                    {`${item.label} : ${item.value}`}
+                    {`${item.label}: ${item.value}`}
                   </div>
                 ),
               )

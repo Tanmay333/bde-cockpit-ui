@@ -6,7 +6,7 @@ export const englishTranslations: Translations = {
     preparing: 'Preparing',
     production: 'Production',
     unmounting: 'Unmounting',
-    cleaning: 'Clean-Up',
+    cleaning: 'Cleaning',
     NA: 'N/A',
   },
 
@@ -25,6 +25,8 @@ export const englishTranslations: Translations = {
     edit: 'Edit',
     pocStation: 'Poc Station',
     mockStation: 'Mock Station',
+    endMounting: 'End Mounting',
+    startUnmounting: 'Start Unmounting',
   },
 
   text: {
@@ -60,6 +62,7 @@ export const englishTranslations: Translations = {
     production: 'Production',
     downTime: 'DownTime',
     stationId: 'Please select the Station ID',
+    time: 'time',
   },
 
   reason: {
