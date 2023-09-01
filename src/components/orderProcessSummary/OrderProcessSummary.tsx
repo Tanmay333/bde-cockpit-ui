@@ -17,7 +17,7 @@ import ProductionVsDowntime from './ProductionVsDowntime';
 const OrderProcessSummary: React.FC = () => {
   const translation = useTranslations();
   const [startTimeOfProcess, setStartTimeOfProcess] = useState('N/A');
-  const [currentPhaseTime, setCurrentPhaseTime] = useState('00:00');
+  const [currentPhaseTime, setCurrentPhaseTime] = useState('00:00 h');
   const [orderSummary, setOrderSummary] = useState('00:00 h');
   const [currentPhaseName, setCurrentPhaseName] = useState('N/A');
   const state = useAppSelector((state) => state.machineDetailsSlice.data);

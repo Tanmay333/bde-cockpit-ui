@@ -19,7 +19,7 @@ export const germanTranslations: Translations = {
     downTime: 'Stillstand ',
     endProduction: 'Produktion beenden ',
     endUnmounting: 'Abrüsten beenden ',
-    endCleaning: 'Reinigen beenden ',
+    endCleaning: 'Reinigen beenden',
     editOrderDetails: 'Auftragsdetails bearbeiten ',
     startNewOrder: 'Neuen Auftrag starten ',
     edit: ' Bearbeiten ',

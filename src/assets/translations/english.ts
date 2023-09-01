@@ -6,7 +6,7 @@ export const englishTranslations: Translations = {
     preparing: 'Preparing',
     production: 'Production',
     unmounting: 'Unmounting',
-    cleaning: 'Clean-Up',
+    cleaning: 'Cleaning',
     NA: 'N/A',
   },
 
