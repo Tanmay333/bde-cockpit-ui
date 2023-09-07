@@ -70,6 +70,10 @@
   margin: 30px 0 0 0; /* Adjust the spacing as needed */
   border: none;
   margin-left: -50px;
- 
+
   border-top: 1px solid #ccc; /* Thin line appearance */
+}
+
+.hiddenModal {
+  display: none !important;
 }
