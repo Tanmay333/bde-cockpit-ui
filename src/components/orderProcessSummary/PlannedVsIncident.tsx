@@ -100,10 +100,10 @@ const PlannedVsIncident: React.FC = () => {
   return (
     <>
       <IonIcon icon={ellipse} className={styles.planned} />
-      {plannedDowntime.duration} h {translation.text.planned} (
+      {plannedDowntime.duration} {translation.text.planned} (
       {plannedDowntime.count}){'    '}{' '}
       <IonIcon icon={ellipse} className={styles.incident} />
-      {incidentDowntime.duration} h {translation.text.incident} (
+      {incidentDowntime.duration} {translation.text.incident} (
       {incidentDowntime.count})
     </>
   );

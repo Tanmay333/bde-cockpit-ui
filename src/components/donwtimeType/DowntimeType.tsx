@@ -22,10 +22,15 @@ const DowntimeType: React.FC = () => {
   const [li, setLi] = useState<
     { startTime: string | null; reason: string[] }[]
   >([]);
+  const modalClass = li.length === 0 ? styles.hiddenModal : '';
 
   // Close the downtime modal
   const closeModal = () => {
     setToggleDowntime(false);
+  };
+
+  const openModal = () => {
+    setToggleDowntime(true);
   };
 
   // If machine details are not available, return null
@@ -73,21 +78,21 @@ const DowntimeType: React.FC = () => {
           };
         });
         setLi(dtRs);
-        setToggleDowntime(true);
+        openModal();
       }
       if (
         state.data.process.currentPhaseDetails.phaseName === 'production' &&
         state.data.process.currentPhaseDetails.state === 'RUNNING' &&
         unknownEvent
       ) {
-        setToggleDowntime(true);
+        openModal();
       }
       if (
         state.data.process.currentPhaseDetails.phaseName === 'production' &&
         !unknownEvent
       ) {
         setLi([]);
-        setToggleDowntime(false);
+        closeModal();
       }
     }
   }, [state]);
@@ -100,7 +105,7 @@ const DowntimeType: React.FC = () => {
       state.data.process.currentPhaseDetails.phaseName !== 'production'
     ) {
       setLi([]);
-      setToggleDowntime(false);
+      closeModal();
     }
   }, [state]);
 
@@ -122,7 +127,7 @@ const DowntimeType: React.FC = () => {
     if (state.data.process.currentPhaseDetails.phaseName === 'cleaning') {
       setIsLoadingEndProduction(false);
       history.push('/');
-      setToggleDowntime(false);
+      closeModal();
       setLi([]);
     }
   }, [history, state]);
@@ -186,6 +191,7 @@ const DowntimeType: React.FC = () => {
     <>
       <IonModal
         key="4"
+        className={modalClass}
         style={{
           '--border-radius': '0px',
           '--width': '100%',
